@@ -8,7 +8,7 @@ title: Feel My Presence
     This was my first hiking experience in Johannesburg and also its been quite some time i did any kind of hiking.
     So wasn't sure whether my body would cope up or not.
 
-    ==Hiking Preparation ==
+    h2. Hiking Preparation
 
     3 litres of water is minimum. The day we went was quite hot and needed lot more. However there were couple of
     places to refill while coming back so that saved me. But to reach these refill spots you have to hike atleast
@@ -20,7 +20,7 @@ title: Feel My Presence
     A towel. There was a nice pool of water where we had a lunch, so if you feel tired you can get a bath over
     there.
 
-    The Beginning:
+    h2. The Beginning:
 
 
     I was up by 6.00AM was all excited for the day. The plan is to Ruimin Zhang will pick me up by my place and we
@@ -29,7 +29,7 @@ title: Feel My Presence
     und 6.45AM to our first halt.
 
 
-    First Halt:
+    h2. First Halt:
 
 
     Our first halt was at Gateview House, Constantia Park @ 07h45. GPS Co-Ords : 26°08’58.52” S 27°55’ 32.57” E. And
@@ -46,7 +46,7 @@ title: Feel My Presence
     with few Chinese friends in their car around 8.00 AM.
 
 
-    Arriving at Castle Gorge:
+    h2. Arriving at Castle Gorge:
 
 
     The driving time was around 1 hour from Gateview house. Except the last 4-5 kms in the dirt road the rest of the
