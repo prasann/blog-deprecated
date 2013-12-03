@@ -1,3 +1,5 @@
 name: Feel My Presence
 exclude: ['Rakefile', 'Gemfile', 'Gemfile.lock']
 permalink: pretty
+markdown:    maruku
+permalink:   date
