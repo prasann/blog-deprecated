@@ -3,6 +3,7 @@
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
     {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
     <link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
 </head>
 <body>
 {{ content }}
