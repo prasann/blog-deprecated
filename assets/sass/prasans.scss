@@ -1,4 +1,8 @@
 @import 'bootstrap';
+.title{
+  @extend .col-md-8;
+  @extend .col-md-offset-4; 
+}
 .post{
   @extend .col-md-8;
   @extend .col-md-offset-2;
@@ -11,4 +15,12 @@
   border: 1px solid black;
   border-radius: 10px;
   padding: 10px;
+}
+.div_header{
+  font-weight: 700;
+  font-style: underline;
+}
+.center_div{
+  @extend .text-center;
+  margin: 10px 0;
 }
