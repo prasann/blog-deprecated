@@ -7,7 +7,7 @@ $post-font: 'Sintony', sans-serif;
 
 @mixin texture_background{
     background: {
-        image: url(../images/pixel_weave/pixel_weave.png);
+        image: url(../images/dark_wood/dark_wood.png);
         repeat: repeat;
     }
 }
@@ -30,7 +30,7 @@ body{
 }
 .post{
   @extend .blog_centered;
-  margin-bottom:20px;
+  margin-bottom:10px;
   margin-top:10px;
   text-align: justify;	
   font-family: $post-font;
@@ -38,12 +38,11 @@ body{
   line-height: 31px;
   padding: 10px;
   background: $background-white;
-  @include border-bottom-radius(10px);
 }
 .date{
   float:right;
   color: $header_grey;
-
+  font-style: italic;
 }
 .tags{
   float:left;
@@ -59,4 +58,7 @@ body{
 }
 .disqus{
   @extend .blog_centered;
+  background: $background-white;
+  padding-top: 10px;
+  @include border-bottom-radius(10px);
 }

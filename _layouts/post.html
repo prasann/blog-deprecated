@@ -1,17 +1,19 @@
 <html>
 <head>
-    {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
-    {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
-    <link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
+	{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
+	{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+	<link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<link rel="stylesheet" href="{{ relative }}assets/css/bootstrap-image-gallery.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
 </head>
 <body>
-<nav class="navbar navbar-fixed-top" role="navigation">
-	<ul class="nav navbar-nav">
-      <li class="active"><a href="#">Link</a></li>
-    </ul>  
-</nav>	
-{{ content }}
-{% include _disqus.html %}    
+	{% include _image_loader.html %}
+	{{ content }}
+	{% include _disqus.html %}    
 </body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<script src="{{ relative }}assets/js/bootstrap-image-gallery.min.js"></script>
 </html>
