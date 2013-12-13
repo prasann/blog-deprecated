@@ -1,26 +1,38 @@
 @import 'bootstrap';
+$maroon-color: #710101;
+$background-white: #ffffff; 
+$post-font: 'Sintony', sans-serif;
+
+@mixin texture_background{
+    background: {
+        image: url(../images/pixel_weave/pixel_weave.png);
+        repeat: repeat;
+    }
+}
+
+body{
+  @include texture_background;
+}
+
 .title{
   @extend .col-md-8;
-  @extend .col-md-offset-4; 
+  @extend .col-md-offset-2;
+  margin-top:10px;
+  background: $background-white;
+  @include border-top-radius(10px);
+  h1{
+    color: $maroon-color;
+  }
 }
 .post{
   @extend .col-md-8;
   @extend .col-md-offset-2;
-  margin-top: 20px;
   margin-bottom:20px;
   text-align: justify;	
-  font-family: 'Sintony', sans-serif;
+  font-family: $post-font;
   font-size: 21px;
   line-height: 31px;
-  border: 1px solid black;
-  border-radius: 10px;
   padding: 10px;
-}
-.div_header{
-  font-weight: 700;
-  font-style: underline;
-}
-.center_div{
-  @extend .text-center;
-  margin: 10px 0;
+  background: $background-white;
+  @include border-bottom-radius(10px);
 }
