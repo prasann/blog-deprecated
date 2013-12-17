@@ -15,8 +15,8 @@ body{
   @include texture_background;
 }
 .blog_centered{
-  @extend .col-md-8;
-  @extend .col-md-offset-2;
+  @extend .col-md-10;
+  @extend .col-md-offset-1;
 }
 .title{
   @extend .blog_centered;
