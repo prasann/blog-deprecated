@@ -1,5 +1,4 @@
 @import 'bootstrap';
-$maroon-color: #710101;
 $background-white: #ffffff; 
 $header_grey: #909090;
 $link_color: #2a6496;
@@ -24,9 +23,6 @@ body{
   padding-bottom:10px;
   background: $background-white;
   @include border-top-radius(10px);
-  h1{
-    color: $maroon-color;
-  }
 }
 .post{
   @extend .blog_centered;
@@ -40,12 +36,12 @@ body{
   background: $background-white;
 }
 .date{
-  float:right;
+  display: block;
   color: $header_grey;
   font-style: italic;
 }
 .tags{
-  float:left;
+  display: inline-block;
   color: $header_grey;
   a{
     padding:0 2px;
