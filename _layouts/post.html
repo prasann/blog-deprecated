@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
 	<link rel="stylesheet" href="{{ relative }}assets/css/bootstrap-image-gallery.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/jquery.fancybox.css">
 	<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
 </head>
 <body>
@@ -16,4 +17,12 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
 <script src="{{ relative }}assets/js/bootstrap-image-gallery.min.js"></script>
+<script src="{{ relative }}assets/js/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".fancybox").fancybox({
+        	padding : 0
+    	});
+	});    	
+</script>
 </html>

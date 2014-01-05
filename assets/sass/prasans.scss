@@ -4,18 +4,9 @@ $header_grey: #909090;
 $link_color: #2a6496;
 $post-font: 'Sintony', sans-serif;
 
-@mixin texture_background{
-    background: {
-        image: url(../images/dark_wood/dark_wood.png);
-        repeat: repeat;
-    }
-}
-body{
-  @include texture_background;
-}
 .blog_centered{
-  @extend .col-md-10;
-  @extend .col-md-offset-1;
+  @extend .col-md-8;
+  @extend .col-md-offset-2;
 }
 .title{
   @extend .blog_centered;
