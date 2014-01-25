@@ -8,6 +8,9 @@ $post-font: 'Sintony', sans-serif;
   @extend .col-md-8;
   @extend .col-md-offset-2;
 }
+img{
+  @extend .img-responsive;
+}
 .title{
   @extend .blog_centered;
   margin-top:10px;
@@ -48,4 +51,16 @@ $post-font: 'Sintony', sans-serif;
   background: $background-white;
   padding-top: 10px;
   @include border-bottom-radius(10px);
+}
+a img{
+  display: inline;
+  width:250px;
+}
+.image_center{
+  text-align: center;
+  margin: 10px 0;
+}
+.img_caption{
+  font-weight: bolder;
+  font-size: 75%;
 }
