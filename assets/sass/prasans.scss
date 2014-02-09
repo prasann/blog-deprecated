@@ -33,6 +33,27 @@ body{
     font-style: italic;
   }
 }
+.my_nav{
+  @extend .blog_centered;
+  margin-bottom: 2px;
+  padding:0;
+  table{
+    width:100%;
+    td{
+      cursor: pointer;
+      padding:10px;
+      background-color: $link_color;
+      color:#FFFFFF;
+      width:50%;
+      text-align: center;
+    }
+    td:hover{
+      background-color: #F0F0F0;
+      color:#000000;
+    }
+  }
+}
+
 .title{
   @extend .blog_centered;
   padding-bottom:10px;
