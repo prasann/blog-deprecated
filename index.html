@@ -1,13 +1,19 @@
----
-layout: default
-title: Feel My Presence
+--- 
+layout: journey 
+title: Feel My Presence 
 ---
 
-<div id="home">
-    <h1>Prasanna's Post</h1>
-    <ul class="posts">
+<div class="post">
+    <div class="clearfix mosaicflow">
         {% for post in site.posts %}
-        <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+        <div class="mosaicflow__item grid">
+            <a href="{{ post.url }}">
+            	<img class="grid_image" src="{{ post.image }}"></img>
+        		<div class="grid_title">{{ post.title }}</div>
+        	</a>
+            <div class="grid_date">{{ post.date | date_to_string }}</div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
+</div>
 </div>

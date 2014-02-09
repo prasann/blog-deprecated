@@ -43,8 +43,8 @@ body{
   margin-bottom:10px;
   text-align: justify;	
   font-family: $post-font;
-  font-size: 16px;
-  line-height: 25px;
+  font-size: 15px;
+  line-height: 24px;
   padding: 10px;
   background: $background-white;
 }
@@ -85,4 +85,33 @@ a img{
 .img_caption{
   font-weight: bolder;
   font-size: 75%;
+}
+.mosaicflow__column { 
+  float:left; 
+}
+.mosaicflow__item img { 
+  display:block; 
+  width:100%; 
+  height:auto; 
+  border-radius: 30px;
+
+}
+.grid{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  a:hover{
+    background-color: $link_color;
+    text-decoration: none;
+  }
+  .grid_title{
+    text-align: center; 
+  }
+  .grid_date{
+    text-align: right;
+    font-style: italic;
+    $header_grey: #333333;
+    font-size: 75%;
+  }
+
 }
