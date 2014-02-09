@@ -1,10 +1,11 @@
 <div class="title">
-	<h1>{{ include.title }}</h1>
-	<div class="date">{{ page.date | date: "%-d %B, %Y" }}</div>
-	<div class="tags">
-		<em>Tags: {% for category in page.categories %}
-			<a href="/categories/{{ category }}">{{ category }}</a> 
-		{% endfor %}
-		</em>
-	</div>	
+    <h1>{{ include.title }}</h1>
+    <div class="date_tag">
+        <div class="date">{{ page.date | date: "%-d %B, %Y" }}.</div>
+        <div class="tags">
+            <em>Under: {% for category in page.categories %}
+                <a href="/categories/{{ category }}">{{ category }}</a> {% endfor %}
+            </em>
+        </div>
+    </div>
 </div>

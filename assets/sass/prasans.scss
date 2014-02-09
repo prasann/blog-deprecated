@@ -1,6 +1,7 @@
 @import 'bootstrap';
 $background-white: #ffffff; 
-$header_grey: #909090;
+$background_grey: #444444;
+$header_grey: #333333;
 $link_color: #2a6496;
 $post-font: 'Sintony', sans-serif;
 
@@ -11,17 +12,35 @@ $post-font: 'Sintony', sans-serif;
 img{
   @extend .img-responsive;
 }
+body{
+  background: $background_grey; 
+}
+.blog_header{
+  @extend .blog_centered;
+  background: $header_grey;
+  padding: 20px;
+
+  .blog_title{
+    @extend .text-center;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size:300%;
+  }
+
+  .blog_quote{
+    @extend .text-right;
+    color: #F0F0F0;
+    font-style: italic;
+  }
+}
 .title{
   @extend .blog_centered;
-  margin-top:10px;
   padding-bottom:10px;
   background: $background-white;
-  @include border-top-radius(10px);
 }
 .post{
   @extend .blog_centered;
   margin-bottom:10px;
-  margin-top:10px;
   text-align: justify;	
   font-family: $post-font;
   font-size: 16px;
@@ -30,13 +49,11 @@ img{
   background: $background-white;
 }
 .date{
-  display: block;
-  color: $header_grey;
+  display: inline-block;
   font-style: italic;
 }
 .tags{
   display: inline-block;
-  color: $header_grey;
   a{
     padding:0 2px;
   }
@@ -45,6 +62,11 @@ img{
     color: #ffffff;
     text-decoration: none;
   }
+}
+.date_tag{
+  font-size:75%;
+  border-radius: 5px;
+  background: #F0F0F0;
 }
 .disqus{
   @extend .blog_centered;
