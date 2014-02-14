@@ -6,13 +6,13 @@ title: Feel My Presence
 <div class="post">
     <div class="clearfix mosaicflow">
         {% for post in site.posts %}
-        <div class="mosaicflow__item grid">
-            <a href="{{ post.url }}">
+        <a class="grid_url" href="{{ post.url }}">
+            <div class="mosaicflow__item grid">
             	<img class="grid_image" src="{{ post.image }}"></img>
         		<div class="grid_title">{{ post.title }}</div>
-        	</a>
-            <div class="grid_date">{{ post.date | date_to_string }}</div>
-        </div>
+                <div class="grid_date">{{ post.date | date_to_string }}</div>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </div>
