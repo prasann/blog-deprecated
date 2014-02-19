@@ -158,5 +158,11 @@ a img{
     $header_grey: #333333;
     font-size: 75%;
   }
-
+}
+#images{
+  img{
+    width: 75px;
+    height: 75px;
+  }
+  text-align: center;
 }

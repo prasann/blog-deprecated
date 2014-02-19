@@ -1,29 +1,35 @@
 <html>
+
 <head>
-	{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
-	{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
-	<link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-	<link rel="stylesheet" href="{{ relative }}assets/css/bootstrap-image-gallery.min.css">
-	<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/jquery.fancybox.css">
-	<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
+    {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+    <link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/magnific-popup.css">
+
 </head>
+
 <body>
-	{% include _blog_header.html %}
-	{% include _image_loader.html %}
-	{{ content }}
-	{% include _disqus.html %}    
+
+
+    {% include _blog_header.html %} {% include _image_loader.html %} {{ content }} {% include _disqus.html %}
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-<script src="{{ relative }}assets/js/bootstrap-image-gallery.min.js"></script>
-<script src="{{ relative }}assets/js/jquery.fancybox.pack.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="{{ relative }}/assets/js/jquery.magnific-popup.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$(".fancybox").fancybox({
-        	padding : 0
-    	});
-	});    	
+$(document).ready(function() {
+    $('#images').magnificPopup({
+        delegate: 'a', // child items selector, by clicking on it popup will open
+        type: 'image',
+        gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		},
+        // other options
+    });
+});
 </script>
+
 </html>
