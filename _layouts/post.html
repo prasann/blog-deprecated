@@ -1,5 +1,4 @@
 <html>
-
 <head>
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
     <link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
@@ -10,9 +9,9 @@
 </head>
 
 <body>
-
-
-    {% include _blog_header.html %} {% include _image_loader.html %} {{ content }} {% include _disqus.html %}
+    {% include _blog_header.html %} 
+    {{ content }} 
+    {% include _disqus.html %}
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
@@ -20,14 +19,13 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#images').magnificPopup({
-        delegate: 'a', // child items selector, by clicking on it popup will open
+        delegate: 'a',
         type: 'image',
         gallery: {
 			enabled: true,
 			navigateByImgClick: true,
-			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-		},
-        // other options
+			preload: [0,1]
+		}
     });
 });
 </script>
