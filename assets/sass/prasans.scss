@@ -142,11 +142,13 @@ a img{
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #888888;
+
   &:hover{
     box-shadow: 10px 10px 5px #888888;
   }
   .grid_image{
     margin-bottom: 30px;
+    max-height:275px;
   }
   .grid_title{
     color: #000000;
