@@ -1,10 +1,10 @@
 <html>
 <head>
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
-    <link href='http://fonts.googleapis.com/css?family=Sintony' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/tomorrow-night-bright.css">
 
 </head>
 
@@ -13,9 +13,10 @@
     {{ content }} 
     {% include _disqus.html %}
 </body>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="{{ relative }}/assets/js/jquery.min.js"></script>
+<script src="{{ relative }}/assets/js/jquery-ui.min.js"></script>
 <script src="{{ relative }}/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="{{ relative }}/assets/js/prettify.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $('#images').magnificPopup({
@@ -27,6 +28,7 @@ $(document).ready(function() {
 			preload: [0,1]
 		}
     });
+    prettyPrint();
 });
 </script>
 
