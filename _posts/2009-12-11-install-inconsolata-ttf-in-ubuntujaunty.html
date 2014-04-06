@@ -1,0 +1,41 @@
+---
+layout: post
+title: Install Inconsolata.ttf in Ubuntu(Jaunty).
+categories:
+- Fonts
+- Tech
+- Ubuntu
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  blogger_blog: www.prasans.info
+  blogger_author: prasannahttp://www.blogger.com/profile/04827252212134050280noreply@blogger.com
+  blogger_permalink: /2010/01/install-inconsolatattf-in-ubuntujaunty.html
+  dsq_thread_id: '309980428'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<div class="post">
+<p>As developers tend to spend most of the time in front of IDEs it makes sense to pick up the best suited font for development. And i have seen most of  the developers prefer to use monochrome fonts as it yields better feel while looking at the code. It is been now widely accepted by many developers to use Inconsolata as their development font. So better start using it and prove yourself geeky ;)<br />When i tried to use Inconsolata with my IntellijIDEA i couldn't find the ttf type inconsolata. And Intellij supports only ttf types. After a long search i downloaded thr ODf type and converted it to ttf using a converter and then i had the issue of installing it to my Jaunty. And i took help of my dev friends out here to resolve stuffs. So thought of consolidating the steps together as it may reduce someone else's pain.</p>
+<p><strong>Steps to install Inconsolata.ttf in Ubuntu(Jaunty).</strong></p>
+<p><strong>Step 1:</strong> Start with downloading inconsolata font. <a href="http://www.4shared.com/file/xnMYNL0w/Inconsolata.html" target=_blank>Inconsolata.ttf</a></p>
+<p><strong>Step 2:</strong> </p> 
+<pre class="prettyprint">mkdir /usr/share/fonts/truetype</pre>
+<pre class="prettyprint">cd /usr/share/fonts/truetype</pre>
+<pre class="prettyprint">sudo mkdir  ttf-inconsolata</pre>
+<p><strong>Step 3:</strong> Copy the Inconsolata.ttf into the directory.<pre class="prettyprint">sudo cp ~/Desktop/Inconsolata.ttf ttf-inconsolata</pre></p>
+<p><strong>Step 4:</strong> Now modify the permissions to allow it to be accessed by IDE's
+	<pre class="prettyprint">cd ttf-inconsolata</pre>
+	<pre class="prettyprint">sudo chmod 777 Inconsolata.ttf</pre>
+<p><strong>Step 5:</strong>Its not over yet. Finally before going to the IDE you need to cache the font to make it accessible.
+	<pre class="prettyprint">sudo fc-cache -f -v</pre>
+	This will show a list of fonts cached recently. Check whether Inconsolata.ttf is been cached.</p>
+<div>Now you can keep staring at your code for a long time as it feels a lot better :)   </div>
+</div>
+</div>

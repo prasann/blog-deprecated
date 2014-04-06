@@ -1,0 +1,89 @@
+---
+layout: post
+title: Slot machine effect using jQuery
+categories:
+- jQuery
+- Tricks
+tags:
+- jQuery
+status: publish
+type: post
+published: true
+meta:
+  _yoast_wpseo_linkdex: '59'
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: http://prasans.info/2011/09/slot-machine-effect-jquery/
+  _wp_jd_target: http://prasans.info/2011/09/slot-machine-effect-jquery/
+  _jd_wp_twitter: Slot machine effect using jQuery http://prasans.info/2011/09/slot-machine-effect-jquery/
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '1'
+  _yoast_wpseo_focuskw: jQuery cashflow slot machine
+  _yoast_wpseo_title: ! 'slot machine effect - cashflow effect  - jQuery '
+  _yoast_wpseo_metadesc: ''
+  _yoast_wpseo_metakeywords: ''
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '425150368'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p><strong>Intention:</strong><br />
+In an yet another cart based web-app, the intention is to make the cart page looks fancier. <a title="Praveen Selvam" href="http://praveenselvam.com" target="_blank">Praveen Selvam</a> came up with this idea of slot machine effect in the price section whenever an item been added.</p>
+<p><strong>Slot Machine Effect:</strong></p>
+<p>[iframe width="100%" height="320" src="http://jsfiddle.net/prasans/vxrBd/embedded/result/"]</p>
+<p><strong>Requisite:</strong></p>
+<ul>
+<li>jQuery 1.5+</li>
+</ul>
+<p><strong>Idea:</strong></p>
+<ul>
+<li>Create an element to display the animation.</li>
+<li>Next create an empty element say <span style="color: #008080;">&lt;div&gt;&lt;/div&gt;</span> and set its <span style="color: #008080;">position: 'fixed'</span></li>
+<li>Set the position of the empty element to the Start Value of the slot.</li>
+<li>Now use jQuery animate to move the empty element from Start value to the specified End Value in a given duration.</li>
+<li>jQuery animate has a <span style="color: #008080;">step()</span> method which gives you the current position of the div for every unit of time.</li>
+<li>Now inside this <span style="color: #008080;">step()</span> method set the display element's text to the current position value of the empty element.</li>
+<li>Since empty element moves from start value to end value, you will see the numbers changing from start value to end value in the display area.</li>
+</ul>
+<div><span class="Apple-style-span" style="font-size: 16px; line-height: 24px;"><strong>Javascript Code:</strong></span></div>
+<div>
+<pre class="brush:js">$('#animate_btn').click(function() {
+	cashFlow($('.value'), $('#startVal').val(), $('#endVal').val(),
+	$('#duration').val() * 1000, $('#decimal').val());
+});
+
+cashFlow = function(elem, from, to, duration, decimal) {
+    var magicObject;
+    if (typeof magicObject === 'undefined') {
+        magicObject = $('&lt;div&gt;&lt;/div&gt;').appendTo('body');
+    }
+    magicObject.css({
+        position: "fixed",
+        left: from
+    }).animate({
+        left: to
+    }, {
+        duration: duration,
+        step: function(currentLeft) {
+            elem.html(Number(currentLeft).toFixed(decimal));
+        },
+        complete: function() {
+            magicObject.remove();
+        }
+    });
+};</pre>
+</div>

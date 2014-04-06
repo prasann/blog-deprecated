@@ -1,0 +1,81 @@
+---
+layout: post
+title: Test your Controller's ModelAttribute methods.
+categories:
+- Assertion
+tags:
+- Controller
+- Spring
+- Unit test
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _yoast_wpseo_title: Test your Controller's ModelAttribute methods. - Feel My Presence
+  _wp_old_slug: ''
+  _yoast_wpseo_metadesc: Injecting a ModelAttribute to the controller's method in
+    Unit tests
+  _yoast_wpseo_metakeywords: ModelAttribute, Spring 3, Unit Tests, Controller
+  _yoast_wpseo_focuskw: Controller
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '311276276'
+  _yoast_wpseo_linkdex: '24'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>I was about to write some unit tests around my Spring’s controller classes and also i wanted to write the test using MockHttpRequest and MockHttpResponse.</p>
+<p>My controller had a method to which i was using ModelAttribute as one of the parameter. I just want to simulate the same scenario in my Unit Tests.</p>
+<p>Unfortunately i could not see any methods in MockHttpRequest to help me with this. So i had to take a simple different approach as an workaround for this.</p>
+<p><span style="text-decoration: underline;">My Controller code looks similar to this:</span></p>
+<div id="_mcePaste">
+<pre class="brush:java">@Controller
+@RequestMapping(value = "/register")
+public class MyController {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ModelAndView save(@ModelAttribute User user) {
+        //Code to save the User object
+        return new ModelAndView();
+    }
+}</pre>
+</div>
+<p><span style="text-decoration: underline;">My Unit Tests:</span></p>
+<pre class="brush:java">public class MyControllerTest {
+    MockHttpServletResponse response;
+    MockHttpServletRequest request;
+    AnnotationMethodHandlerAdapter handler;
+
+    @Before
+    public final void init() {
+        response = new MockHttpServletResponse();
+        request = new MockHttpServletRequest();
+        handler = new AnnotationMethodHandlerAdapter();
+    }
+
+    @Test
+    public void shouldTestSaveUser() {
+        final User mockUser = new UserTestBuilder().withName("John").build();
+        request.setMethod("POST");
+        request.setRequestURI("/register/save");
+
+        MyController myController = new MyController() {
+            @ModelAttribute
+            public User mockModel() {
+                return user;
+            }
+        }
+        ModelAndView model = handler.handle(request, response, myController);
+    }
+}</pre>
+<p><em><strong>Explanation:</strong></em></p>
+<p>Whenever a method in a controller is annotated with @ModelAttribute , it will be invoked for every request made to that controller. So while creating the mycontroller object i am overriding a sample method which has this annotation and returns a User object as a ModelAttribute.</p>

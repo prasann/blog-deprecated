@@ -1,0 +1,47 @@
+---
+layout: post
+title: Link your Sublime Text 2 instances with Dropbox
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _yoast_wpseo_linkdex: '56'
+  _yoast_wpseo_focuskw: ST2, Sublime Text, Mac, Windows
+  _yoast_wpseo_title: ''
+  _yoast_wpseo_metadesc: ''
+  _yoast_wpseo_metakeywords: ''
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_sitemap-html-include: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '1484946106'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>After started using <strong>Sublime Text 2 (ST2)</strong>, was completely head over heels for it. After using it for some time, figured out that ST2 uses a settings file to remember the plugins, open tabs etc. I was using my laptop (Mac) and sometimes uses my PC (Windows) do type blog post or some other stuff. So thought of giving a try in syncing these two using Dropbox folder.</p>
+<p>The idea is to have the settings file in the Dropbox folder and to have a symlink in the OS to point to. This means whatever changes i did to a ST2 instance will reflect in my other instance too.</p>
+<p><strong>Prerequisites:</strong></p>
+<ul>
+<li>Install ST2 in both the machines.</li>
+<li>Have a DropBox account and install the software in both the machines.</li>
+</ul>
+<h3><strong>In Mac:</strong></h3>
+<p>Move the entire Sublime Text folder into the Dropbox folder.</p>
+<pre class="brush:shell">mv '~/Library/Application\ Support/Sublime\ Text\ 2/' '~/Dropbox/Sublime\ Text\ 2'</pre>
+<p>Next step is to create a symlink in the original location so that it the folder in the Dropbox will be used to store the settings.</p>
+<pre class="brush:shell">ln -s '~/Library/Application\ Support/Sublime\ Text\ 2' '~/Dropbox/Sublime\ Text\ 2'</pre>
+<h3><strong>In Windows:</strong></h3>
+<p>Windows don't have symlink concept. So we have to settle with <a title="NTFS Junction Point" href="http://en.wikipedia.org/wiki/NTFS_symbolic_link">NTFS symbolic link</a></p>
+<pre class="brush:shell">mklink /J 'C:/Users/user_name/Dropbox/Sublime Text 2' 'C:/User/user_name/Applications/Sublime Text 2'</pre>
+<p>That's it, now you don't need to worry about the sync between these two instances.</p>

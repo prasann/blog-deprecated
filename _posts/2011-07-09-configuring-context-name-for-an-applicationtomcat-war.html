@@ -1,0 +1,86 @@
+---
+layout: post
+title: Configuring Context name for an application(Tomcat, WAR)
+categories:
+- Java
+- Tomcat
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _jd_tweet_this: 'no'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: ''
+  _wp_jd_target: ''
+  _jd_wp_twitter: ''
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '1'
+  _yoast_wpseo_title: Configuring Context name for an application(Tomcat, WAR)
+  _yoast_wpseo_metadesc: ''
+  _yoast_wpseo_metakeywords: ''
+  _yoast_wpseo_focuskw: ''
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '353854044'
+  _wp_old_slug: ''
+  _yoast_wpseo_linkdex: '0'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<div id="_mcePaste">Many times i have faced this necessity of  having a different Context name than that of the WAR name. Especially when i use Maven. And i also found that it is quite simple in Tomcat. While looking for it i found two approached for doing it. One using Context.xml and the other using Server.xml</div>
+<div></div>
+<div><strong>Problem Statement: </strong>I have a WAR file myapp-build123.war and the app can be referred using http://localhost:8080/myapp-build123 but i need to refer my application as http://localhost:8080/myapp. So here is what im gonna do.</div>
+<div></div>
+<div id="_mcePaste"><strong>Approach 1:</strong> Context.xml <strong>(Recommended way)</strong></div>
+<div><span style="text-decoration: underline;"><br />
+</span></div>
+<div id="_mcePaste">
+<ul>
+<li>Create a Context file in ${TOMCAT_HOME}/conf/Catalina/localhost directory. Name the file as myapp.xml (The file name should be the same as desired context name) The content of the file is given below.</li>
+</ul>
+</div>
+<div id="_mcePaste">
+<pre class="brush:xml" style="padding-left: 30px;">&lt;Context path="/somepath" docBase="/home/myapp-build123"/&gt;</pre>
+<div style="padding-left: 30px;"><em>Basically the path attribute is been ignored by Tomcat so if you want you can ignore it too.</em></div>
+<div style="padding-left: 30px;"><em> </em><em>The docBase will contain the path of the WAR. Here i have placed my WAR file in the home directory.</em></div>
+<div style="padding-left: 30px;"><em><br />
+</em></div>
+<li style="padding-left: 30px;">An important thing to note here is that the WAR file cannot be placed inside the ${TOMCAT_HOME}/webapps folder. If you place the WAR in the webapps folder then the war will get exploded with the same name as the WAR file and after that it is not possible to configure the Context name. So place the WAR anywhere in the system apart from ${TOMCAT_HOME}/webapps folder.</li>
+</div>
+<div>
+<ul>
+<li>Now its time to start the server and you will see a folder named myapp in the ${TOMCAT_HOME}/webapps folder, containing the application files.</li>
+</ul>
+</div>
+<div><strong>Approach 2:</strong> Server.xml ( <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/context.html" target="_blank">Not Recommended</a> after Tomcat 4.x )</div>
+<div>
+<ul>
+<li>Open the Server.xml file from ${TOMCAT_HOME}/conf folder. Search for the Host tag and place the Context tag inside it.</li>
+</ul>
+</div>
+<div id="_mcePaste">
+<pre class="brush:xml" style="padding-left: 60px;">&lt;Host name="localhost"  appBase="webapps"
+unpackWARs="true" autoDeploy="true"
+xmlValidation="false" xmlNamespaceAware="false"&gt;
+<span style="color: #ff0000;">&lt;Context path="/myapp" docBase="/myapp-build123"/&gt;</span>
+&lt;/Host&gt;</pre>
+</div>
+<div>
+<ul>
+<li>In this scenario you can place the WAR file in the ${TOMCAT_HOME}/webapps folder itself. And also it is possible to access the application by both the URLs, http://localhost:8080/myapp-build123 and http://localhost:8080/myapp.</li>
+</ul>
+</div>

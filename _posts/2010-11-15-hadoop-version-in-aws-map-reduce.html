@@ -1,0 +1,34 @@
+---
+layout: post
+title: Hadoop Version in AWS Map Reduce
+categories:
+- Amazon
+- AWS
+- Hadoop
+- MapReduce
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  blogger_blog: www.prasans.info
+  blogger_author: prasannahttp://www.blogger.com/profile/04827252212134050280noreply@blogger.com
+  blogger_permalink: /2010/11/hadoop-version-in-aws-map-reduce.html
+  _edit_last: '1'
+  dsq_thread_id: '345989427'
+  _yoast_wpseo_linkdex: '0'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>Creating job flows using AWS MapReduce's GUI is pretty simple and very straight forward. But i wanted to use Java SDK to create/run jobs in MapReduce. I could successfully able set up the job and configured all the parameters except for a weird error.</p>
+<pre class="brush:shell">java.lang.NoSuchMethodError:
+org.apache.hadoop.mapred.JobConf.
+setBooleanIfUnset(Ljava/lang/String;Z)V</pre>
+<p>I was constantly getting this error while running the job. Initially i had no idea why this error occurs and none of the forum talks about it either. Then i figured out that the default Hadoop version used by the Ec2 instances was 0.18 and i was expecting 0.20. Interestingly i didn't face this issue when i did it through GUI.</p>
+<p>As a solution i need to explicitly set the version number as 0.20 to the Instances object so that it will use the same while running the job.</p>
+<pre class="brush:java">JobFlowInstancesConfig instances = new JobFlowInstancesConfig();
+instances.setHadoopVersion("0.20");</pre>

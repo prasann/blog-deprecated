@@ -1,0 +1,27 @@
+---
+layout: post
+title: Stop halting at Assertions
+categories:
+- Assertion
+- Tests
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  blogger_blog: www.prasans.info
+  blogger_author: prasannahttp://www.blogger.com/profile/04827252212134050280noreply@blogger.com
+  blogger_permalink: /2010/03/stop-halting-at-assertions.html
+  dsq_thread_id: '309980441'
+  _yoast_wpseo_linkdex: '0'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>When i was writing functional tests i stepped into a scenario where i have to continue with the test even after an assertion failure. The idea here is that you find an assertion failing, still you may need to go ahead and check out all the assertions as these tests generally take long time to complete. At the end of the test it will be good to have the summary of all the failures along with the stack trace. I was looking for some testing framework to help out with this functionality but unfortunately cant find any.</p>
+<p>Finally using TestNg i implemented this feature. All you need is to write a listener that listens whenever a test fails and simply logs the stack trace without failing the test. There is a neat step by step tutorial given <a href="http://seleniumexamples.com/blog/guide/using-soft-assertions-in-testng">here&nbsp;</a></p>
+<p>Though this example has some specific information for Selenium based tests, it works fine with normal functional tests too.</p>
+<p>Happy Testing :)</p>

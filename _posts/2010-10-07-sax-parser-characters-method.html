@@ -1,0 +1,75 @@
+---
+layout: post
+title: SAX parser characters() method.
+categories:
+- SAX
+- XML
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  blogger_blog: www.prasans.info
+  blogger_author: prasannahttp://www.blogger.com/profile/04827252212134050280noreply@blogger.com
+  blogger_permalink: /2010/10/sax-parser-characters-method.html
+  _edit_last: '1'
+  dsq_thread_id: '320363318'
+  _yoast_wpseo_linkdex: '0'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>Was playing around SAX parsing some Gigs of XML file :) Here are few leanings from the game.</p>
+<p>My intention was to read values between a corresponding tag. I initially went after using characters() in SAX parser which actually worked fine for initial feeds. But as i keep increasing the size of the XMLs and if the size of the tagContent was large the problem arises. characters() function not always gives back the entire value in a single shot. It may return the value in multiple chunks. So need to be careful in assigning and using the values from characters() method.</p>
+<p>So the better way to use characters() method is to keep appending all the values to a buffer and use the value in the corresponding end tag section. Also need to make sure that the buffer has to be flushed in the corresponding start element.</p>
+<p><strong>Sample Xml:</strong></p>
+<p><strong> </strong></p>
+<pre class="brush:xml">&lt;Sample&gt;
+    &lt;StudentCollection&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Jack&lt;/Name&gt;
+            &lt;Age&gt;12&lt;/Age&gt;
+        &lt;/Student&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Jill&lt;/Name&gt;
+            &lt;Age&gt;13&lt;/Age&gt;
+        &lt;/Student&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Rose&lt;/Name&gt;
+            &lt;Age&gt;14&lt;/Age&gt;
+        &lt;/Student&gt;
+    &lt;/StudentCollection&gt;
+&lt;/Sample&gt;</pre>
+<p><strong>Sample SAX handler code to print the Names:</strong></p>
+<p><strong>Initial Code: (Works fine for small values &amp; small files)</strong></p>
+<p><strong> </strong></p>
+<pre class="brush:java">
+public void startElement(String uri,String tag,String qName,
+                             Attributes attributes){ }
+
+public void characters(char ch[],int start,int length){      
+           System.out.println("Name of a student: " + new String(ch,start,length));
+} 
+
+public void endElements(String uri,String tag,String qName){ }
+</pre>
+<p><strong>Final Code:</strong></p>
+<p><strong> </strong></p>
+<pre class="brush:java">public void startElement(String uri,String tag,String qName,
+                             Attributes attributes){
+        if("Name".equals(tag)){
+            tagContentBuffer = new StringBuffer();
+        }
+    }
+public void characters(char ch[],int start,int length){
+        tagContentBuffer.append(new String(ch,start,length));
+    }
+public void endElements(String uri,String tag,String qName){
+        if("Name".equals(tag)){
+            System.out.println("Name of a student: " +
+                    tagContentBuffer.toString());
+        }
+    }</pre>

@@ -1,0 +1,73 @@
+---
+layout: post
+title: Make your NTFS drive writable under Mac Lion
+categories:
+- Mac OSX
+- NTFS
+- Tech
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _jd_wp_twitter: Make your NTFS drive writable under Mac Lion http://prasans.info/2011/12/make_ntfs_write_mac_lion/
+  _wp_jd_target: http://prasans.info/2011/12/make_ntfs_write_mac_lion/
+  _wp_jd_url: http://prasans.info/2011/12/make_ntfs_write_mac_lion/
+  _wp_jd_yourls: ''
+  _wp_jd_wp: ''
+  _wp_jd_bitly: ''
+  _wp_jd_clig: ''
+  _jd_twitter: ''
+  _jd_tweet_this: 'yes'
+  _yoast_wpseo_linkdex: '62'
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '1'
+  _yoast_wpseo_focuskw: Mac NTFS
+  _yoast_wpseo_title: Make your NTFS drive writable under Mac Lion - Feel My Presence
+  _yoast_wpseo_metadesc: Mac OsX, Mac Lion, NTFS Write, NTFS Write on Mac OSX
+  _yoast_wpseo_metakeywords: Mac, NTFS
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '496309747'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<div class="post">
+<p>Just now i got my new MBP pre loaded with Lion OSX and one of the surprises i stepped onto is NTFS write issue on the Mac.</p>
+<p>Based on a few blog posts and comments I managed to find a way that worked for me, so I thought I’d put it all here in one place for others.</p>
+<p><strong>Pre requisites:</strong></p>
+<p>Get <a title="homebrew" href="http://mxcl.github.com/homebrew/" target="_blank">HomeBrew</a> installed in your machine. And of course this needs XCode tools to be installed.</p>
+<p><strong>Steps:</strong></p>
+<p>1) Install latest Fuse4X (a fork of MacFUSE) and NTFS-3G packages:</p>
+<pre class="prettyprint">brew install fuse4x
+brew install ntfs-3g</pre>
+<p>2) Type brew info fuse4x-kext in the terminal. You will be shown a message similar to this:</p>
+<pre class="prettyprint">In order for FUSE-based filesystems to work, the fuse4x kernel extension
+must be installed by the root user:
+sudo cp -rfX /usr/local/Cellar/fuse4x-kext/0.8.13/Library/Extensions/fuse4x.kext /System/Library/Extensions
+sudo chmod +s /System/Library/Extensions/fuse4x.kext/Support/load_fuse4x</pre>
+<p>Perform both the operation.<br />
+3) And after this i simply followed this <a href="http://fernandoff.posterous.com/ntfs-write-support-on-osx-lion-with-ntfs-3g-f" target="_blank">blog post entry</a>. Since you have already installed Fuse4x and ntfs-3g you can directly jump to</p>
+<blockquote><p>"Ok, at this point you should have a functional fuse4x and ntfs-3g install."</p></blockquote>
+<p>and create an alternative</p>
+<pre class="prettyprint">/sbin/ntfs_mount</pre>
+<p>script as described there.<br />
+And at last you got make one change to get things working.<br />
+The script in the bog post is for MacPort users. For HomveBrew users you got to make this change.<br />
+replace</p>
+<pre class="prettyprint">/opt/local/bin/ntfs-3g</pre>
+<p>with</p>
+<pre class="prettyprint">/usr/local/bin/ntfs-3g</pre>
+<p>And that's it. Just try mounting a NTFS drive and you should have write permissions to your drive. If you face any issues check out the log @</p>
+<pre class="prettyprint">/var/log/ntfsmnt.log</pre>
+<p>or try re-booting the machine in the worst case.</p>
+</div>

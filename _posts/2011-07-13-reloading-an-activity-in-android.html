@@ -1,0 +1,65 @@
+---
+layout: post
+title: Reloading an activity in Android
+categories:
+- Android
+- Java
+- Tech
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _jd_tweet_this: ''
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: http://prasans.info/2011/07/reloading-an-activity-in-android/
+  _wp_jd_target: http://prasans.info/2011/07/reloading-an-activity-in-android/
+  _jd_wp_twitter: Reloading an activity in Android http://prasans.info/2011/07/reloading-an-activity-in-android/
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '1'
+  _yoast_wpseo_title: Reloading/ Refreshing/ Restarting an activity in Android
+  _yoast_wpseo_metadesc: Some approaches to Reload/ Refresh/ Restart an activity in
+    Android
+  _yoast_wpseo_metakeywords: ''
+  _yoast_wpseo_focuskw: ''
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '357419453'
+  _wp_old_slug: ''
+  _yoast_wpseo_linkdex: '0'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<div id="_mcePaste">More often i wanted to reload an activity to refresh the contents of an page. I have seen many ways to do this in Android world and i always puzzled about the best approach.</div>
+<div id="_mcePaste">However these are some of the approaches that i took . I found the following two approaches a lot cleaner as they kill the existing intent and restart.</div>
+<div id="_mcePaste"></div>
+<div><strong>Approach 1:</strong></div>
+<div id="_mcePaste">
+<pre class="brush:java">Intent intent = getIntent();
+finish();
+startActivity(intent);</pre>
+</div>
+<div></div>
+<div id="_mcePaste"><strong>Approach 2:</strong></div>
+<div id="_mcePaste">
+<pre class="brush:java">Intent intent = getIntent();
+overridePendingTransition(0, 0);
+intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+finish();
+overridePendingTransition(0, 0);
+startActivity(intent);</pre>
+</div>
+<div><em><strong>Note:</strong> The second approach works only from API 5+</em></div>

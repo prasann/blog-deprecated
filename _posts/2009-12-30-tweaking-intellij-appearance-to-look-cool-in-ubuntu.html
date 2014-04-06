@@ -1,0 +1,40 @@
+---
+layout: post
+title: Tweaking IntelliJ appearance to look cool in Ubuntu
+categories:
+- Intellij
+- Tech
+- Ubuntu
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  blogger_blog: www.prasans.info
+  blogger_author: prasannahttp://www.blogger.com/profile/04827252212134050280noreply@blogger.com
+  blogger_permalink: /2009/11/tweaking-intellij-appearance-to-look.html
+  dsq_thread_id: '313281327'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<div class="post">
+<p>When i  initially installed IntelliJ in Ubuntu the font of the IDE really sucked. I couldn't able to concentrate on my work because of the freaking font style. After looking out various forums and blogs i finally did a revamp to my Intellij that looked perfect to me. Here is a screenshot of my IDEA after modification.<br /><a rel="lightbox" title="IntelliJ IDEA 7.0" href="http://4.bp.blogspot.com/_1InVskGajaM/S2QE4uCXzRI/AAAAAAAAALE/Q8pCdBbZd80/s1600/image1.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 400px; height: 232px;" src="http://4.bp.blogspot.com/_1InVskGajaM/S2QE4uCXzRI/AAAAAAAAALE/Q8pCdBbZd80/s400/image1.png" border="0" alt="" id="BLOGGER_PHOTO_ID_5432472422992825618" /></a><br />If you are facing same issues try out these steps and your life with IDEA will be much better.
+<ul>
+<li>Open the file idea.vmoptions.<br /><i>cd {IDEA directory}/bin</i><br /><i>
+<div style="text-align: left;"><span class="Apple-style-span" style="font-style: normal; "><i>sudo vim idea.vmoptions</i></span></div>
+<p></i>
+<div style="text-align: left;">Add '<i>-Dawt.useSystemAAFontSettings=on'</i> (without quotes) to the end of file.</div>
+<p>Save and exit the editor.</li>
+<li>Install <a href="http://www.prasans.info/2010/01/install-inconsolatattf-in-ubuntujaunty.html">Inconsolata.ttf to Ubuntu.</a></li>
+<li>Goto <i>System -> Preferences -> Appearance</i></li>
+<li>Goto the Fonts tab and click on Details  and set your Resolution to 120 DPI.</li>
+<li>Open IntellijIDEA. Goto Project <i>Settings -> Colors &amp; Fonts</i>  Select General tab and Click on the button near the Name textbox.</li>
+<li>Uncheck the '<i>Show Only Monospaced Fonts</i>' . Now you will find Inconsolata in the list . Select <b>Inconsolata</b> as font , Set Size to <b>16</b> and Line Spacing to <b>1.0</b>  then click on Apply.</li>
+<li>Back in the <i>Settings </i>menu choose Appearance and Select '<b><i>Use Anti-Aliased Font in Editor</i></b>' option.</li>
+</ul>
+<p>Thats it. You are done.</p>
+</div>

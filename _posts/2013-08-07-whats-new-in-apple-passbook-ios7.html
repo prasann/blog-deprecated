@@ -1,0 +1,46 @@
+---
+layout: post
+title: What's new in Apple Passbook iOS7
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _yoast_wpseo_linkdex: '69'
+  _yoast_wpseo_focuskw: What's new in Apple Passbook iOS7
+  _yoast_wpseo_title: ''
+  _yoast_wpseo_metadesc: ''
+  _yoast_wpseo_metakeywords: ''
+  _yoast_wpseo_meta-robots-noindex: '0'
+  _yoast_wpseo_meta-robots-nofollow: '0'
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_sitemap-include: ! '-'
+  _yoast_wpseo_sitemap-prio: ! '-'
+  _yoast_wpseo_sitemap-html-include: ! '-'
+  _yoast_wpseo_canonical: ''
+  _yoast_wpseo_redirect: ''
+  dsq_thread_id: '1580751118'
+author:
+  login: prasans
+  email: prasans@prasans.x10.mx
+  display_name: prasans
+  first_name: ''
+  last_name: ''
+---
+<p>I'm currently working in a project that integrated with iOS Passbook application to deliver digital passes to their users. Spent some time in investigating the changes to passbook application in iOS7 (beta 4). Here is a quick summary of it.</p>
+<p>Apple listened to its user's feedback and have come with some features which increases the usability of the application.</p>
+<p><strong>Add multiple passes to Passbook.</strong></p>
+<p>Yes, you can able to add multiple passes to the Passbook application in one go. So, if you are issuing multiple passes to your users, probably have a page with all the passes and you can have download all link, which downloads all the passes in one shot.</p>
+<p><strong>Delivery through Barcode.</strong></p>
+<p>Apple have added one more delivery mechanism to the passbook. Currently you can deliver a pass through Safari browser (with vnd.apple.pkpass as header) or Through email attachment or to stream from your native iOS application. Now in the new passbook app they have added a barcode scanner. So the content of the pass can be crisped into a barcode and can be delivered to the Passbook application.</p>
+<p><strong>Anchor tags at the back of the pass.</strong></p>
+<p>Currently you can have links, but you cannot have link text. For example if you want to link <a href="http://www.google.com/" target="_blank">http://www.google.com</a> to 'Click here' it is not possible. But it will be possible from iOS7</p>
+<p><strong>Expiration date for Passes.</strong></p>
+<p>Now passes can have its own expiration date. It's a meta data that you can set and after that the passes will be destroyed from the Apple passbook automatically.</p>
+<p><strong>Usage restriction by Geo location.</strong></p>
+<p>You can restrict the usage of passes, within a specific geo location. For example if you are issuing a coupon, then you can make sure that your users could able to access the coupons within a specific geo co-ordinates.</p>
+<p>All these are nice features that are provided in iOS7. So far i was happy with all these news, until i read that, (<a href="https://devforums.apple.com/thread/190987?tstart=0">Dev forum link</a>)</p>
+<p><strong>The rendering algorithms are significantly different from the previous versions. </strong></p>
+<p>This seems to be a major issue to me, since i have to now test the appearance of my pass with new version. And have to think about optimising the design across all the versions.</p>
