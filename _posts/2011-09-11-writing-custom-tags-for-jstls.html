@@ -10,42 +10,14 @@ status: publish
 type: post
 published: true
 meta:
-  _jd_post_meta_fixed: 'true'
-  _yoast_wpseo_metakeywords: ''
-  _yoast_wpseo_metadesc: ''
-  _yoast_wpseo_title: ''
-  _yoast_wpseo_focuskw: jstl custom tag
-  _edit_last: '1'
-  _jd_wp_twitter: ''
-  _wp_jd_target: ''
-  _wp_jd_url: ''
-  _wp_jd_yourls: ''
-  _wp_jd_wp: ''
-  _wp_jd_bitly: ''
-  _jd_tweet_this: 'yes'
-  _jd_twitter: ''
-  _wp_jd_clig: ''
   dsq_thread_id: '411196210'
-  _yoast_wpseo_meta-robots-nofollow: '0'
-  _yoast_wpseo_redirect: ''
-  _yoast_wpseo_canonical: ''
-  _yoast_wpseo_sitemap-prio: ! '-'
-  _yoast_wpseo_sitemap-include: ! '-'
-  _yoast_wpseo_meta-robots-adv: none
-  _yoast_wpseo_meta-robots-noindex: '0'
-  _yoast_wpseo_linkdex: '57'
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p>First start with writing a tag library descriptor(TLD). A TLD is a XML document that contains information about a library as a whole and about each tag contained in the library.<br />
 The structure of the TLD file is pretty readalbe.</p>
 <p>Below is an implementation of tag which takes in a section name(value) of a web page and checks whether the logged-in user has rights to view the section.</p>
 <p><span style="text-decoration: underline;"><strong>Step 1:</strong> custom.tld</span></p>
-<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
+<pre class="prettyprint">&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
 &lt;!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
         "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"&gt;
 &lt;taglib xmlns="http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"&gt;
@@ -74,7 +46,7 @@ The structure of the TLD file is pretty readalbe.</p>
 Similarly you can add more tags to your library by adding more &lt;tag&gt; nodes.</p>
 <p>After done with defining TLD, next step is to implement the conditional logic. Below is a piece of Java code that does the implementation of the TLD.</p>
 <p><strong>Step 2: </strong><span style="text-decoration: underline;">PermissionTag.java</span></p>
-<pre class="brush:java">package com.prasans;
+<pre class="prettyprint">package com.prasans;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
@@ -112,11 +84,11 @@ public class PermissionTag extends ConditionalTagSupport {
 <p>*Note that all tag attributes are member variables of the class and all of them should have getters and setters.</p>
 <p>*Here we have overridden the condition() from ConditionalTagSupport to return the needed boolean result.</p>
 <p>* InvertCondition is an attribute that helps us in simulating negative scenarios.</p>
-<p>For ex: "Show the section <em>If  User A do not have 'X' permission</em> "</p>
+<p>For ex: "Show the section <em>If User A do not have 'X' permission</em>"</p>
 <p>After building the TLD and its corresponding logic, the next step is to integrate with your application.<br />
 Add the custome tag library to your web.xml to integrate with your web app.</p>
 <p><strong>Step 3:</strong> <span style="text-decoration: underline;">web.xml</span></p>
-<pre class="brush:xml">&lt;jsp-config&gt;
+<pre class="prettyprint">&lt;jsp-config&gt;
     &lt;taglib&gt;
         &lt;taglib-uri&gt;/custom&lt;/taglib-uri&gt;
         &lt;taglib-location&gt;/WEB-INF/tags/custom.tld&lt;/taglib-location&gt;
@@ -124,3 +96,4 @@ Add the custome tag library to your web.xml to integrate with your web app.</p>
 &lt;/jsp-config&gt;</pre>
 <p>The taglib-uri is the <em>&lt;shortname&gt;</em> defined in the TLD file. And <em>&lt;taglib-location&gt;</em> is the location of the tld. Make sure that you are bundling the TLD along with your WAR.</p>
 <p>Thats it. You can start using your custom tags in your JSPs now.</p>
+</div>

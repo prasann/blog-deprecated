@@ -8,24 +8,14 @@ type: post
 published: true
 meta:
   dsq_thread_id: '2266418057'
-  _yoast_wpseo_metadesc: Getting current UTC time from Android device by syncing with
-    NTP server to make sure the time is accurate.
-  _yoast_wpseo_focuskw: Android ntp utc
-  _edit_last: '1'
-  _yoast_wpseo_linkdex: '61'
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p>I had a requirement to persist the current UTC time of a request in Android device for future reference.</p>
 <p>Getting the time from the Android device and converting it to UTC will not be efficient since, user might have set wrong time in the device and it might mislead the data.<br />
 So we decided to sync the device with NTP server before converting the time to UTC.</p>
 <p><span style="text-decoration: underline;"><strong>Step 1 :</strong></span> Copy this <a title="SntpClient.java" href="https://gist.github.com/prasann/9003350" target="_blank">SntpClient.java</a> into your source.<br />
 <span style="text-decoration: underline;"><strong>Step 2 :</strong></span> The SntpService.java to compute the current UTC is here below.</p>
-<pre class="brush:java">public String getUTCTime(){
+<pre class="prettyprint">public String getUTCTime(){
         long nowAsPerDeviceTimeZone = 0;
         SntpClient sntpClient = new SntpClient();
 
@@ -40,10 +30,11 @@ So we decided to sync the device with NTP server before converting the time to U
     }</pre>
 <p>Some more details on SntpService code:</p>
 <p>Connect to any of the prominent ntp servers. There were lots of recommendation to place this in config file, however i thought it doesn't make sense for Android since i have to repackage this anyways.</p>
-<pre class="brush:java">sntpClient.getNtpTime()</pre>
+<pre class="prettyprint">sntpClient.getNtpTime()</pre>
 <p>gives you the current NTP time as per the device time zone.</p>
 <p>Then identify the device's time zone,</p>
-<pre class="brush:java">cal.getTimeZone()</pre>
+<pre class="prettyprint">cal.getTimeZone()</pre>
 <p>and calculate the offset difference between UTC and the current device time.</p>
-<pre class="brush:java">DateUtils.getFormattedDateTime(date)</pre>
+<pre class="prettyprint">DateUtils.getFormattedDateTime(date)</pre>
 <p>is our custom method to format date into String.</p>
+</div>

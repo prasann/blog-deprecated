@@ -12,58 +12,31 @@ status: publish
 type: post
 published: true
 meta:
-  _yoast_wpseo_title: Handle MaxUploadSizeExceededException in Spring
-  _yoast_wpseo_focuskw: handle maxuploadsizeexceededexception
-  _jd_post_meta_fixed: 'true'
-  _edit_last: '1'
-  _jd_tweet_this: 'yes'
-  _jd_twitter: ''
-  _wp_jd_clig: ''
-  _wp_jd_bitly: ''
-  _wp_jd_wp: ''
-  _wp_jd_yourls: ''
-  _wp_jd_url: http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/
-  _wp_jd_target: http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/
-  _jd_wp_twitter: a:1:{i:0;s:121:"Handle MaxUploadSizeExceededException in Spring
-    http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/";}
-  _yoast_wpseo_linkdex: '71'
-  _yoast_wpseo_metadesc: Custom handling MaxUploadSizeExceededException in Spring
-    3.
-  _yoast_wpseo_metakeywords: ''
-  _yoast_wpseo_meta-robots-noindex: '0'
-  _yoast_wpseo_meta-robots-nofollow: '0'
-  _yoast_wpseo_meta-robots-adv: none
-  _yoast_wpseo_sitemap-include: ! '-'
-  _yoast_wpseo_sitemap-prio: ! '-'
-  _yoast_wpseo_canonical: ''
-  _yoast_wpseo_redirect: ''
   dsq_thread_id: '738781326'
-  _yoast_wpseo_sitemap-html-include: ! '-'
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p>I was doing a AJAX file upload using jQuery and Spring 3. Spring provides a way to limit the file being uploaded and this can be configured while creating the multipart bean by specifying the maxUploadSize parameter.</p>
 <p>So whenever an user tries to upload a file with size size greater than that of the specified one then Spring will throw<em> 'MaxUploadSizeExceededException'</em> exception and returns back. The problem for me is that i was doing the file upload using AJAX so i wanted a custom error to be thrown rather than the Spring's default error.</p>
 <p>And also because of this exception the control will not even reach your specified controller so there is no chance to catch it in your Controller. After some lookup i found this simple fix for it.</p>
 <p><span style="text-decoration: underline;">FileUploadController: Controller which will handle the file upload request.</span></p>
 <p><em><strong>Make this FileUploadController to implement HandlerExceptionResolver. This will force you to define resolveException() method.</strong></em></p>
-<pre class="brush:java">    @ResponseBody
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
-        if (e instanceof MaxUploadSizeExceededException) {
-            ModelAndView modelAndView = new ModelAndView("inline-error");
-            modelAndView.addObject("error", "Error: Your file size is too large to upload. Please upload a file of size &lt; 5MB and continue.");
-            return modelAndView;
-        }
-        e.printStackTrace();
-        return new ModelAndView("500");
-    }</pre>
+<pre class="prettyprint">    
+  @ResponseBody
+  public ModelAndView resolveException(HttpServletRequest httpServletRequest, 
+            HttpServletResponse httpServletResponse, Object o, Exception e) {
+      if (e instanceof MaxUploadSizeExceededException) {
+          ModelAndView modelAndView = new ModelAndView("inline-error");
+          modelAndView.addObject("error", "Error: Your file size is too large to upload. 
+                    Please upload a file of size &lt; 5MB and continue.");
+          return modelAndView;
+      }
+      e.printStackTrace();
+      return new ModelAndView("500");
+  }</pre>
 <p><strong> How to show the error on the same page:</strong></p>
 <p>The call to the controller is from a jQuery ajax method. But the problem here is that even with this approach your jQuery POST method is going to receive a HTTP_OK message from the controller. Hence if you are waiting at the error callback then you have no chance of catching this error.</p>
 <p>So what i have done here is to return inline-error view back as the response. On the <span style="text-decoration: underline;">success</span> callback of the jQuery i check for the presence of the error_div in the response and display the field in the page. Else show the success message.</p>
 <p><em>inline-error.jsp</em></p>
 <pre class="brush:plain">&lt;div class="error" id="error_div"&gt;${error}&lt;/div&gt;</pre>
 <p><span style="text-decoration: underline;"><em>PS: This is definitely not the cleanest approach, but this solved my problem :)</em></span></p>
+</div>

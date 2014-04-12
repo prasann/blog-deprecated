@@ -12,38 +12,11 @@ type: post
 published: true
 meta:
   dsq_thread_id: '753967195'
-  _jd_tweet_this: 'yes'
-  _jd_twitter: ''
-  _wp_jd_clig: ''
-  _wp_jd_bitly: ''
-  _wp_jd_wp: ''
-  _wp_jd_yourls: ''
-  _wp_jd_url: http://prasans.info/2012/06/hamcrest-conflict-junit/
-  _wp_jd_target: http://prasans.info/2012/06/hamcrest-conflict-junit/
-  _jd_wp_twitter: a:1:{i:0;s:80:"Hamcrest conflict in jUnit. http://prasans.info/2012/06/hamcrest-conflict-junit/";}
-  _jd_post_meta_fixed: 'true'
-  _yoast_wpseo_linkdex: '41'
-  _edit_last: '1'
-  _yoast_wpseo_focuskw: jUnit hamcrest
-  _yoast_wpseo_title: Hamcrest conflict in jUnit. - Feel My Presence
-  _yoast_wpseo_metadesc: ''
-  _yoast_wpseo_metakeywords: ''
-  _yoast_wpseo_meta-robots-noindex: '0'
-  _yoast_wpseo_meta-robots-nofollow: '0'
-  _yoast_wpseo_meta-robots-adv: none
-  _yoast_wpseo_sitemap-include: ! '-'
-  _yoast_wpseo_sitemap-prio: ! '-'
-  _yoast_wpseo_canonical: ''
-  _yoast_wpseo_redirect: ''
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p>Using jUnit 4.8 i got into an issue when testing the few <a title="LambdaJ" href="http://code.google.com/p/lambdaj/" target="_blank">lambda</a> expressions. I was constantly getting this error while testing code involving Hamcrest matchers.</p>
-<pre class="brush:shell">java.lang.NoSuchMethodError: org.hamcrest.core.AllOf.allOf(Lorg/hamcrest/Matcher;Lorg/hamcrest/Matcher;)Lorg/hamcrest/Matcher;</pre>
+<pre class="prettyprint">java.lang.NoSuchMethodError: org.hamcrest.core.AllOf.allOf(Lorg/hamcrest/Matcher;Lorg/hamcrest/Matcher;)Lorg/hamcrest/Matcher;</pre>
 <p>However when i ran the application it was all fine. So i could sense the issue with the jUnit.</p>
-<p>The problem is due to hamcrest versioning issue with jUnit. jUnit uses an old version while other libraries (in my case LambdaJ) was using the latest version.<br />
+<p>The problem is due to hamcrest versioning issue with jUnit. jUnit uses an old version while other libraries (in my case LambdaJ) was using the latest version.
 The fix will be to download the junit-dep-4.*.jar from the jUnit <a title="gitHub kent beck" href="https://github.com/KentBeck/junit/downloads" target="_blank">download</a> page. Since you app already have Hamcrest class the test will run smoothly.</p>
+</div>

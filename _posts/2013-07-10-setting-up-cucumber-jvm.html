@@ -4,67 +4,50 @@ title: Setting up Cucumber-jvm
 categories:
 - Cucumber
 - Java
-tags: []
 status: publish
 type: post
 published: true
 meta:
-  _yoast_wpseo_focuskw: cucumber, java, jvm, example, tutorial
   dsq_thread_id: '1484835638'
-  _edit_last: '1'
-  _yoast_wpseo_linkdex: '55'
-  _yoast_wpseo_title: Cucumber JVM Setup
-  _yoast_wpseo_metadesc: ''
-  _yoast_wpseo_metakeywords: ''
-  _yoast_wpseo_meta-robots-noindex: '0'
-  _yoast_wpseo_meta-robots-nofollow: '0'
-  _yoast_wpseo_meta-robots-adv: none
-  _yoast_wpseo_sitemap-include: ! '-'
-  _yoast_wpseo_sitemap-prio: ! '-'
-  _yoast_wpseo_canonical: ''
-  _yoast_wpseo_redirect: ''
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p><a title="Cucumber JVM" href="https://github.com/cucumber/cucumber-jvm" target="_blank">Cucumber JVM</a> is Java implementation of Cucumber BDD.</p>
 <h3><strong>Integrating into the Project</strong></h3>
 <p>The installation using maven is super simple, just add the dependency and you are ready to go. Make sure you add both command line interface (cucumber-core) and the IDE interface (cucumber-junit)</p>
 <p>I was using Intellij and add Intellij Cucumber plugin, to make the navigations easier.</p>
 <p>One thing i liked very much is the ability to add custom annotations to the feature. You can add a custom annotation and can create Before and After hook for them.</p>
 <p>In .feature file</p>
-<pre class="brush:java">@Email
+<pre class="prettyprint">@Email
 Feature:</pre>
 <p>In the step definitions file.</p>
-<pre class="brush:java">@Before({"@Email"})
+<pre class="prettyprint">@Before({"@Email"})
 @After({"@Email"})</pre>
 <h3><strong>Integrating with Spring</strong></h3>
 <p>For Spring integration you need to add one more component of the cucumber-jvm <em>(cucumber-spring)</em></p>
 <p>It is advisable to have a test runner class which can run all the feature files in one go especially when you are runnning in the CI.</p>
 <p>The structure of the test runner class will be :</p>
-<pre class="brush:java">@RunWith(Cucumber.class)
+<pre class="prettyprint">@RunWith(Cucumber.class)
 public class CucumberAdapterTest {
 }</pre>
 <p>Make sure to place all the feature files in the same package as of this Runner class. Or you can specify the path using the cucumber options, like this.</p>
-<pre class="brush:java">@RunWith(Cucumber.class)
+<pre class="prettyprint">@RunWith(Cucumber.class)
 @Cucumber.Options(features = "classpath:**/*.feature")
 public class CucumberAdapterTest {
 }</pre>
 <p>If you are placing all the step definition in other package you can add that to the annotation using glue attribute.</p>
-<pre class="brush:java">@RunWith(Cucumber.class)
+<pre class="prettyprint">@RunWith(Cucumber.class)
 @Cucumber.Options(features = "classpath:**/*", glue = {"path of the step definitions"})
 public class CucumberAdapterTest {
 }</pre>
 <p>This will look up for cucumber.xml file in the classpath. This xml file can hold all the bean definitions. My cucumber.xml was super simple.</p>
-<pre class="brush:xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"&gt;
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd"&gt;
 
     &lt;import resource="classpath*:/application-context.xml"/&gt;
 
@@ -72,24 +55,24 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     &lt;context:annotation-config/&gt;
 &lt;/beans&gt;</pre>
 <p>The step defnitions can lie in a different package and make sure you use glue attribute to wire them in the Runner class.</p>
-<pre class="brush:java">public class StepDefinitions {
+<pre class="prettyprint">public class StepDefinitions {
+	@Autowired
+	EntityRepository entityRepository;
 
-@Autowired
-EntityRepository entityRepository;
+	@Given("^Register a user$")
+	public void registerUser() throws Throwable {
 
-@Given("^Register a user$")
-public void registerUser() throws Throwable {
-
-}
+	}
 }</pre>
 <h3><strong>Integrating with Spring Transactions</strong></h3>
 <p>One last thing that i wanted to do is to hook up Spring transactions. So all the data created by the features have to be removed after the test completes. So you can write independent tests without bothering about the data.</p>
 <p>You can use '<em>txn</em>' annotation that comes with Cucumber-JVM. All you need to do is to wire up that package along with your adapter class.</p>
-<pre class="brush:java">@RunWith(Cucumber.class)
+<pre class="prettyprint">@RunWith(Cucumber.class)
 @Cucumber.Options(glue = {"cucumber.api.spring"})
 public class CucumberAdapterTest {
 }</pre>
 <p>and</p>
-<pre class="brush:java">@txn
+<pre class="prettyprint">@txn
 Scenario: Some scenario to test</pre>
 <p>&nbsp;</p>
+</div>

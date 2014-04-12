@@ -9,40 +9,11 @@ status: publish
 type: post
 published: true
 meta:
-  _jd_tweet_this: ''
-  _jd_twitter: ''
-  _wp_jd_clig: ''
-  _wp_jd_bitly: ''
-  _wp_jd_wp: ''
-  _wp_jd_yourls: ''
-  _wp_jd_url: http://prasans.info/2011/05/primary-key-onetoone-mapping-in-hibernate/
-  _wp_jd_target: http://prasans.info/2011/05/primary-key-onetoone-mapping-in-hibernate/
-  _jd_wp_twitter: ''
-  _jd_post_meta_fixed: 'true'
-  _edit_last: '1'
-  _yoast_wpseo_title: OneToOne Join of a Custom object with a primary key - Hibernate
-  _yoast_wpseo_metadesc: OneToOne Join of a Custom object with a primary key - Hibernate
-  _yoast_wpseo_metakeywords: ''
-  _yoast_wpseo_focuskw: ''
-  _yoast_wpseo_meta-robots-noindex: '0'
-  _yoast_wpseo_meta-robots-nofollow: '0'
-  _yoast_wpseo_meta-robots-adv: none
-  _yoast_wpseo_sitemap-include: ! '-'
-  _yoast_wpseo_sitemap-prio: ! '-'
-  _yoast_wpseo_canonical: ''
-  _yoast_wpseo_redirect: ''
-  _wp_old_slug: ''
   dsq_thread_id: '309930671'
-  _yoast_wpseo_linkdex: '0'
-author:
-  login: prasans
-  email: prasans@prasans.x10.mx
-  display_name: prasans
-  first_name: ''
-  last_name: ''
 ---
+<div class="post">
 <p>Today was trying to join two tables using its Primary keys using Hibernate. Here is what I tried to do:</p>
-<pre class="brush:java">@Table(name = "customer")
+<pre class="prettyprint">@Table(name = "customer")
 @Entity
 public class Customer {
     @Id
@@ -51,7 +22,7 @@ public class Customer {
     private Credentials credentials;
 }</pre>
 <p>I was constantly getting an error stating invalid column name. Later then I realized that its not possible have Join in the Primary-Key and bind to a custom object. This forced me to have a Auto-generated Id as a key to the table and named it as the primary key. This is how my code looked after modification.</p>
-<pre class="brush:java">@Table(name = "customer")
+<pre class="prettyprint">@Table(name = "customer")
 @Entity
 public class Customer {
 
@@ -63,3 +34,4 @@ public class Customer {
     @JoinColumn(name = "customer_id",updatable = false)
     private Credentials credentials;
 }</pre>
+</div>
