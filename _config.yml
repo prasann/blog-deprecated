@@ -1,4 +1,4 @@
-name: Feel My Presence
+name: Random Presence
 permalink: /:year/:month/:title/
 highlighter: pygments
 exclude: ['Gemfile','Gemfile.lock','Rakefile','sass','vendor']

@@ -1,23 +1,25 @@
 --- 
-layout: journey 
-title: Feel My Presence 
+layout: home 
+title: Random Presence
 ---
 
 <div class="post">
     <div class="clearfix mosaicflow">
         {% for post in site.posts %}
-        <a class="grid_url" href="{{ post.url }}">
-            <div class="mosaicflow__item grid">
-                {% if post.image %}
-            	<img class="grid_image" src="{{ post.image }}"></img>
-                {% endif %}
-        		<div class="grid_title">{{ post.title }}</div>
-                {% if post.short_summary %}
-                <div class="grid_summary">{{ post.short_summary }}</div>
-                {% endif %}          
-                <div class="grid_date">{{ post.date | date_to_string }}</div>
-            </div>
-        </a>
+            {% if post.published == true %}
+                <a class="grid_url" href="{{ post.url }}">
+                    <div class="mosaicflow__item grid">
+                        {% if post.image %}
+                    	<img class="grid_image" src="{{ post.image }}"></img>
+                        {% endif %}
+                		<div class="grid_title">{{ post.title }}</div>
+                        {% if post.meta-description %}
+                        <div class="grid_summary">{{ post.meta-description }}</div>
+                        {% endif %}          
+                        <div class="grid_date">{{ post.date | date_to_string }}</div>
+                    </div>
+                </a>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
