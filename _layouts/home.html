@@ -11,9 +11,15 @@
 		{{ content }}
 		{% include _footer.html %}
 	</body>
-	<script src="{{ relative }}/assets/js/jquery.min.js"></script>
+	<script src="{{ relative }}assets/js/jquery.min.js"></script>
 	<script src="{{ relative }}assets/js/jquery.mosaicflow.min.js"></script>
-
+	<script src="{{ relative }}assets/js/masonry.pkgd.min.js"></script>
 	<script type="text/javascript">
+		var $container = $('#container');
+		// initialize
+		$container.masonry({
+		  columnWidth: 0,
+		  itemSelector: '.item'
+		});
 	</script>
 	</html>

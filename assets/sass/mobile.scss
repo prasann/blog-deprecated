@@ -1,0 +1,21 @@
+@media only screen and (min-width : 320px) and (max-width : 480px) {
+	.item{
+	   width : 85%;
+	}
+	.blog_header {
+		.blog_img{
+			text-align: center;
+            .circular {
+                width: 50px;
+                height: 50px;
+                border-radius: 25px;
+                -webkit-border-radius: 25px;
+                -moz-border-radius: 25px;
+            }	
+		}
+		.blog_title {
+			text-align: center;
+            width: 100%;	
+		}
+	}
+}

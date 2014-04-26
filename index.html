@@ -4,11 +4,11 @@ title: Random Presence
 ---
 
 <div class="post">
-    <div class="clearfix mosaicflow">
+    <div id="container">
         {% for post in site.posts %}
             {% if post.published == true %}
                 <a class="grid_url" href="{{ post.url }}">
-                    <div class="mosaicflow__item grid">
+                    <div class="mosaicflow__item grid item w1">
                         {% if post.image %}
                     	<img class="grid_image" src="{{ post.image }}"></img>
                         {% endif %}
