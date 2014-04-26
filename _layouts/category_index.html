@@ -1,25 +1,27 @@
 ---
 layout: home
+title: Random Presence
 ---
 <div class="post">
 	<h3 class="clearfix text-center">{{ page.title }}</h3>
-    <div class="clearfix mosaicflow">
-        {% for post in site.categories[page.category] %}
-            {% if post.published == true %}
-                <a class="grid_url" href="{{ post.url }}">
-                    <div class="mosaicflow__item grid">
-                        {% if post.image %}
-                    	<img class="grid_image" src="{{ post.image }}"></img>
-                        {% endif %}
-                		<div class="grid_title">{{ post.title }}</div>
-                        {% if post.meta-description %}
-                        <div class="grid_summary">{{ post.meta-description }}</div>
-                        {% endif %}          
-                        <div class="grid_date">{{ post.date | date_to_string }}</div>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
+    <div id="container">
+        <div class="clearfix mosaicflow">
+            {% for post in site.categories[page.category] %}
+                {% if post.published == true %}
+                    <a class="grid_url" href="{{ post.url }}">
+                        <div class="mosaicflow__item grid item">
+                            {% if post.image %}
+                        	<img class="grid_image" src="{{ post.image }}"></img>
+                            {% endif %}
+                    		<div class="grid_title">{{ post.title }}</div>
+                            {% if post.meta-description %}
+                            <div class="grid_summary">{{ post.meta-description }}</div>
+                            {% endif %}          
+                            <div class="grid_date">{{ post.date | date_to_string }}</div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-</div>
 </div>

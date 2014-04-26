@@ -28,7 +28,10 @@ h1,h2,h3{
     @extend .blog_centered;
     color: $orange;
     padding: 20px;
-  
+    a:hover{
+        background: transparent;
+        color: $orange;
+    }
     .blog_title {
         display: inline-block;
         font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
@@ -202,4 +205,17 @@ p strong{
 }
 #container{
     text-align: center;
+}
+
+#share_icons{
+    text-align: right;
+    margin-right: 25px;
+    margin-top: 10px;
+    img{
+        width: 24px;
+        height: 24px;
+    }
+    a:hover{
+        background: transparent;
+    }
 }

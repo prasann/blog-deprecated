@@ -1,5 +1,7 @@
 	<html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="robots" content = "noodp,noydir">
 		{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
 		{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
 		<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/bootstrap.min.css">
@@ -12,7 +14,6 @@
 		{% include _footer.html %}
 	</body>
 	<script src="{{ relative }}assets/js/jquery.min.js"></script>
-	<script src="{{ relative }}assets/js/jquery.mosaicflow.min.js"></script>
 	<script src="{{ relative }}assets/js/masonry.pkgd.min.js"></script>
 	<script type="text/javascript">
 		var $container = $('#container');
