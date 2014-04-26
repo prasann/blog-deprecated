@@ -1,12 +1,25 @@
 ---
-layout: header
+layout: home
 ---
-
-<h1 class="clearfix category">{{ page.title }}</h1>
-<ul class="posts">
-{% for post in site.categories[page.category] %}
-    <div>{{ post.date | date_to_html_string }}</div>
-    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-    <div class="categories">Filed under {{ post.categories | category_links }}</div>
-{% endfor %}
-</ul>
+<div class="post">
+	<h3 class="clearfix text-center">{{ page.title }}</h3>
+    <div class="clearfix mosaicflow">
+        {% for post in site.categories[page.category] %}
+            {% if post.published == true %}
+                <a class="grid_url" href="{{ post.url }}">
+                    <div class="mosaicflow__item grid">
+                        {% if post.image %}
+                    	<img class="grid_image" src="{{ post.image }}"></img>
+                        {% endif %}
+                		<div class="grid_title">{{ post.title }}</div>
+                        {% if post.meta-description %}
+                        <div class="grid_summary">{{ post.meta-description }}</div>
+                        {% endif %}          
+                        <div class="grid_date">{{ post.date | date_to_string }}</div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</div>
