@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}

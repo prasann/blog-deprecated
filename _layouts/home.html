@@ -1,4 +1,7 @@
-	<html>
+	<!DOCTYPE html>
+	<!--[if IEMobile 7 ]><html class="old_browser"><![endif]-->
+	<!--[if lt IE 9]><html class="old_browser"><![endif]-->
+	<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="old_browser" lang="en"><!--<![endif]-->
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="robots" content = "noodp,noydir">
@@ -16,11 +19,13 @@
 	<script src="{{ relative }}assets/js/jquery.min.js"></script>
 	<script src="{{ relative }}assets/js/masonry.pkgd.min.js"></script>
 	<script type="text/javascript">
-		var $container = $('#container');
-		// initialize
-		$container.masonry({
-		  columnWidth: 0,
-		  itemSelector: '.item'
-		});
+		if(!$('html').hasClass('old_browser')){
+			var $container = $('#container');
+			// initialize
+			$container.masonry({
+			  columnWidth: 0,
+			  itemSelector: '.item'
+			});
+		}
 	</script>
 	</html>

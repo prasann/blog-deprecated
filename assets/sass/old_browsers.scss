@@ -1,0 +1,50 @@
+$black: #000000;
+$orange: #FF8000;
+.old_browser {
+	.item{
+	       max-width : 100% !important; 
+	}    
+    .mosaicflow__column {
+        float: left;
+    }
+    
+    .mosaicflow__item {
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 30px;
+        }
+        .item {
+        	width: 100%;
+        }
+    }
+    .grid_url {
+    	float:left;
+    	width: 25%;
+    	&:hover {
+    		background: #ffffff;
+            color: $black;
+        } 	
+    }
+    .grid {
+        border-radius: 5px;
+        border: 1px solid #888888;
+        &:hover {
+            color: $black;
+        }
+        .grid_image {
+            margin-bottom: 30px;
+            max-height: 275px;
+        }
+        .grid_title {
+            color: $orange;
+            text-align: center;
+        }
+        .grid_date {
+            text-align: right;
+            font-style: italic;
+            font-size: 75%;
+        }
+    }
+}
