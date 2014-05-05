@@ -219,3 +219,7 @@ p strong{
         background: transparent;
     }
 }
+
+#page-navigation{
+    @extend .post;
+}
