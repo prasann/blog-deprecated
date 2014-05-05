@@ -22,6 +22,7 @@ namespace :site do
   desc "Generate and publish blog to gh-pages"
   task :publish => [:generate] do
     cp_r "_site/.", LOCAL_DIR_NAME
+    cp ".travis.yml", LOCAL_DIR_NAME
     pwd = Dir.pwd
     Dir.chdir LOCAL_DIR_NAME
     system "git add --all"
