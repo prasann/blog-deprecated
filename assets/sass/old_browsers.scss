@@ -1,13 +1,19 @@
-$black: #000000;
-$orange: #FF8000;
+$black: black;
+$orange: #ff8000;
+
 .old_browser {
-	.item{
-	       max-width : 100% !important; 
-	}    
+    .circular {
+        display: none;
+    }
+    .blog_title {
+        text-align: center;
+    }
+    .item {
+        max-width: 100% !important;
+    }
     .mosaicflow__column {
         float: left;
     }
-    
     .mosaicflow__item {
         img {
             display: block;
@@ -16,16 +22,16 @@ $orange: #FF8000;
             border-radius: 30px;
         }
         .item {
-        	width: 100%;
+            width: 100%;
         }
     }
     .grid_url {
-    	float:left;
-    	width: 25%;
-    	&:hover {
-    		background: #ffffff;
+        float: left;
+        width: 25%;
+        &:hover {
+            background: #ffffff;
             color: $black;
-        } 	
+        }
     }
     .grid {
         border-radius: 5px;
