@@ -223,3 +223,10 @@ p strong{
 #page-navigation{
     @extend .post;
 }
+
+.icon-rss{
+    background: url(../images/feed.png);
+    background-size:16px 16px;
+    background-repeat:no-repeat;
+    padding: 3px 18px;
+}
