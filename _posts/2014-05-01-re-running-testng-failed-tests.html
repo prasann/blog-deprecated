@@ -1,0 +1,94 @@
+---
+layout: post
+title: Re running testNG failed times n times.
+categories:
+- Testng
+- testing
+published: false
+meta-robots: "noodp,noydir"
+meta-description: Steps to set up re-runn of testNG failed tests for n number of times, using ant task.
+---
+<div class="post">
+	<p>
+			We were running our Selenium functional tests using<a href="http://testng.org/doc/index.html" target="_blank">testNG&nbsp;</a>runner in&nbsp;<a href="http://jenkins-ci.org/">Jenkins</a>. However the problem was we were having too many failures on our initial run, and lot of these failures were classified as random or not reproducable. Mainly these are test script issues. Some times the testers tend to put some static wait conditions which might work on their machine but not in the Jenkins agent. Sometimes the environment against which our tests run might be a bit slow which pushes our pass percentage well behind. The ideal appropriate fix will be is to go through the failed test cases and figure out the randomness and fix it. But we thought of adding a re run mechanism to our test job to identify these random failures. As the no. of test cases grew, we ended up in re running the failed tests multiple times, something like this.</p>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						Run Name</td>
+					<td>
+						Total tests</td>
+					<td>
+						Tests Failed</td>
+				</tr>
+				<tr>
+					<td>
+						Initial run</td>
+					<td>
+						100</td>
+					<td>
+						30</td>
+				</tr>
+				<tr>
+					<td>
+						ReRun1</td>
+					<td>
+						30</td>
+					<td>
+						20</td>
+				</tr>
+				<tr>
+					<td>
+						ReRun2</td>
+					<td>
+						20</td>
+					<td>
+						10</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			In this case we will interpret the last 10 failures as a legitimate failures and rest as intermittent ones.&nbsp;</p>
+		<p>
+			Please note that this is not a correct approach to reduce the failure count. This make the testers more lazy since they always analyse only the failed tests in the final run. And this increases the running time of the job inadvertently since the sure fail cases runs for n times and failing always.</p>
+		<p>
+			Re Running testNG failed tests using ANT.</p>
+		<p>
+			After every test run, testng will create a file called testng-failed.xml in the report directory which will contain the failed tests of that run. There was an issue with this file however. If you define multiple suites in your initial test suite file then this outer testng-failed.xml will contain the failed tests of the first run alone. The remaining suite&#39;s failed tests will be in the inner directories under their corresponding suite names.</p>
+		<p>
+			This testng-failed.xml will also inherit all the properties from the original test suite file. For example if we have defined thread-count value then the same value will be retained.</p>
+		<p>
+			So what I did was copied this file to a location and fed this to the testng task to run again. This can be achieved by any means, since we were using ant as our build tool i configured this in our build.xml file itself.</p>
+		<pre>
+		&lt;target name=&quot;runTests&quot; depends=&quot;compile&quot; description=&quot;Running tests&quot;&gt;
+		&lt;echo&gt;Running Tests...&lt;/echo&gt;
+		&lt;taskdef resource=&quot;testngtasks&quot; classpath=&quot;lib/testng-6.8.jar&quot; /&gt;
+		&lt;testng outputDir=&quot;${report.dir}&quot; useDefaultListeners=&quot;true&quot; classpathref=&quot;build.classpath&quot; 
+			listeners=&quot;org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter&quot;&gt;
+			&lt;classpath location=&quot;${class.dir}&quot; /&gt;
+			&lt;xmlfileset dir=&quot;.&quot; includes=&quot;testng-checkout.xml&quot; /&gt;
+			&lt;sysproperty key=&quot;org.uncommons.reportng.title&quot; value=&quot;Checkout test report&quot; /&gt;
+			&lt;sysproperty key=&quot;properties&quot; value=&quot;${properties}&quot; /&gt;
+		&lt;/testng&gt;
+		&lt;copy file=&quot;${report.dir}/testng-failed.xml&quot; todir=&quot;${basedir}/test-output-rerun/0&quot;/&gt;
+		
+		&lt;antcall target=&quot;multiReRun&quot;/&gt;
+		&lt;antcall target=&quot;dataTearDown&quot;/&gt;
+	&lt;/target&gt;
+	&lt;target name=&quot;multiReRun&quot; description=&quot;Multiple rerun tests&quot;&gt;
+		&lt;antcall target=&quot;runFailedTests&quot;&gt;
+			&lt;param name=&quot;rerun.report.dir&quot; value=&quot;${rerun.base.dir}/1&quot;/&gt;
+			&lt;param name=&quot;src.rerun.dir&quot; value=&quot;${rerun.base.dir}/0&quot;/&gt;
+		&lt;/antcall&gt;
+		&lt;antcall target=&quot;runFailedTests&quot;&gt;
+			&lt;param name=&quot;rerun.report.dir&quot; value=&quot;${rerun.base.dir}/2&quot;/&gt;
+			&lt;param name=&quot;src.rerun.dir&quot; value=&quot;${rerun.base.dir}/1&quot;/&gt;
+		&lt;/antcall&gt;
+	&lt;/target&gt;
+	
+</pre>
+		<p>
+			Here output folder of the init run will be test-output. And am copying testng-failed.xml from test-output to test-output-rerun/0 . This is just to make my multiReRun more convenient. Now i have repeated the block of code for two times. This is due to the fact that ant doesn&#39;t support the regular for..counter loop.</p>
+		<p>
+			When i went through some ant docs figured out that ant script supports JavaScript!! May be i can use that to constuct a string like &quot;1,2,3,4,5&quot; and pass it onto the for loop of ant.&nbsp;</p>
+</div>
