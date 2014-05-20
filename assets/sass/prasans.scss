@@ -37,12 +37,10 @@ h1,h2,h3{
         font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
         margin: 10px;
         font-weight: bold;
-        font-size: 300%;
     }
     .blog_quote {
         @extend .text-right;
         font-family: "Brush Script MT", cursive;
-        font-size:200%;
     }
 }
 
@@ -205,19 +203,6 @@ p strong{
 }
 #container{
     text-align: center;
-}
-
-#share_icons{
-    text-align: right;
-    margin-right: 25px;
-    margin-top: 10px;
-    img{
-        width: 24px;
-        height: 24px;
-    }
-    a:hover{
-        background: transparent;
-    }
 }
 
 #page-navigation{

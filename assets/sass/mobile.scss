@@ -15,7 +15,25 @@
 		}
 		.blog_title {
 			text-align: center;
-            width: 100%;	
+        	width: 100%;
+            font-size: 200%;	
 		}
+		.blog_quote{
+			font-size: 150%;
+		}
+	}
+	#share_icons{
+		margin: 10px;
+	    text-align: center;
+	    img{
+	        width: 24px;
+	        height: 24px;
+	    }
+	    a:hover{
+	        background: transparent;
+	    }
+	}
+	h1{
+		font-size: 175% !important;
 	}
 }

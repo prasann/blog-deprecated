@@ -14,5 +14,30 @@
 			    -moz-border-radius: 50px;
 			}           
 	    }
+	    .blog_title {
+            font-size: 300%;	
+		}
+		.blog_quote{
+			font-size: 200%;
+		}
 	}
+	#share_icons{
+	    text-align: right;
+	    margin-right: 25px;
+	    margin-top: 10px;
+	    img{
+	        width: 24px;
+	        height: 24px;
+	    }
+	    a:hover{
+	        background: transparent;
+	    }
+	}
+	.prev-link{
+		float: left;
+	}
+	.next-link{
+		float: right;
+	}
+
 }
