@@ -210,8 +210,23 @@ p strong{
 }
 
 .icon-rss{
-    background: url(../images/feed.png);
-    background-size:16px 16px;
+    background: url(../images/share/sprite24.png) 0 -102px;
     background-repeat:no-repeat;
-    padding: 3px 18px;
+    text-align: right;
+    padding: 3px 30px;
+}
+
+.fb_icon, a.fb_icon:hover{
+    background: url(../images/share/sprite24.png) 0 -34px;
+    padding: 3px 11px;
+}
+
+.twtr_icon, a.twtr_icon:hover{
+    background: url(../images/share/sprite24.png) 0 0;
+    padding: 3px 14px;
+}
+
+.lkdn_icon, a.lkdn_icon:hover{
+    background: url(../images/share/sprite24.png) 0 -68px;
+    padding: 3px 14px;
 }

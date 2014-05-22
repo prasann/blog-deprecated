@@ -25,12 +25,13 @@
 	#share_icons{
 		margin: 10px;
 	    text-align: center;
-	    img{
+	    a{
 	        width: 24px;
 	        height: 24px;
+	        background-repeat:no-repeat;
 	    }
-	    a:hover{
-	        background: transparent;
+	   	a:hover{
+	        background-repeat:no-repeat;
 	    }
 	}
 	h1{

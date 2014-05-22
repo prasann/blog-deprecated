@@ -25,12 +25,13 @@
 	    text-align: right;
 	    margin-right: 25px;
 	    margin-top: 10px;
-	    img{
+	    a{
 	        width: 24px;
 	        height: 24px;
+	        background-repeat:no-repeat;
 	    }
 	    a:hover{
-	        background: transparent;
+	        background-repeat:no-repeat;
 	    }
 	}
 	.prev-link{
