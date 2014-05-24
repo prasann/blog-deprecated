@@ -3,6 +3,7 @@
 <head>
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
     {% include _meta_tags.html %} 
+    <title>{{ page.title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/tomorrow-night-bright.css">
