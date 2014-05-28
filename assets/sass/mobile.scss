@@ -16,10 +16,10 @@
 		.blog_title {
 			text-align: center;
         	width: 100%;
-            font-size: 200%;	
+            font-size: 3.25em !important;	
 		}
 		.blog_quote{
-			font-size: 150%;
+			font-size: 1.75em;
 		}
 	}
 	#share_icons{
@@ -35,6 +35,7 @@
 	    }
 	}
 	h1{
-		font-size: 175% !important;
+		font-size: 2em !important;
+		text-align: center;
 	}
 }
