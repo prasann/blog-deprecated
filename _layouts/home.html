@@ -11,6 +11,7 @@
 		{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
 		
 		<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
+		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
 		<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.url }}/feed.xml">
 		<title>Random Presence</title>
 	</head>
@@ -20,8 +21,14 @@
 		{% include _footer.html %}
 	</body>
 	<script src="{{ relative }}assets/js/jquery.min.js"></script>
+	<script src="{{ relative }}assets/js/bootstrap.min.js"></script>
 	<script src="{{ relative }}assets/js/masonry.pkgd.min.js"></script>
+	<script src="{{ relative }}assets/js/headroom.min.js"></script>
 	<script type="text/javascript">
+		var myElement = document.querySelector(".navbar-fixed-top");
+		var headroom  = new Headroom(myElement);
+		headroom.init();
+
 		if(!$('html').hasClass('old_browser')){
 			var $container = $('#container');
 			// initialize

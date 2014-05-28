@@ -29,7 +29,11 @@ h1,h2,h3{
     color: $orange;
     padding: 20px;
     a:hover{
+        text-decoration: none;
         background: transparent;
+        color: $orange;
+    }
+    a:visited{
         color: $orange;
     }
     .blog_title {
@@ -228,4 +232,31 @@ p strong{
 .lkdn_icon, a.lkdn_icon:hover{
     background: url(../images/share/sprite24.png) 0 -68px;
     padding: 3px 14px;
+}
+
+body { padding-top: 40px; }
+
+.headroom {position: fixed;top: 0;left: 0;right: 0;transition: all .2s ease-in-out;}
+.headroom--unpinned {top: -100px;}
+.headroom--pinned {top: 0;}
+
+.navbar-default {
+    .navbar-brand{
+        color: $orange;
+    }
+    .navbar-nav li a{
+        color: $orange;        
+    }
+    .navbar-toggle .icon-bar{
+        background-color: $orange;
+    }
+}
+
+.share_txt{
+    color: $orange;
+    font-size:120%;
+}
+
+.btn-primary {
+  @include button-variant(#fff, $orange, $orange);
 }
