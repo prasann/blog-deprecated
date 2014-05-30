@@ -7,7 +7,8 @@ require "jekyll"
 
 # Change your GitHub reponame
 LOCAL_DIR_NAME = "../prasann.github.io/."
-
+js_files=['jquery.min.js','jquery-ui.min.js','jquery.magnific-popup.min.js',
+  'prettify.js','headroom.min.js','masonry.pkgd.min.js','bootstrap.min.js','prasans.js']
 
 namespace :site do
   desc "Generate blog files"
@@ -18,6 +19,14 @@ namespace :site do
     })).process
   end
 
+  desc "Concat JS files"
+  task :compress do
+    js = ""
+    js_files.each do |js_file|
+      js << File.read("assets/js/dev/#{js_file}")
+    end
+    File.open("assets/js/application.js","w") {|file| file.write(js)}
+  end
 
   desc "Generate and publish blog to gh-pages"
   task :publish => [:generate] do

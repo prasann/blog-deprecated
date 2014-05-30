@@ -4,10 +4,8 @@
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
     {% include _meta_tags.html %} 
     <title>{{ page.title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/application.css">
-    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/magnific-popup.css">
-    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/tomorrow-night-bright.css">
-	<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.url }}/feed.xml">
+    <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/post.css">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.url }}/feed.xml">
 </head>
 
 <body>
@@ -19,38 +17,6 @@
     {% include _disqus.html %}
     {% include _footer.html %} 
 </body>
-<script src="{{ relative }}/assets/js/jquery.min.js"></script>
-<script src="{{ relative }}/assets/js/jquery-ui.min.js"></script>
-<script src="{{ relative }}/assets/js/jquery.magnific-popup.min.js"></script>
-<script src="{{ relative }}/assets/js/prettify.js"></script>
-<script src="{{ relative }}assets/js/headroom.min.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    var myElement = document.querySelector(".navbar-fixed-top");
-    var headroom  = new Headroom(myElement);
-    headroom.init();
-
-    $('#images').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0,1]
-		}
-    });
-    $('#image').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0,1]
-        }
-    });
-    prettyPrint();
-});
-</script>
+<script src="{{ relative }}/assets/js/application.js"></script>
 
 </html>
