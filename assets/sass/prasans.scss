@@ -28,7 +28,7 @@ h1,h2,h3,h4,h5{
     @extend .blog_centered;
     color: $orange;
     padding: 20px;
-    a:hover{
+    a:hover,a:focus{
         text-decoration: none;
         background: transparent;
         color: $orange;
@@ -168,7 +168,7 @@ p strong{
     margin:10px;
     border-radius: 5px;
     border: 1px solid #888888;
-    &:hover {
+    &:hover{
         box-shadow: 15px 15px 10px #888888;
         color: $black;
     }
@@ -268,4 +268,40 @@ body { padding-top: 40px; }
     -webkit-border-radius: 15px;
     -moz-border-radius: 15x;
     margin-right: 5px;
-}   
+}  
+
+.me-circle{
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    margin: 50px;
+} 
+
+.short-desc{
+    clear:left;
+    font-size: 120%;
+    font-style: italic;
+    line-height: 2;
+}
+
+.me-desc{
+    clear: both;
+}
+
+.me-icon{
+    &:hover{
+        text-decoration: none;
+        background: transparent;
+    }
+    img{
+        height:64px;
+        width:64px;
+        display: inline-block;
+        margin: 20px; 
+    }
+}
+.name-heading{
+   text-align: left; 
+}
