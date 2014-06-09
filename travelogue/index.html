@@ -6,7 +6,7 @@ title: Random Presence
 <div class="post">
     <div id="container">
         {% for post in site.posts %}
-            {% if post.published == true and post.travelogue != true%}
+            {% if post.published == true and post.travelogue == true%}
                 <a class="grid_url" href="{{ post.url }}">
                     <div class="mosaicflow__item grid item">
                         {% if post.image %}
