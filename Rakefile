@@ -10,6 +10,15 @@ LOCAL_DIR_NAME = "../prasann.github.io/."
 js_files=['jquery.min.js','jquery-ui.min.js','jquery.magnific-popup.min.js',
   'prettify.js','headroom.min.js','masonry.pkgd.min.js','bootstrap.min.js','prasans.js']
 
+namespace :post do
+  desc "Will create a template for new blog post"
+  task :create do
+    name = ARGV.last
+    d = DateTime.now
+    touch "_posts/#{d.strftime("%Y-%m-%d-")}#{name}.html"
+    task name.to_sym do ; end
+  end
+end
 namespace :site do
   desc "Generate blog files"
   task :generate do
