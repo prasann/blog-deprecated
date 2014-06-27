@@ -1,13 +1,14 @@
 ---
 layout: post
 title: Cross Site HTTP(S) Requests.
-categories:
-- Tech
+categories: 
+  - Tech
 published: true
-meta-robots: "noodp,noydir"
-meta-description: Some of the tried out solutions for the cross site request issue. Should be a good place to look out for which solution to be used under a circumstance.
-meta-keywords: "cors, ie8, cross-site, AJAX"
+"meta-robots": "noodp,noydir"
+"meta-description": Some of the tried out solutions for the cross site request issue. Should be a good place to look out for which solution to be used under a circumstance.
+"meta-keywords": "cors, ie8, cross-site, AJAX"
 ---
+
 <div class="post">
 	<p>Browsers have a default security mechanism to prevent http(s) request from one domain to other. Since there are tons of possibilities to misuse them. </p>
 
@@ -15,9 +16,9 @@ meta-keywords: "cors, ie8, cross-site, AJAX"
 
 <p>However there are lots of genuine use cases for this scenario to occur which got to be handled by the application and the browsers.</p>
 
-I had to face one such genuine case, and got to deal with one of the miserable browser of my time IE :( 
+  <p>I had to face one such genuine case, and got to deal with one of the miserable browser of my time IE :( </p>
 
-Just documenting few techniques to overcome this problem. I am not elaborating the techniques since that can be figured out, all i wanted is to document the possible solutions and when to use them.
+  <p>Just documenting few techniques to overcome this problem. I am not elaborating the techniques since that can be figured out, all i wanted is to document the possible solutions and when to use them.</p>
 
 <h4>1. CORS - Cross Origin Resource sharing</h4>
 
@@ -27,23 +28,24 @@ Just documenting few techniques to overcome this problem. I am not elaborating t
 
 <pre class="prettyprint">Access-Control-Allow-Origin:</pre>
 
-Which will tell the browser to allow those specified domains to talk to the application.
+  <p>Which will tell the browser to allow those specified domains to talk to the application.</p>
+  
+  <p>This solution works well with most of the modern browsers. Check out for the CORS browser support <a href="http://caniuse.com/cors">here.</a></p>
+  
+  <p><b>Limitations with IE: </b></p>
 
-<p><b>Limitations: </b></p>
-
-<p>Some of the most important conditions are, if your application ,
+  <p>As you can see the browser compatibility chart, IE8 and IE9 has a partial implementation to CORS. </p>
+  <p>Modern browsers could able to support CORS for XMLHttpRequest. However IE8 and IE9 supports CORS using XDomainRequest object. What this means is that they have few limitations of their own. </p>
+<p>Some of the most important constraints are,
 <ul>
-	<li>Uses only GET, POST HTTP methods and not PUT, DELETE etc.</li>
-	<li>Both the domain uses the same protocol. Either HTTP or HTTPS.</li>
-	<li>Doesn't need to add any custom headers.</li>
-	<li>You should have access to both the application. The calling and the caller application.</li>
-</ul>
-</p>	
-<p>There are more to this check out the <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx">MSDN blog</a> before deciding on this solution.</p>
+	<li>Your requests should be only GET, POST HTTP methods and not PUT, DELETE etc.</li>
+	<li>Both the domain (the calling and the caller) uses the same protocol. Either HTTP or HTTPS.</li>
+	<li>Your request should not have any custom headers.</li>
+</ul>	
+<p>The exhaustive list is been detailed out in this <a href="http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx">MSDN blog</a>.</p>
 
-<p><b>More limitations on IE8</b></p>
-
-<p>Apart from the above mentioned problems there are more in IE8. This solution will not work out of box in IE8 (No Surprises !!). You got to change all the XHR to XDR to make it work. Luckily if you are using jQuery you don't need to go through changing all the requests. Instead you can use this <a href="https://github.com/MoonScript/jQuery-ajaxTransport-XDomainRequest"> jQuery plugin </a>. I guess there are more of these  available just check out before breaking your brains.</p>
+  <p><b>Workaround for IE</b></p>
+  <p>If you think you can live with the constraints mentioned above, then the workaround is quite simple. You got to change all the XHR to XDR to make it work. Luckily if you are using jQuery you don't need to go through changing all the requests. Instead you can use this <a href="https://github.com/MoonScript/jQuery-ajaxTransport-XDomainRequest"> jQuery plugin </a>. I guess there are more of these  available just check out before breaking your brains.</p>
 
 <h4>2. JSONP Solution</h4>
 
