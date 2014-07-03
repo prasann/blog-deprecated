@@ -256,3 +256,23 @@ body { padding-top: 40px; }
 .name-heading{
    text-align: left; 
 }
+
+.btn-share {
+    width: 25%;
+    display: inline-block;
+    color: #fff;
+    font-weight: bold;
+    height: 34px;
+    background-color: #f4f4f4;
+    line-height: 34px;
+    padding: 0 15px 0 34px;
+    border-radius: 3px;
+    text-align: center;
+
+    &.facebook{
+        background: #3b5998 url(../images/sharing-button-a.png) 0 0 no-repeat;       
+    }
+    &.twitter {
+        background: #00aced url(../images/sharing-button-a.png) 0 -34px no-repeat;
+    }
+}
