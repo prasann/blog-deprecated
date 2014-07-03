@@ -1,0 +1,20 @@
+	<!DOCTYPE html>
+	<!--[if IEMobile 7 ]><html class="old_browser"><![endif]-->
+	<!--[if lt IE 9]><html class="old_browser"><![endif]-->
+	<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="robots" content = "noodp,noydir">
+		<meta name="description" content = "Prasanna Venkatesan - Resume">
+		<meta name="keywords" content = "Prasanna, Venkatesan, Resume">
+		{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
+		{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
+		
+		<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/resume.css">
+		<title>Prasanna Venkatesan - Resume</title>
+	</head>
+	<body>
+		{{ content }}
+	</body>
+	<script src="{{ relative }}assets/js/application.js"></script>
+	</html>
