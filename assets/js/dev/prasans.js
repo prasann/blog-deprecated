@@ -1,7 +1,10 @@
-$(document).ready(function() {      
-	var myElement = document.querySelector(".navbar-fixed-top");
-	var headroom  = new Headroom(myElement);
-	headroom.init();
+$(document).ready(function() {
+	
+	if($('.navbar-fixed-top').length > 0){
+		var myElement = document.querySelector(".navbar-fixed-top");
+		var headroom  = new Headroom(myElement);
+		headroom.init(); 
+	}      
 
 	if(!$('html').hasClass('old_browser')){
 		var $container = $('#container');
