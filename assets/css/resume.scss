@@ -3,11 +3,29 @@
 .resume {
     font-family: Calibri, sans-serif;
     .header {
+        margin: 0 7%;
+        border: 1px solid black;
         text-align: center;
         .contact {
             li {
+                font-size: 90%;
                 display: inline-block;
+                margin: 0 10px;
                 list-style: none;
+            }
+            .phone img{
+                margin-bottom:-4px;
+            }
+            .browser img{
+                padding-right: 4px;
+                margin-bottom:-4px;
+            }
+            .twitter img{
+                margin-bottom:-4px;
+            }
+            .github img{
+               padding-right: 5px;
+               margin-bottom:-4px;
             }
         }
     }
