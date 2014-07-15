@@ -13,35 +13,30 @@ published: false
 
 	<p> Refer to the GitHub repo for the source code. I will be giving some notes on the code.</p>
 
-	<h4>1. Create build.gradle file</h4>
+	<h4>Create build.gradle file</h4>
 	<p> build.gradle can be pretty much simple to start with. I started with adding java and war plugin followed by adding dependencies to the Spring artifacts. I have to define <pre>runtime 'javax.servlet:jstl:1.2'</pre> to make sure it doesn't get packaged as part of the war.</p>
 	
 	<p> Then thought it will be awesome to start the application in one command instead of building the war and deploying it in local instance. After some initial searching landed onto this <a href="https://github.com/bmuschko/gradle-cargo-plugin">Cargo plugin</a> This lets you to configure the server of your choice and get it working. So after doing some basic configuration got this working.</p>
 	Now <pre>gradle war cargoRunLocal</pre> since the task name is not so user friendly, just added an alias to it.
 	<pre>
-		task serve(dependsOn: cargoRunLocal) << {
-		}
+	task serve(dependsOn: cargoRunLocal) << {
+	}
 	</pre>
 	<h4>Setup Spring</h4>
+	<div>I decided to play around with Servlet 3.0 style of Spring configuration. This means that i do not need to create web.xml or applicationContext.xml files. Instead i can go with complete Java style configuration.</div>
+	
+	<div>Application containers (tomcat 7+ in my case) will look for implementation of WebApplicationInitializer and will load that class on the startup. Initializer.java in my src will be equivalent for web.xml</div>
+	
+	<div>MvcConfig.java will be equivalent to applicationContext.xml file. This contains all the bean initialization, property place holders and more.</div>
+	
+	<div>As you can see most of the configurations are handled by annotations.</div> 
+
 	<h4>Setup Unit Tests</h4>
+	<div>Setting up Unit tests are no different to Gradle. As i mentioned i have used Java style configuration for my Spring classes. So the style of testing my controllers will also be different.</div>
+	
+	<div>InitControllerTest.java</div> will be my controller test. I have initialized a mock web application in the <pre>@Before</pre> method and the rest of the stuff are handled by annotations.
+	
 	<h4>Setup Logging</h4>
-	compile 'org.slf4j:slf4j-api:1.7.7'
-	compile 'org.slf4j:slf4j-log4j12:1.7.7'
-	compile 'log4j:log4j:1.2.17'
 	
-	src/main/resources -> log4j properties
-	
-	log4j.rootCategory=INFO, CONSOLE
-
-LOG_PATTERN=[%d{yyyy-MM-dd HH:mm:ss.SSS}] log4j%X{context} - %5p [%t] --- %c{1}: %m%n
-
-# CONSOLE is set to be a ConsoleAppender using a PatternLayout.
-log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
-log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
-log4j.appender.CONSOLE.layout.ConversionPattern=${LOG_PATTERN}
-
-log4j.category.org.apache.coyote.http11.Http11NioProtocol=WARN
-log4j.category.org.apache.tomcat.util.net.NioSelectorPool=WARN
-log4j.category.org.apache.catalina.startup.DigesterFactory=ERROR
-
+	<div>Setting up slf4j is quite straight forward. You have to add slf4j-log4j, log4j jars and add a log4j.properties to the <pre>src/main/resources</pre> In the log4j.properties you can define the way your appenders should work.</div>
 </div>
