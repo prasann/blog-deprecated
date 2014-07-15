@@ -16,11 +16,13 @@
     <priority>1.0</priority>
   </url>
   {% for post in site.posts %}
-  <url>
-    <loc>http://prasans.info{{ post.url }}/</loc>
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+    {% if post.published == true%}
+      <url>
+        <loc>http://prasans.info{{ post.url }}/</loc>
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    {% endif %}
   {% endfor %}
 </urlset>
