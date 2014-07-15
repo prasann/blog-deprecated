@@ -18,7 +18,7 @@
   {% for post in site.posts %}
     {% if post.published == true%}
       <url>
-        <loc>http://prasans.info{{ post.url }}/</loc>
+        <loc>http://prasans.info{{ post.url }}</loc>
         <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
