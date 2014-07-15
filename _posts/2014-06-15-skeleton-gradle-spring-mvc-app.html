@@ -4,7 +4,7 @@ title: Gradle, Spring MVC App.
 categories: 
   - Tech
   - Java
-published: false
+published: true
 "meta-robots": "noodp,noydir"
 "meta-description": A skeleton sample app demostrating gradle set up with Spring MVC along with basic logging and deployment in tomcat environment.
 "meta-keywords": "gradle, spring, java, log"
@@ -12,32 +12,31 @@ published: false
 <div class="post">
 	<p>Will try to list down few of my learnings to set up a Spring MVC app with Gradle. And also this time i tried using Servlet 3.0 spec which means no .xml files for Spring configuration.</p>
 
-	<p> Refer to the GitHub repo for the source code. I will be giving some notes on the code.</p>
+	<p> Refer to the <a href="https://github.com/prasann/GradleSpringApp"> GitHub repo </a> for the source code. I will be giving some notes on the code.</p>
 
 	<h4>Create build.gradle file</h4>
-	<p> build.gradle can be pretty much simple to start with. I started with adding java and war plugin followed by adding dependencies to the Spring artifacts. I have to define <pre>runtime 'javax.servlet:jstl:1.2'</pre> to make sure it doesn't get packaged as part of the war.</p>
+	<p> build.gradle can be pretty much simple to start with. I started with adding java and war plugin followed by adding dependencies to the Spring artifacts. I have to define <pre class="prettyprint">runtime 'javax.servlet:jstl:1.2'</pre> to make sure it doesn't get packaged as part of the war.</p>
 	
 	<p> Then thought it will be awesome to start the application in one command instead of building the war and deploying it in local instance. After some initial searching landed onto this <a href="https://github.com/bmuschko/gradle-cargo-plugin">Cargo plugin</a> This lets you to configure the server of your choice and get it working. So after doing some basic configuration got this working.</p>
-	Now <pre>gradle war cargoRunLocal</pre> since the task name is not so user friendly, just added an alias to it.
-	<pre>
-	task serve(dependsOn: cargoRunLocal) << {
-	}
+	Now <pre class="prettyprint">gradle war cargoRunLocal</pre> since the task name is not so user friendly, just added an alias to it.
+	<pre class="prettyprint">
+task serve(dependsOn: cargoRunLocal) << {
+}
 	</pre>
 	<h4>Setup Spring</h4>
-	<div>I decided to play around with Servlet 3.0 style of Spring configuration. This means that i do not need to create web.xml or applicationContext.xml files. Instead i can go with complete Java style configuration.</div>
+	<p>	I decided to play around with Servlet 3.0 style of Spring configuration. This means that i do not need to create web.xml or applicationContext.xml files. Instead i can go with complete Java style configuration.</p>
+	<p>	Application containers (tomcat 7+ in my case) will look for implementation of WebApplicationInitializer and will load that class on the startup. Initializer.java in my src will be equivalent for web.xml</p>
 	
-	<div>Application containers (tomcat 7+ in my case) will look for implementation of WebApplicationInitializer and will load that class on the startup. Initializer.java in my src will be equivalent for web.xml</div>
+	<p>	MvcConfig.java will be equivalent to applicationContext.xml file. This contains all the bean initialization, property place holders and more.</p>
 	
-	<div>MvcConfig.java will be equivalent to applicationContext.xml file. This contains all the bean initialization, property place holders and more.</div>
-	
-	<div>As you can see most of the configurations are handled by annotations.</div> 
+	<p>	As you can see most of the configurations are handled by annotations.</p> 
 
 	<h4>Setup Unit Tests</h4>
-	<div>Setting up Unit tests are no different to Gradle. As i mentioned i have used Java style configuration for my Spring classes. So the style of testing my controllers will also be different.</div>
+	<p>Setting up Unit tests are no different to Gradle. As i mentioned i have used Java style configuration for my Spring classes. So the style of testing my controllers will also be different.</p>
 	
-	<div>InitControllerTest.java</div> will be my controller test. I have initialized a mock web application in the <pre>@Before</pre> method and the rest of the stuff are handled by annotations.
+	<p>InitControllerTest.java will be my controller test. I have initialized a mock web application in the <pre>@Before</pre> method and the rest of the stuff are handled by annotations.</p>
 	
 	<h4>Setup Logging</h4>
 	
-	<div>Setting up slf4j is quite straight forward. You have to add slf4j-log4j, log4j jars and add a log4j.properties to the <pre>src/main/resources</pre> In the log4j.properties you can define the way your appenders should work.</div>
+	<p>Setting up slf4j is quite straight forward. You have to add slf4j-log4j, log4j jars and add a log4j.properties to the <pre>src/main/resources</pre> In the log4j.properties you can define the way your appenders should work.</p>
 </div>
