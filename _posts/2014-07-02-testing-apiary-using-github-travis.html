@@ -1,0 +1,22 @@
+---
+layout: post
+title: Testing APIary using Dredd.
+categories: 
+  - Tech
+published: true
+"meta-robots": "noodp,noydir"
+"meta-description": Test API blueprint mardown files by simply hosting them on GitHub and setting up a pipeline in Travis CI.
+"meta-keywords": "apiary, github, travis, dredd, api blueprint"
+---
+<div class="post">
+	<p><a href='http://apiblueprint.org/'>API Blueprint</a> is a documentation-oriented API description language. A couple of semantical assumptions over the plain Markdown.</p>
+
+	<p><a href='https://github.com/apiaryio/dredd'>Dredd</a> is a command-line tool for testing API documentation written in API Blueprint format against its backend implementation. </p>
+
+	<p>I could able to setup dredd quite easily on my Mac by installing Node and npm. However its not quite straight forward in Windows. I faced lots of difficulties while installing node, npm and dredd.</p>
+
+	<p>So i decided to use <a href='http://travis-ci.org/'>Travis</a> to setup the testing pipeline for my jobs. All i needed to do is to have a .travis.yml file to install node_js and install dredd using npm.</p>
+
+	<p>Added a simple script file to run the dredd tool inside the job. And that's it. As part of the code i also checked in the API markdown files which will run againt the APIs</p> 
+
+</div>
