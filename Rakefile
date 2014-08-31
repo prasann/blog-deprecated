@@ -15,7 +15,7 @@ namespace :post do
   task :create do
     name = ARGV.last
     d = DateTime.now
-    touch "_posts/#{d.strftime("%Y-%m-%d-")}#{name}.html"
+    touch "_drafts/#{d.strftime("%Y-%m-%d-")}#{name}.html"
     task name.to_sym do ; end
   end
 end
