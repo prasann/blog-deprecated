@@ -1,0 +1,65 @@
+---
+layout: post
+title: Integrating CKEditor with Rails asset pipeline.
+categories:
+- Tech
+published: true
+meta-robots: "noodp,noydir"
+meta-description: Integrating CKEditor plugin into rails asset pipeline.
+meta-keywords: "Rails, Ckeditor, asset_pipeline"
+---
+<div class="post">
+  <p>We are using <a href="http://ckeditor.com/">ckeditor</a> in our rails application (Rails 4.2).</p>
+
+  <p>Number of network calls made by the ckeditor and its plugins are quite alot and we were facing difficulty in
+    integrating them with the Rails asset pipeline.</p>
+
+  <p>My initial approach is to use a <a href="https://github.com/tsechingho/ckeditor-rails">ckeditor rails gem</a>.
+    However getting it to work was complicated. On top of it we had some custom plugins written for ckeditor and making
+    it to work with ckeditor rails gem was almost impossible.</p>
+
+  <p>Taking some pointers from this <a href="https://github.com/galetahub/ckeditor/issues/307">issue</a> finally could
+    get
+    into some working solution.</p>
+
+  <ol>
+    <li>Move all the CKEditor files into vendor/assets/javascript/ckeditor</li>
+    <li>In application.js add
+      <pre code="javascript">//= require ckeditor/ckeditor</pre>
+    </li>
+    <li>ckeditor.js looks up for other ckeditor relative to CKEDITOR_BASEPATH location. So before loading ckeditor in JS
+      add a line to set that environment variable.
+      <pre code="javascript">window.CKEDITOR_BASEPATH = '/assets/ckeditor/';</pre>
+    </li>
+    <li>Add
+      <pre code="javascript">config.assets.precompile << ['ckeditor/*']</pre>
+      to your application.rb file.
+    </li>
+    <li>Finally add a file called precompile_hook.rake This rake task will help in compiling the ckeditor files and add
+      it
+      to the assets folder.
+      The content of the rake task is here. <a href="https://gist.github.com/prasann/c8978041777cb443fb77.js">precompile_hook.rake</a>
+    </li>
+  </ol>
+  <br>
+
+  <p>
+    Here is the screenshot of the network calls before and after adding ckeditor to asset pipeline.
+  </p>
+  <br>
+
+  <div id="images">
+    <a href="/assets/images/posts/add_ckeditor_to_rails/full/before.png" title="Before adding to asset pipeline"
+       data-dialog>
+      <img src="/assets/images/posts/add_ckeditor_to_rails/thumbs/before.png" alt="Before adding to asset pipeline"/>
+    </a>
+    <a href="/assets/images/posts/add_ckeditor_to_rails/full/after.png" title="After adding to asset pipeline"
+       data-dialog>
+      <img src="/assets/images/posts/add_ckeditor_to_rails/thumbs/after.png" alt="After adding to asset pipeline"/>
+    </a>
+  </div>
+
+  <p>Even after adding ckeditor to asset pipeline the it did not effectively reduce all calls into one.
+    Still the ckeditor's plugin calls are been fired separately. </p>
+
+</div>
