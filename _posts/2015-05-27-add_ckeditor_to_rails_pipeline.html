@@ -25,14 +25,14 @@ meta-keywords: "Rails, Ckeditor, asset_pipeline"
   <ol>
     <li>Move all the CKEditor files into vendor/assets/javascript/ckeditor</li>
     <li>In application.js add
-      <pre code="javascript">//= require ckeditor/ckeditor</pre>
+      <pre class="prettyprint">//= require ckeditor/ckeditor</pre>
     </li>
     <li>ckeditor.js looks up for other ckeditor relative to CKEDITOR_BASEPATH location. So before loading ckeditor in JS
       add a line to set that environment variable.
-      <pre code="javascript">window.CKEDITOR_BASEPATH = '/assets/ckeditor/';</pre>
+      <pre class="prettyprint">window.CKEDITOR_BASEPATH = '/assets/ckeditor/';</pre>
     </li>
     <li>Add
-      <pre code="javascript">config.assets.precompile << ['ckeditor/*']</pre>
+      <pre class="prettyprint">config.assets.precompile << ['ckeditor/*']</pre>
       to your application.rb file.
     </li>
     <li>Finally add a file called precompile_hook.rake This rake task will help in compiling the ckeditor files and add
