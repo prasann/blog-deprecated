@@ -1,83 +1,47 @@
 @import "vars.scss";
 
-@media only screen and (min-width : 320px) and (max-width : 480px) {
-	.item{
-	   width : 100%;
-	}
-	.blog_header {
-		.blog_img{
-			text-align: center;
-            .circular {
-                width: 50px;
-                height: 50px;
-                border-radius: 25px;
-                -webkit-border-radius: 25px;
-                -moz-border-radius: 25px;
-            }	
-		}
-		.blog_title {
-			text-align: center;
-        	width: 100%;
-            font-size: 3.25em !important;	
-		}
-		.blog_quote{
-			font-size: 1.75em;
-		}
-	}
-	#share_icons{
-		margin: 10px;
-	    text-align: center;
-	    a{
-	        width: 24px;
-	        height: 24px;
-	        background-repeat:no-repeat;
-	    }
-	   	a:hover{
-	        background-repeat:no-repeat;
-	    }
-	}
-	h1{
-		font-size: 2em !important;
-		text-align: center;
-	}
-
-	.mosaicflow__column {
-	    float: left;
-	}
-
-	.mosaicflow__item {
-	    img {
-	        display: block;
-	        width: 100%;
-	        height: auto;
-	        border-radius: 30px;
-	    }
-	}
-
-	.grid_url {
-	    color: #000000;
-	    &:hover {
-	        text-decoration: none;
-	    }
-	}
-
-	.grid {
-		border-bottom: 1px solid #888888;
-		&:hover{
-	        color: $black;
-	    }
-	    .grid_image {
-	        margin-bottom: 30px;
-	        max-height: 275px;
-	    }
-	    .grid_title {
-	        color: $orange;
-	        text-align: center;
-	    }
-	    .grid_date {
-	        text-align: right;
-	        font-style: italic;
-	        font-size: 75%;
-	    }
-	}
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .blog_header {
+    .blog_img {
+      text-align: center;
+      .circular {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+      }
+    }
+    .blog_title {
+      text-align: center;
+      width: 100%;
+      font-size: 2em !important;
+    }
+    .blog_quote {
+      font-size: 1.5em;
+    }
+  }
+  #index_container {
+    a.item {
+      .item-title {
+        display: inline;
+      }
+    }
+  }
+  #share_icons {
+    margin: 10px;
+    text-align: center;
+    a {
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+    }
+    a:hover {
+      background-repeat: no-repeat;
+    }
+  }
+  h1 {
+    font-size: 1.5em !important;
+    text-align: center;
+  }
 }

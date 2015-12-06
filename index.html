@@ -1,50 +1,18 @@
---- 
-layout: home 
+---
+layout: home
 title: Random Presence
 ---
 
-<div class="post">
-    <div id="container">
-        {% for post in paginator.posts %}
-            {% if post.published == true and post.travelogue != true%}
-                <a class="grid_url" href="{{ post.url }}">
-                    <div class="mosaicflow__item grid item">
-                        {% if post.image %}
-                    	<img class="grid_image" src="{{ post.image }}"></img>
-                        {% endif %}
-                		<div class="grid_title">{{ post.title }}</div>
-                        {% if post.meta-description %}
-                        <div class="grid_summary">{{ post.meta-description }}</div>
-                        {% endif %}          
-                        <div class="grid_date">{{ post.date | date_to_string }}</div>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-    {% if paginator.total_pages > 1 %}
-        <div class="text-center">
-          {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; Prev</a>
-          {% else %}
-            <span>&laquo; Prev</span>
-          {% endif %}
-
-          {% for page in (1..paginator.total_pages) %}
-            {% if page == paginator.page %}
-              <em>{{ page }}</em>
-            {% elsif page == 1 %}
-              <a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
-            {% else %}
-              <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
-            {% endif %}
-          {% endfor %}
-
-          {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next &raquo;</a>
-          {% else %}
-            <span>Next &raquo;</span>
-          {% endif %}
-        </div>
+<div id="index_container" class="post">
+  {% for post in site.posts %}
+    {% if post.published == true and post.travelogue != true%}
+      <a class="item" href="{{ post.url }}">
+        <div class="item-title">{{ post.title }}</div>
+        <div class="item-date">{{ post.date | date_to_string }}</div>
+        {% if post.meta-description %}
+          <div class="item-meta">{{ post.meta-description }}</div>
+        {% endif %}
+      </a>
     {% endif %}
+  {% endfor %}
 </div>

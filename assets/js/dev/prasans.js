@@ -6,16 +6,6 @@ $(document).ready(function() {
 		headroom.init(); 
 	}      
 
-	if(!$('html').hasClass('old_browser')){
-		var $container = $('#container');
-		if($container.length >0){
-			$container.masonry({
-			  columnWidth: 0,
-			  itemSelector: '.item'
-			});
-		}
-	}
-
 	$('#images').magnificPopup({
         delegate: 'a',
         type: 'image',

@@ -4,5 +4,3 @@ permalink: /:year/:month/:title/
 highlighter: pygments
 exclude: ['Gemfile','Gemfile.lock','Rakefile','sass','vendor']
 url: http://prasans.info
-paginate: 20
-paginate_path: "blog/page:num"
