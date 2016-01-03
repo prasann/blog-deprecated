@@ -1,0 +1,47 @@
+---
+layout: post
+title: Set deployed Git revision using Capistrano 3
+categories:
+- Tech
+- Capistrano
+- Rails
+published: true
+meta-robots: "noodp,noydir"
+meta-description: While deploying Rails application using Capistrano 3, recording the current deployed git revision to be used by Rails applicaiton.
+meta-keywords: "Rails, Capistrano, Deploy, Git"
+meta:
+
+---
+<div class="post">
+  <p>We use Capistrano to deploy our Rails application. Recently i upgraded our capistrano version from 2 to 3</p>
+  <p>Capistrano 3 has a complete DSL changeover. Apart from this one other major change I figured out was the way a Git repository is been deployed.</p>
+  <p>Previously a Git repository is cloned in the deploy location. Now in Cap 3 a Git archive is been downloaded to the deploy location.
+    This means the deploy directory is no more a Git repository. During Cap 2 times, we used to run a 'git log' command in the deployed driectory to find the deployed revision. Now
+    after upgrade I am unable to do this.
+  </p>
+  <p>
+    Cap 3 has got a REVISION file, which contain the SHA of the deployed commit. This wasn't useful in our case, as we show this message in our web application.
+  </p>
+  <p>
+    So i ended up writing a Cap task using a similar logic to create a REVISION file with our custom formatted Git message.
+  </p>
+  <pre class="prettyprint">
+    namespace :deploy do
+      task :add_revision_file do
+        on roles(:app) do
+          within repo_path do
+            execute(:git, :'log', :"--pretty=format:'%h | %ai | %d %s'", :'-1',
+            :"#{fetch(:branch)}", ">#{release_path}/REVISION")
+          end
+        end
+      end
+    end
+  </pre>
+  <pre class="prettyprint">
+    after 'deploy:updating', 'deploy:add_revision_file'
+  </pre>
+
+  <p>
+    This will overwrite the REVISION file created by Cap with our custom message. Which will be consumed by our application.
+  </p>
+</div>
