@@ -1,5 +1,6 @@
 ---
 ---
+@import "../sass/fonts.scss";
 .resume {
     font-family: Calibri, sans-serif;
     .header {
@@ -12,6 +13,9 @@
                 display: inline-block;
                 margin: 0 10px;
                 list-style: none;
+                i{
+                  margin: 2px 5px;
+                }
             }
             .phone img{
                 margin-bottom:-4px;

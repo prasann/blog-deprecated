@@ -15,21 +15,21 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  color: $orange;
+  color: $primary_font_color;
   font-family: $font !important;
 }
 
 .blog_header {
   @extend .blog_centered;
-  color: $orange;
+  color: $primary_font_color;
   padding: 20px 20px 0 20px;
   a:hover, a:focus {
     text-decoration: none;
     background: transparent;
-    color: $orange;
+    color: $primary_font_color;
   }
   a:visited {
-    color: $orange;
+    color: $primary_font_color;
   }
   .blog_title {
     text-align: center;
@@ -110,11 +110,11 @@ h1, h2, h3, h4, h5 {
 }
 
 a {
-  color: $orange;
+  color: $primary_font_color;
 }
 
 a:hover {
-  background-color: $orange;
+  background-color: $primary_font_color;
   color: $white;
   text-decoration: none;
 }
@@ -125,7 +125,7 @@ a img {
 }
 
 p strong {
-  color: $orange;
+  color: $primary_font_color;
 }
 
 .image_center {
@@ -150,7 +150,7 @@ p strong {
   @extend .blog_centered;
   text-align: center;
   margin-top: 15px;
-  color: $orange;
+  color: $primary_font_color;
   font-family: $font;
   font-size: 80%;
   font-style: italic;
@@ -186,23 +186,23 @@ body {
 
 .navbar-default {
   .navbar-brand {
-    color: $orange;
+    color: $primary_font_color;
   }
   .navbar-nav li a {
-    color: $orange;
+    color: $primary_font_color;
   }
   .navbar-toggle .icon-bar {
-    background-color: $orange;
+    background-color: $primary_font_color;
   }
 }
 
 .share_txt {
-  color: $orange;
+  color: $primary_font_color;
   font-size: 120%;
 }
 
 .btn-primary {
-  @include button-variant(#fff, $orange, $orange);
+  @include button-variant(#fff, $primary_font_color, $primary_font_color);
 }
 
 .brand_img {
@@ -234,16 +234,21 @@ body {
   clear: both;
 }
 
-.me-icon {
-  &:hover {
-    text-decoration: none;
-    background: transparent;
-  }
-  img {
-    height: 64px;
-    width: 64px;
-    display: inline-block;
-    margin: 20px;
+.me-icons{
+  margin-top: 20px;
+  .me-icon {
+    width: 50px;
+    height: 50px;
+    margin-left: 30px;
+    a{
+      font-size: 200%;
+      color: black;
+      &:hover{
+        font-size: 250%;
+        background: white;
+        color: black;
+      }
+    }
   }
 }
 
@@ -290,7 +295,7 @@ body {
       display: inline-block;
     }
     .item-title {
-      color: $orange;
+      color: $primary_font_color;
     }
     .item-meta {
       font-size: 80%;
