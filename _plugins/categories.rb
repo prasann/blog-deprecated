@@ -24,7 +24,7 @@ module Jekyll
         all_categories = site.categories.keys.compact.uniq.reject(&:empty?)
         all_categories.each do |category|
           if !category.nil?
-            site.pages << CategoryPage.new(site, site.source, File.join(dir, category), category)
+            site.pages << CategoryPage.new(site, site.source, File.join(dir, category.downcase), category)
           end
         end
       end

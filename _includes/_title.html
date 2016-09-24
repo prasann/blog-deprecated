@@ -4,7 +4,8 @@
     <div class="date">{{ page.date | date: "%-d %B, %Y" }}.</div>
     <div class="tags">
       <em>Under: {% for category in page.categories %}
-                <a href="/categories/{{ category }}">{{ category }}</a> {% endfor %}
+                 {% assign categoryDownCased = category | downcase %}
+                <a href="/categories/{{ categoryDownCased }}">{{ categoryDownCased }}</a> {% endfor %}
             </em>
     </div>
   </div>
