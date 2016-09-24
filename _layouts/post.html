@@ -2,7 +2,7 @@
 <html>
 <head>
     {% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %} {% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
-    {% include _meta_tags.html %} 
+    {% include _meta_tags.html %}
     {% include _open_graph.html %}
     <title>{{ page.title }}</title>
     <link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/post.css">
@@ -10,13 +10,13 @@
 </head>
 
 <body>
-    {% include _blog_header.html %} 
+    {% include _blog_header.html %}
     {% include _title.html %}
-    {{ content }} 
+    {{ content }}
     {% include _share_icons.html %}
     {% include _next_prev_link.html %}
-    {% include _disqus.html %}
-    {% include _footer.html %} 
+    <!-- {% include _disqus.html %} -->
+    {% include _footer.html %}
 </body>
 <script src="{{ relative }}assets/js/application.js"></script>
 

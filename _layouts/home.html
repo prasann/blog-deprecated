@@ -9,7 +9,7 @@
 		<meta name="keywords" content = "Prasanna, Venkatesan, Blog">
 		{% capture lvl %}{{ page.url | append:'index.html' | split:'/' | size }}{% endcapture %}
 		{% capture relative %}{% for i in (3..lvl) %}../{% endfor %}{% endcapture %}
-		
+
 		<link rel="stylesheet" type="text/css" href="{{ relative }}assets/css/home.css">
 		<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.url }}/feed.xml">
 		<title>Random Presence</title>
