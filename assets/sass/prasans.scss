@@ -269,10 +269,10 @@ body {
   text-align: center;
 
   &.facebook {
-    background: #3b5998 url(../images/sharing-button-a.png) 0 0 no-repeat;
+    background: #3b5998 0 0 no-repeat;
   }
   &.twitter {
-    background: #00aced url(../images/sharing-button-a.png) 0 -34px no-repeat;
+    background: #00aced 0 -34px no-repeat;
   }
 }
 
