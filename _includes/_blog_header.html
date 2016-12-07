@@ -8,8 +8,13 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">
+        {% if page.url == "/" %}
         <img class="brand_img" src="/assets/images/home.png">
+        {% else %}
+        Random Presence
+        {% endif %}
       </a>
+
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
@@ -21,9 +26,12 @@
     </div>
   </div>
 </nav>
+
 <div class="blog_header">
+  {% if page.url == "/" %}
   <a href="/">
     <h1 class="blog_title">Random Presence</h1>
     <div class="blog_quote">Of my thoughts & scribblings ...</div>
   </a>
+  {% endif %}
 </div>
