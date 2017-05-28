@@ -4,3 +4,5 @@ permalink: /:year/:month/:title/
 highlighter: pygments
 exclude: ['Gemfile','Gemfile.lock','Rakefile','sass','vendor']
 url: http://prasans.info
+sass:
+    sass_dir: ./assets/css
