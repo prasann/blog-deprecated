@@ -1,0 +1,37 @@
+* Testing toLocaleString('de') won't work with jest
+* Jest uses phantomJS
+* phontomJS don't support i18n
+* So none of the i18n will work
+* Mock these methods in Jest and assert
+
+/**********/
+
+05bd2ad1928364cd7d2f34bd87fc9972b3e7ef08
+
+// eslint-disable-next-line import/prefer-default-export
+export function formatDate(date) {
+const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+return date.toLocaleString('de-DE', options);
+}
+
+/**********/
+/**********/
+
+import * as helpers from '../src/helpers';
+describe('formatDate', () => {
+it('should invoke localString implementation to format date ', () => {
+    const localStringMock = jest.fn();
+    const mockDate = { toLocaleString: localStringMock };
+    helpers.formatDate(mockDate);
+    expect(localStringMock).toHaveBeenCalledWith('de-DE', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    });
+});
+
+
+/**********/
