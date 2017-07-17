@@ -1,0 +1,28 @@
+<div class="comments">
+    <hr/>
+    <h3 class="text-center">
+        Comment
+    </h3>
+    <form method="POST"
+          class="form-horizontal"
+          action="https://api.staticman.net/v2/entry/prasann/prasann.github.io/master/comments">
+        <input name="options[redirect]" type="hidden" value="https://prasans.info">
+        <!-- e.g. "2016-01-02-this-is-a-post" -->
+        <input name="options[slug]" type="hidden" value="{{ page.slug }}">
+        <div class="form-group">
+            <label for="comment_name">Name</label>
+            <input class="form-control" id="comment_name" name="fields[name]" type="text">
+        </div>
+        <div class="form-group">
+            <label for="comment_email">E-mail</label>
+            <input class="form-control" id="comment_email" name="fields[email]" type="email">
+        </div>
+        <div class="form-group">
+            <label for="comment_message">Message</label>
+            <textarea class="form-control" rows="3" id="comment_message" name="fields[message]"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

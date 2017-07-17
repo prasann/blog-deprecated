@@ -3,6 +3,8 @@ description: Of my thoughts & scribblings ...
 permalink: /:year/:month/:title/
 highlighter: pygments
 exclude: ['Gemfile','Gemfile.lock','Rakefile','sass','vendor']
+comments:
+
 url: http://prasans.info
 sass:
     sass_dir: ./assets/css
