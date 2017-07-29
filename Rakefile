@@ -46,6 +46,7 @@ namespace :site do
     system "git add --all"
     message = "Site updated at #{Time.now.utc}"
     system "git commit -m #{message.inspect}"
+    system "git pull --rebase"
     system "git push origin master:refs/heads/master"
     Dir.chdir pwd
   end
