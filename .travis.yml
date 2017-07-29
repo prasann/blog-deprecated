@@ -7,4 +7,4 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_API_KEY # Set in travis-ci.org dashboard
   on:
-    branch: source
+    branch: master
