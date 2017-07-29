@@ -1,5 +1,4 @@
 module Jekyll
-  require 'compass'
   require 'bootstrap-sass'
   class SassConverter < Converter
     safe true
