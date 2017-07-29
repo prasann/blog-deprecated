@@ -3,11 +3,14 @@
     <h3 class="text-center">
         Comment
     </h3>
-    <form method="POST"
+    <div id="comment_success" class="alert alert-success" style="display: none">
+      Your comment has been posted successfully. It will appear soon here.
+    </div>
+    <div id="comment_error" class="alert alert-danger" style="display: none">
+      Some fields are missing. Please check again and post.
+    </div>
+    <form id="comment_form"
           class="form-horizontal"
-          action="https://api.staticman.net/v2/entry/prasann/blog/master/comments">
-        <input name="options[redirect]" type="hidden" value="https://prasans.info">
-        <!-- e.g. "2016-01-02-this-is-a-post" -->
         <input name="options[slug]" type="hidden" value="{{ page.slug }}">
         <div class="form-group">
             <label for="comment_name">Name</label>

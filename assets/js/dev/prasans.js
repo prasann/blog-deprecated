@@ -1,10 +1,9 @@
 $(document).ready(function() {
-	
 	if($('.navbar-fixed-top').length > 0){
 		var myElement = document.querySelector(".navbar-fixed-top");
 		var headroom  = new Headroom(myElement);
-		headroom.init(); 
-	}      
+		headroom.init();
+	}
 
 	$('#images').magnificPopup({
         delegate: 'a',
@@ -25,5 +24,5 @@ $(document).ready(function() {
         }
     });
     prettyPrint();
-    
+
  });
