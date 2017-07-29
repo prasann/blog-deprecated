@@ -2,3 +2,9 @@ language: ruby
 rvm:
   - 2.3.3
 script: rake site:generate
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_API_KEY # Set in travis-ci.org dashboard
+  on:
+    branch: source
