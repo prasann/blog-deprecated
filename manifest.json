@@ -6,8 +6,15 @@
       "src": "/assets/images/home.png",
       "type": "image/png",
       "sizes": "256x256"
+    },
+    {
+      "src": "/assets/images/home.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#155E5B",
   "start_url": "index.html?launcher=true"
 }
