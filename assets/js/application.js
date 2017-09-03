@@ -85,7 +85,6 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 
  });
 $(document).ready(function() {
-    console.log('Comments initialised..');
     $("#comment_form").on("submit", function(event) {
       $('#comment_form').find('button').prop('disabled', true);
         $.ajax({
@@ -104,4 +103,17 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
+});
+$(document).ready(function () {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function (err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
 });

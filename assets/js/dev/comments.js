@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log('Comments initialised..');
     $("#comment_form").on("submit", function(event) {
       $('#comment_form').find('button').prop('disabled', true);
         $.ajax({

@@ -1,0 +1,13 @@
+{
+  "short_name": "Prasans Blog",
+  "name": "Prasanna's Blog - Feel My Presence",
+  "icons": [
+    {
+      "src": "/assets/images/home.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ],
+  "display": "standalone",
+  "start_url": "index.html?launcher=true"
+}

@@ -7,7 +7,7 @@ require 'jekyll'
 
 # Change your GitHub reponame
 LOCAL_DIR_NAME = '../prasann.github.io/.'
-js_files=%w(jquery.min.js jquery-ui.min.js jquery.magnific-popup.min.js prettify.js headroom.min.js bootstrap.min.js prasans.js comments.js)
+js_files=%w(jquery.min.js jquery-ui.min.js jquery.magnific-popup.min.js prettify.js headroom.min.js bootstrap.min.js prasans.js comments.js sw-registration.js)
 
 namespace :post do
   desc 'Will create a template for new blog post'
