@@ -71,12 +71,11 @@ h1, h2, h3, h4, h5 {
 }
 
 .comments{
-  @extend .blog_centered;
   background: #F1F7F7;
-
   textarea {
     resize: none;
   }
+  @extend .blog_centered;
 }
 
 .list-comments{
