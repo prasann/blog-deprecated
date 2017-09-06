@@ -7,6 +7,8 @@ $(document).ready(function() {
             data: $("#comment_form").serialize(), // serializes the form's elements.
             success: function(data) {
               $('#comment_success').show();
+              $('#comment_message').val('');
+              $('#comment_email').val('');
               $('#comment_form').find('button').prop('disabled', false);
             },
             error: function(data) {
