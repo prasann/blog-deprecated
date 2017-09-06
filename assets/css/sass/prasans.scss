@@ -72,6 +72,41 @@ h1, h2, h3, h4, h5 {
 
 .comments{
   @extend .blog_centered;
+  background: #F1F7F7;
+
+  textarea {
+    resize: none;
+  }
+}
+
+.list-comments{
+  @extend .blog_centered;
+
+  .comment-block {
+    border-bottom: 1px solid #cccccc;
+    margin-top: 5px;
+
+    .comment-header {
+      display: flex;
+
+      .comment-name {
+        margin: 0 20px;
+        font-weight: bold;
+      }
+
+      .comment-date {
+        font-size: 60%;
+        font-style: italic;
+        margin-top: 6px;
+        color: #6E6E6E;
+      }
+    }
+  }
+
+  .comment-body{
+    margin: 0 20px;
+    font-size: 90%;
+  }
 }
 
 .post {
@@ -265,6 +300,10 @@ body {
 
 .name-heading {
   text-align: left;
+}
+
+.right-aligned{
+  text-align: right;
 }
 
 .btn-share {
