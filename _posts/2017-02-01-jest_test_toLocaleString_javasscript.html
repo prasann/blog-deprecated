@@ -1,0 +1,37 @@
+---
+layout: post
+title: Mock toLocaleString in Jest
+categories:
+- Javascript
+- Jest
+- React
+type: post
+published: true
+meta-robots: "noodp,noydir"
+meta-description: Found an issue while testing toLocaleString and other related JS prototype function. Described here is the way to mock them.
+meta-keywords: "jest, phantomJS, mock, jasmine, javascript, localeString"
+---
+
+<div class="post">
+  <p>
+    We had to use <span class="inline">toLocaleString</span> with a specific country-code. <span class="inline">toLocaleString('de')</span>.
+    This works perfectly in all the browsers. However, not in jest tests.
+  </p>
+  <p>
+    Our Jest tests were running with <span class="inline">--env=jsdom</span>. I got to know that jsdom and phantomJS aren't supporting multiple locale implementations.
+  </p>
+
+  <a href="https://github.com/ariya/phantomjs/issues/12327">PhantomJS support locale-specific.</a>
+
+  <p>
+    So, the only solution I found is to mock these methods and test rest of the logic. Here is a sample mock behaviour.
+  </p>
+
+  <script src="https://gist.github.com/prasann/84432c625f08c4156ad0e3a5ca188ec6.js"></script>
+
+  <p>
+    <b>Note:</b> This behaviour is applicable for
+    <span class="inline">toLocaleDateString()</span>
+    <span class="inline">toLocaleTimeString()</span>
+  </p>
+</div>
