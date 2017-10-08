@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/prasann
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://prasans.info
+  * I am prasann (https://keybase.io/prasann) on keybase.
+  * I have a public key ASAQVtwyhQ1XUFYNoIpqxm2JG32G_B_yMdt5oVARSQCYpAo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01201056dc32850d5750560da08a6ac66d891b7d86fc1ff231db79a15011490098a40a",
+      "host": "keybase.io",
+      "kid": "01201056dc32850d5750560da08a6ac66d891b7d86fc1ff231db79a15011490098a40a",
+      "uid": "1f3f133e2e1d72db030216d629902d19",
+      "username": "prasann"
+    },
+    "merkle_root": {
+      "ctime": 1507493347,
+      "hash": "3d097e5a281e863f1d1ccd8ef7629f45ed0221e44639d42d1e9e7d432f9a21b4fbb576b32d00cb6d1aa087a6e9d8324df659c0833f3e26b13f3960c911541189",
+      "hash_meta": "ffc27b98e3c5cb0f4b077c6c266f11567fdddb9607540928bdb649c34e73af54",
+      "seqno": 1541356
+    },
+    "service": {
+      "hostname": "prasans.info",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.33"
+  },
+  "ctime": 1507493397,
+  "expire_in": 504576000,
+  "prev": "232dcaf7a404ea108b40b78c6b542374a39c0673ccf7167a2de24065fcb2ff9f",
+  "seqno": 6,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgEFbcMoUNV1BWDaCKasZtiRt9hvwf8jHbeaFQEUkAmKQKp3BheWxvYWTFA0N7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwMTA1NmRjMzI4NTBkNTc1MDU2MGRhMDhhNmFjNjZkODkxYjdkODZmYzFmZjIzMWRiNzlhMTUwMTE0OTAwOThhNDBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwMTA1NmRjMzI4NTBkNTc1MDU2MGRhMDhhNmFjNjZkODkxYjdkODZmYzFmZjIzMWRiNzlhMTUwMTE0OTAwOThhNDBhIiwidWlkIjoiMWYzZjEzM2UyZTFkNzJkYjAzMDIxNmQ2Mjk5MDJkMTkiLCJ1c2VybmFtZSI6InByYXNhbm4ifSwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE1MDc0OTMzNDcsImhhc2giOiIzZDA5N2U1YTI4MWU4NjNmMWQxY2NkOGVmNzYyOWY0NWVkMDIyMWU0NDYzOWQ0MmQxZTllN2Q0MzJmOWEyMWI0ZmJiNTc2YjMyZDAwY2I2ZDFhYTA4N2E2ZTlkODMyNGRmNjU5YzA4MzNmM2UyNmIxM2YzOTYwYzkxMTU0MTE4OSIsImhhc2hfbWV0YSI6ImZmYzI3Yjk4ZTNjNWNiMGY0YjA3N2M2YzI2NmYxMTU2N2ZkZGRiOTYwNzU0MDkyOGJkYjY0OWMzNGU3M2FmNTQiLCJzZXFubyI6MTU0MTM1Nn0sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJwcmFzYW5zLmluZm8iLCJwcm90b2NvbCI6Imh0dHBzOiJ9LCJ0eXBlIjoid2ViX3NlcnZpY2VfYmluZGluZyIsInZlcnNpb24iOjF9LCJjbGllbnQiOnsibmFtZSI6ImtleWJhc2UuaW8gZ28gY2xpZW50IiwidmVyc2lvbiI6IjEuMC4zMyJ9LCJjdGltZSI6MTUwNzQ5MzM5NywiZXhwaXJlX2luIjo1MDQ1NzYwMDAsInByZXYiOiIyMzJkY2FmN2E0MDRlYTEwOGI0MGI3OGM2YjU0MjM3NGEzOWMwNjczY2NmNzE2N2EyZGUyNDA2NWZjYjJmZjlmIiwic2Vxbm8iOjYsInRhZyI6InNpZ25hdHVyZSJ9o3NpZ8RAGfm4s2QNTdg/9irMD+D5/e7pBWoFtn6Ovn5RZiHeHoMN7Ckc2cyw7+AECI/GombCo/RRSqwtZjEM4kEnHUQDDqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIH7vTOLIx9d8V95C81m6fzqSIk/9f4tzaxRAs4ZGXjREo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/prasann
+
+==================================================================
