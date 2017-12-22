@@ -1,18 +1,18 @@
 <div class="list-comments">
   {% if site.data.comments[page.slug] %}
-    {% assign comments = site.data.comments[page.slug] | sort %}
-      {% for comment in comments %}
-        <div class="comment-block">
-          <div class="comment-header">
-            <div class="comment-name">
-              {{ comment[1].name }}
-            </div>
-            <div class="comment-date">{{ comment[1].date | date: "%B %d, %Y" }}</div>
-          </div>
-          <div class="comment-body">
-            {{ comment[1].message | markdownify }}
-          </div>
-        </div>
-      {% endfor %}
+  {% assign comments = site.data.comments[page.slug] | sort %}
+  {% for comment in comments %}
+  <div class="comment-block">
+    <div class="comment-header">
+      <div class="comment-name">
+        {{ comment[1].name }}
+      </div>
+      <div class="comment-date">{{ comment[1].date | date: "%B %d, %Y" }}</div>
+    </div>
+    <div class="comment-body">
+      {{ comment[1].message | xml_escape }}
+    </div>
+  </div>
+  {% endfor %}
   {% endif %}
 </div>

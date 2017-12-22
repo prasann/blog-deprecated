@@ -79,11 +79,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .list-comments{
+  margin-top: 20px;
   @extend .blog_centered;
 
   .comment-block {
     border-bottom: 1px solid #cccccc;
-    margin-top: 5px;
+    margin-top: 10px;
 
     .comment-header {
       display: flex;
@@ -103,7 +104,7 @@ h1, h2, h3, h4, h5 {
   }
 
   .comment-body{
-    margin: 0 20px;
+    margin: 10px 20px;
     font-size: 90%;
   }
 }
