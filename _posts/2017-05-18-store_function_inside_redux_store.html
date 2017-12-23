@@ -1,0 +1,48 @@
+---
+layout: post
+title: Storing a function in the Redux store
+categories:
+- Tech
+- Javascript
+- React
+- Redux
+type: post
+published: true
+meta-robots: "noodp,noydir"
+meta-description: Redux state can be very useful to share data across the application. This post is about storing a function inside the redux store.
+meta-keywords: "javascript, redux, tech, react, network"
+---
+
+<div class="post">
+  <p><a href="https://redux.js.org/">Redux</a> is a predictable state container for Javascript. Redux state has to be serializable all
+  the time.</p>
+  <p>Object serialization is the process of converting an object's state to a string from which it can later be restored.</p>
+
+  <p>So, if you are trying to store a function inside the Redux state, you need to serialize them before persisting.</p>
+
+  <blockquote>Storing functions inside redux state is not a best practice in general. So try to avoid it.</blockquote>
+
+  <p>Javascript functions can be serialized quite easily, the challenge is in retrieving them from the store to execute.</p>
+
+  <p>Below are the helper functions for persisting functions inside Redux state.</p>
+
+  <pre class="prettyprint">
+  //Returns a string
+  export const serializeFunction = (func) => (func.toString());
+  //serializeFunction(()=>console.log('Hello!!'))
+  // Output ==> "()=>console.log('Hello!!')"
+  </pre>
+
+  <p>
+  The function to be stored in the state should be converted into string using <span class="inline">serializeFunction</span>.
+  </p>
+
+  <pre class="prettyprint">
+  //Returns a function
+  export const deserializeFunction = (funcString) => (new Function(`return ${funcString}`)());
+  </pre>
+
+  <p>
+    Convert the string from the redux store into a function using <span class="inline">deserializeFunction</span>
+  </p>
+</div>
