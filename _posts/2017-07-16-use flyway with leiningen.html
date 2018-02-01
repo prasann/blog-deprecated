@@ -1,0 +1,57 @@
+---
+layout: post
+title: Flyway migrations in lein clojure
+categories:
+- Tech
+- Clojure
+- DB
+type: post
+published: true
+meta-robots: "noodp,noydir"
+meta-description: Flyway is a popular Java based database migration tool. This post describes about integrating flyway seamlessly with lein compojure ring stack in clojure.
+meta-keywords: "clojure, compojure, flyway, lein, ring"
+---
+
+<div class="post">
+    <p>
+        <a href="https://leiningen.org/">Leiningen</a> is the easiest way to start with clojure project automation. The project under discussion is a webservices
+        written in clojure with
+        <a href="https://github.com/metosin/compojure-api">compojure-api</a> and
+        <a href="https://github.com/ring-clojure/ring">ring</a> middleware.
+    </p>
+    <p>
+        When it came to Database migrations, I didn't find anything straightforward amongst the lein plugins. So, decided to use
+        <a href="https://flywaydb.org/">flyway</a>. I have worked with flyway in the past with Java applications. But, this is the first time with clojure,
+        leiningen combination.
+    </p>
+    <h3>Migration utility in clojure</h3>
+    <p>
+        Here is the small migration helper written in Clojure
+        <script src="https://gist.github.com/prasann/11e62167434eb76a675b54a5b5b672e4.js"></script>
+    </p>
+    <h3>Running migration during deployment</h3>
+    <p>
+        I'm using
+        <a href="https://github.com/weavejester/lein-ring">lein-ring</a> plugin, this provided an option to execute function before the handler starts. So, I wired
+        <span class="inline">app.migrate</span> to the init block of the handler.
+    </p>
+
+    <p>This helps to run migration everytime before the application deploys. Ofcourse, flyway will take care of what migrations
+        need to run based on the migration version.</p>
+
+    <h3>Running migrations for local development</h3>
+    <p>
+        The above method works perfectly for the application deployment scenarios. However, in local it will be better to execute​
+        ​migration and clean databases as and when required, rather than re-deploying the application. lein-exec plugin offers​
+        ​a way to create and execute clojure code from project.clj files. With the above-mentioned migration present, all
+        ​I​​ ha​ve to do is to create some aliases as shown below.
+        <pre class="prettyprint">
+            :aliases { 
+                "db-clean"   ["exec" "-ep" "(use 'deal-picker.migration) (clean)"]
+                "db-migrate" ["exec" "-ep" "(use 'deal-picker.migration) (migrate)"]
+                "db-info"    ["exec" "-ep" "(use 'deal-picker.migration) (info)"]
+                "db-reset"   ["exec" "-ep" "(use 'deal-picker.migration) (reset)"]
+            }
+        </pre>
+    </p>
+</div>
