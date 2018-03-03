@@ -1,7 +1,0 @@
-_id: 4a5cd130-b4fa-11e7-9670-3b6a9dc04145
-message: >-
-  As far as I understand Factory pattern deals with creation of objects. In your
-  case instead of creating http client you return a reference to the previously
-  created one.
-name: E.S
-date: 1508437274
