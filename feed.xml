@@ -2,11 +2,12 @@
 layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"  xmlns:webfeeds="http://webfeeds.org/rss/1.0">
 	<channel>
-		<title>{{ site.name | xml_escape }}</title>
-		<description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>
+		<title>Prasanna's blog</title>
+		<description>Random presence of my thoughts and scribblings</description>
 		<link>{{ site.url }}</link>
+		<webfeeds:icon>https://prasans.info/assets/home.png</webfeeds:icon>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
 		{% for post in site.posts limit:15 %}
 			{% if post.published == true%}
