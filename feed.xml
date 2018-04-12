@@ -7,7 +7,7 @@ layout: null
 		<title>Prasanna's blog</title>
 		<description>Random presence of my thoughts and scribblings</description>
 		<link>{{ site.url }}</link>
-		<webfeeds:icon>https://prasans.info/assets/home.svg</webfeeds:icon>
+		<webfeeds:icon>https://prasans.info/assets/images/home.svg</webfeeds:icon>
 		<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
 		{% for post in site.posts limit:15 %}
 			{% if post.published == true%}
