@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="cucumber, java, bdd">
+<meta name="description" content="Setting up cucumber BDD framework in your Java project.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Setting up Cucumber-jvm">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2013/07/setting-up-cucumber-jvm/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Setting up cucumber BDD framework in your Java project.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2013-07-10T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Setting up Cucumber-jvm</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Setting up Cucumber-jvm</h1>
+  <div class="date_tag">
+    <div class="date">10 July, 2013.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p><a title="Cucumber JVM" href="https://github.com/cucumber/cucumber-jvm" target="_blank">Cucumber JVM</a> is Java implementation of Cucumber BDD.</p>
+<h3><strong>Integrating into the Project</strong></h3>
+<p>The installation using maven is super simple, just add the dependency and you are ready to go. Make sure you add both command line interface (cucumber-core) and the IDE interface (cucumber-junit)</p>
+<p>I was using Intellij and add Intellij Cucumber plugin, to make the navigations easier.</p>
+<p>One thing i liked very much is the ability to add custom annotations to the feature. You can add a custom annotation and can create Before and After hook for them.</p>
+<p>In .feature file</p>
+<pre class="prettyprint">@Email
+Feature:</pre>
+<p>In the step definitions file.</p>
+<pre class="prettyprint">@Before({"@Email"})
+@After({"@Email"})</pre>
+<h3><strong>Integrating with Spring</strong></h3>
+<p>For Spring integration you need to add one more component of the cucumber-jvm <em>(cucumber-spring)</em></p>
+<p>It is advisable to have a test runner class which can run all the feature files in one go especially when you are runnning in the CI.</p>
+<p>The structure of the test runner class will be :</p>
+<pre class="prettyprint">@RunWith(Cucumber.class)
+public class CucumberAdapterTest {
+}</pre>
+<p>Make sure to place all the feature files in the same package as of this Runner class. Or you can specify the path using the cucumber options, like this.</p>
+<pre class="prettyprint">@RunWith(Cucumber.class)
+@Cucumber.Options(features = "classpath:**/*.feature")
+public class CucumberAdapterTest {
+}</pre>
+<p>If you are placing all the step definition in other package you can add that to the annotation using glue attribute.</p>
+<pre class="prettyprint">@RunWith(Cucumber.class)
+@Cucumber.Options(features = "classpath:**/*", glue = {"path of the step definitions"})
+public class CucumberAdapterTest {
+}</pre>
+<p>This will look up for cucumber.xml file in the classpath. This xml file can hold all the bean definitions. My cucumber.xml was super simple.</p>
+<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd"&gt;
+
+    &lt;import resource="classpath*:/application-context.xml"/&gt;
+
+    &lt;context:component-scan base-package="path of the step definition"/&gt;
+    &lt;context:annotation-config/&gt;
+&lt;/beans&gt;</pre>
+<p>The step defnitions can lie in a different package and make sure you use glue attribute to wire them in the Runner class.</p>
+<pre class="prettyprint">public class StepDefinitions {
+	@Autowired
+	EntityRepository entityRepository;
+
+	@Given("^Register a user$")
+	public void registerUser() throws Throwable {
+
+	}
+}</pre>
+<h3><strong>Integrating with Spring Transactions</strong></h3>
+<p>One last thing that i wanted to do is to hook up Spring transactions. So all the data created by the features have to be removed after the test completes. So you can write independent tests without bothering about the data.</p>
+<p>You can use '<em>txn</em>' annotation that comes with Cucumber-JVM. All you need to do is to wire up that package along with your adapter class.</p>
+<pre class="prettyprint">@RunWith(Cucumber.class)
+@Cucumber.Options(glue = {"cucumber.api.spring"})
+public class CucumberAdapterTest {
+}</pre>
+<p>and</p>
+<pre class="prettyprint">@txn
+Scenario: Some scenario to test</pre>
+<p>&nbsp;</p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2013/07/setting-up-cucumber-jvm/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Setting up Cucumber-jvm : http://prasans.info/2013/07/setting-up-cucumber-jvm/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2013/01/link-your-sublime-text-2-instances-with-dropbox/" title="Previous Post:
+Link your Sublime Text 2 instances with Dropbox">&laquo; Link your Sublime Text 2 instances with Dropbox</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2013/08/whats-new-in-apple-passbook-ios7/" title="next Post:
+What's new in Apple Passbook iOS7">What's new in Apple Passbook iOS7 &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

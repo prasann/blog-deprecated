@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"  xmlns:webfeeds="http://webfeeds.org/rss/1.0">
+	<channel>
+		<title>Prasanna's blog</title>
+		<description>Random presence of my thoughts and scribblings</description>
+		<link>http://prasans.info</link>
+		<webfeeds:icon>https://prasans.info/assets/images/home.svg</webfeeds:icon>
+		<atom:link href="http://prasans.info/feed.xml" rel="self" type="application/rss+xml" />
+		
+			
+				<item>
+					<title>Add Redux custom middleware dynamically</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt; &lt;a href=&quot;https://redux.js.org/advanced/middleware&quot;&gt; Redux middlewares&lt;/a&gt; can be used for a variety of things. You can basically tap into a redux event and perform some action with it. 
+    Logging and analytics are very common use cases for Redux middleware.&lt;/p&gt;
+  &lt;p&gt; In my case, I have a middleware component, that needs to be injected while initializing the Redux store.
+    The middleware component will be served dynamically when the app loads. &lt;/p&gt;
+  &lt;h3&gt;Exporting the middleware component&lt;/h3&gt;
+  &lt;p&gt;
+    This middleware detects a specific redux action and persist an information to the local storage.
+    It's a custom middleware with a minimal change. This custom function takes in &lt;span class=&quot;inline&quot;&gt;middlewareAPI&lt;/span&gt;
+    as the parameter instead of having the state.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+  const persistInfo = middlewareAPI =&gt; next =&gt; (action) =&gt; {
+    if (action.type === &quot;SOME_ACTION&quot;) {
+      const result = next(action);
+      const state =
+            JSON.stringify(middlewareAPI.getState().listen.value);
+      window.localStorage.setItem('PERSIST_THIS_INFO', state);
+      return result;
+    }
+    return next(action);
+  };
+  
+  export default persistInfo;
+  &lt;/pre&gt;
+
+  &lt;h3&gt;Loading the custom middleware&lt;/h3&gt;
+  &lt;p&gt;
+    Here is a small utility function that can take in a custom middleware and initialize the store.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+  import { createStore, compose } from 'redux';
+  import reducers from './reducers';
+  
+  
+  class Store {
+    constructor() {
+      const composeEnhancers =
+        typeof window === 'object' &amp;&amp;
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+          window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+
+      this.store = createStore(reducers);
+    }
+  
+    instance() {
+      return this.store;
+    }
+  
+    addMiddleware(middleware) {
+      const middlewareAPI = {
+        getState: this.store.getState,
+        dispatch: action =&gt; this.store.dispatch(action),
+      };
+      this.store.dispatch = compose(middleware(middlewareAPI))(this.store.dispatch);
+    }
+  }
+  export default new Store();
+      
+  &lt;/pre&gt;
+
+  &lt;p&gt;
+    This is my store class with the store initialization happens in the constructor. Simply, importing this store class and calling the &lt;span class=&quot;inline&quot;&gt;addMiddleware&lt;/span&gt;
+    function it's possible to inject the custom middleware component to your redux store.
+  &lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2018/04/add-redux-middleware-dynamically/</link>
+					<guid isPermaLink="true">http://prasans.info/2018/04/add-redux-middleware-dynamically/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Start nginx when upstream is unavailable</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+    &lt;h3&gt;
+        Upstreams in Nginx
+    &lt;/h3&gt;
+    &lt;p&gt;
+        &lt;span class=&quot;inline&quot;&gt;upstream&lt;/span&gt; is an nginx directive to define groups of servers. Servers can listen on differnt ports, and it is possible to mix and match the UNIX-domain sockets and TCP connections. You can read about it &lt;a href=&quot;http://nginx.org/en/docs/http/ngx_http_upstream_module.html&quot;&gt;here.&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Issue with upstream&lt;/h3&gt;
+    &lt;p&gt;If you are using &lt;span class=&quot;inline&quot;&gt;proxy_pass&lt;/span&gt; with upstream definitions in nginx config, then nginx checks for the server availability during the startup phase. A sample nginx.conf with upstream is here, lots of the .conf file is redacted to focus on the point in discussion.&lt;/p&gt;
+    &lt;pre class=&quot;prettyprint&quot;&gt;
+    http {
+        ...
+        upstream service-a {
+            server service-a-ip-or-name:3000;
+        }
+        
+        server {
+            ...
+            location /service-a/ {
+                proxy_pass http://service-a/;
+            }
+        }
+    }
+    &lt;/pre&gt;
+    &lt;p&gt;In the above mentioned scenario, nginx server will check for &lt;span class=&quot;inline&quot;&gt;service-a&lt;/span&gt; while start-up phase. If service-a is down, you will see an error like &lt;span class=&quot;inline&quot;&gt;host not found in upstream service-a&lt;/span&gt;&lt;/p&gt;
+    &lt;h3&gt;The Workaround&lt;/h3&gt;
+    &lt;p&gt;
+        This workaround is for services running in local setup in different docker containers. So, instead of using upstream directive you can directly point your service-discoverable-name in the proxy pass. The only thing while running docker containers, you need to add an additional nginx directive &lt;span class=&quot;inline&quot;&gt;resolver&lt;/span&gt; and make it point to docker's internal DNS resolver. &lt;span class=&quot;inline&quot;&gt;127.0.0.11&lt;/span&gt; The above mentioned config can be re-written as mentioned.
+    &lt;/p&gt;
+    &lt;pre class=&quot;prettyprint&quot;&gt;
+    http {
+        ...
+        resolver 127.0.0.11;
+        
+        server {
+            ...
+            location /service-a/ {
+                proxy_pass http://service-a-ip-or-name:3000/;
+            }
+        }
+    }
+    &lt;/pre&gt;
+    &lt;p&gt;
+        &lt;i&gt;Note: nginx approach is very valid in production like setups. However, in developer boxes it may not be possible to have all the services running while nginx starts. The workaround mentioned here should be mostly used in local or in dev setup and not advisable to use in prodcution like setup.&lt;/i&gt;
+    &lt;/p&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/</link>
+					<guid isPermaLink="true">http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Dealing with SOAP in clojure</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+
+  &lt;h3&gt;Simple Object Access Protocol (SOAP)&lt;/h3&gt;
+  &lt;p&gt;
+    SOAP brings its own protocol and focuses on exposing pieces of application logic (not data) as services.
+    SOAP is focused on accessing named operations, each implements some business logic through different interfaces. 
+    This image below expresses the difference between a SOAP and normal REST/JSON endpoint very well.    
+  &lt;/p&gt;
+  &lt;img src=&quot;/assets/images/posts/soap-clj/soap-primer.png&quot; alt=&quot;SOAP explanation&quot; /&gt;
+  &lt;p&gt;Source: &lt;a href=&quot;https://stackoverflow.com/a/44713574/419448&quot;&gt;Stack overflow&lt;/a&gt;&lt;/p&gt;
+  &lt;h3&gt;Soap With Attachment API for Java (SAAJ)&lt;/h3&gt;
+  &lt;div&gt;
+      &lt;a href=&quot;https://docs.oracle.com/javaee/5/tutorial/doc/bnbhg.html&quot;&gt;SAAJ&lt;/a&gt; is a lower level API in Java that express SOAP messages. 
+      Java developers rarely use SAAJ since the JAX WS and Spring WS provides better abstraction over SAAJ.
+  &lt;/div&gt;
+  &lt;h3&gt;SOAP in Clojure&lt;/h3&gt;
+  &lt;h4&gt;1. Prerequisite&lt;/h4&gt;
+  &lt;p&gt;As a one-time step, convert the WSDL into Java objects. This can be done using `wsimport` or `xjc`&lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;xjc -wsdl wsdl-file-name&lt;/pre&gt;
+  or
+  &lt;pre class=&quot;prettyprint&quot;&gt;wsimport wsdl-file-name&lt;/pre&gt;
+  &lt;h4&gt;2. Build SOAP Message&lt;/h4&gt;
+    &lt;p&gt;
+      First step is to build a soap message with header and body. The root element of the SOAP body is one of the Java object created in the first step.
+      Construct the Java object with the necessary data. Finally convert the SOAP Message into string.
+    &lt;/p&gt;
+  &lt;h4&gt;3. Perform POST&lt;/h4&gt;
+  &lt;p&gt;A simple HTTP POST need to be performed with &lt;span class=&quot;inline&quot;&gt;Content-Type&lt;/span&gt; header set to &lt;span class=&quot;inline&quot;&gt;text/xml&lt;/span&gt;. 
+    This can be done using normal &lt;span class=&quot;inline&quot;&gt;clj-http&lt;/span&gt; methods.Authentication should be covered ideally in the SOAP header.&lt;/p&gt;
+  &lt;h4&gt;4. Parse response into Java Object&lt;/h4&gt;
+  &lt;p&gt;Finally the response string has to be converted into a SOAP Message again. This is required to parse the SOAP Response Body into one of the generated object.&lt;/p&gt;
+
+  &lt;h3&gt;Code in action&lt;/h3&gt;
+  &lt;p&gt;
+    Here is my &lt;a href=&quot;https://github.com/prasann/soap-clj&quot;&gt;Github repository&lt;/a&gt; with a small working application.
+  &lt;/p&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Fri, 16 Feb 2018 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/</link>
+					<guid isPermaLink="true">http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Asynchronous calls in React component</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+
+  &lt;p&gt;All network calls that are necessary to load data needed by the component should go inside &lt;span class=&quot;inline&quot;&gt;componentDidMount()&lt;/span&gt;
+  &lt;/p&gt;
+
+  &lt;blockquote&gt;
+    &lt;h5&gt;&lt;a href=&quot;https://facebook.github.io/react/docs/react-component.html#componentdidmount&quot; target=&quot;_blank&quot;&gt;
+      From React docs&lt;/a&gt;&lt;/h5&gt;
+    &lt;span class=&quot;inline&quot;&gt;componentDidMount()&lt;/span&gt; is invoked immediately after a component is mounted. Initialization
+    that requires DOM nodes should go here.
+    If you need to load data from a remote endpoint, this is a good place to
+    instantiate the network request. Setting state in this method will trigger a re-rendering.
+  &lt;/blockquote&gt;
+
+  &lt;h4&gt;Why not inside &lt;span class=&quot;inline&quot;&gt;constructor()&lt;/span&gt;?&lt;/h4&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;
+      If you make a fetch for a component in constructor, and the user navigates away from the page containing that
+      component before the request completes, it will still try to &lt;span class=&quot;inline&quot;&gt;setState&lt;/span&gt; on that
+      component despite being unmounted,
+      and React will throw an error.
+    &lt;/li&gt;
+
+    &lt;li&gt;If your component fails to load, still you will end up making an unnecessary server-request.&lt;/li&gt;
+
+  &lt;/ul&gt;
+
+  &lt;h4&gt;Why not in &lt;span class=&quot;inline&quot;&gt;componenentWillMount()&lt;/span&gt;?&lt;/h4&gt;
+
+  &lt;p&gt;
+    This function is invoked immediately before mounting occurs. So, obviously this appears to be a best place to place
+    the call to load data.
+    However that's not the case.
+  &lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      Even if you add the network call in componentWillMount, your request will almost certainly not finish before the
+      component is rendered. There is no way to pause the rendering till the request returns.
+      So you will end up re-rendering the component anyways.
+    &lt;/li&gt;
+    &lt;li&gt;
+      This is the only lifecycle hook called on server rendering. So, if you are serving from the backend, this will be
+      executed twice.
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Mon, 11 Sep 2017 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2017/09/using-network-call-in-react/</link>
+					<guid isPermaLink="true">http://prasans.info/2017/09/using-network-call-in-react/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Flyway migrations in lein clojure</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+    &lt;p&gt;
+        &lt;a href=&quot;https://leiningen.org/&quot;&gt;Leiningen&lt;/a&gt; is the easiest way to start with clojure project automation. The project under discussion is a webservices
+        written in clojure with
+        &lt;a href=&quot;https://github.com/metosin/compojure-api&quot;&gt;compojure-api&lt;/a&gt; and
+        &lt;a href=&quot;https://github.com/ring-clojure/ring&quot;&gt;ring&lt;/a&gt; middleware.
+    &lt;/p&gt;
+    &lt;p&gt;
+        When it came to Database migrations, I didn't find anything straightforward amongst the lein plugins. So, decided to use
+        &lt;a href=&quot;https://flywaydb.org/&quot;&gt;flyway&lt;/a&gt;. I have worked with flyway in the past with Java applications. But, this is the first time with clojure,
+        leiningen combination.
+    &lt;/p&gt;
+    &lt;h3&gt;Migration utility in clojure&lt;/h3&gt;
+    &lt;p&gt;
+        Here is the small migration helper written in Clojure
+        &lt;script src=&quot;https://gist.github.com/prasann/11e62167434eb76a675b54a5b5b672e4.js&quot;&gt;&lt;/script&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Running migration during deployment&lt;/h3&gt;
+    &lt;p&gt;
+        I'm using
+        &lt;a href=&quot;https://github.com/weavejester/lein-ring&quot;&gt;lein-ring&lt;/a&gt; plugin, this provided an option to execute function before the handler starts. So, I wired
+        &lt;span class=&quot;inline&quot;&gt;app.migrate&lt;/span&gt; to the init block of the handler.
+    &lt;/p&gt;
+
+    &lt;p&gt;This helps to run migration everytime before the application deploys. Ofcourse, flyway will take care of what migrations
+        need to run based on the migration version.&lt;/p&gt;
+
+    &lt;h3&gt;Running migrations for local development&lt;/h3&gt;
+    &lt;p&gt;
+        The above method works perfectly for the application deployment scenarios. However, in local it will be better to execute​
+        ​migration and clean databases as and when required, rather than re-deploying the application. lein-exec plugin offers​
+        ​a way to create and execute clojure code from project.clj files. With the above-mentioned migration present, all
+        ​I​​ ha​ve to do is to create some aliases as shown below.
+        &lt;pre class=&quot;prettyprint&quot;&gt;
+            :aliases { 
+                &quot;db-clean&quot;   [&quot;exec&quot; &quot;-ep&quot; &quot;(use 'deal-picker.migration) (clean)&quot;]
+                &quot;db-migrate&quot; [&quot;exec&quot; &quot;-ep&quot; &quot;(use 'deal-picker.migration) (migrate)&quot;]
+                &quot;db-info&quot;    [&quot;exec&quot; &quot;-ep&quot; &quot;(use 'deal-picker.migration) (info)&quot;]
+                &quot;db-reset&quot;   [&quot;exec&quot; &quot;-ep&quot; &quot;(use 'deal-picker.migration) (reset)&quot;]
+            }
+        &lt;/pre&gt;
+    &lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Sun, 16 Jul 2017 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2017/07/use-flyway-with-leiningen/</link>
+					<guid isPermaLink="true">http://prasans.info/2017/07/use-flyway-with-leiningen/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Card slider using CSS Keyframes</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+
+  &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/%40keyframes&quot;&gt;CSS Keyframes&lt;/a&gt; is a powerful feature to create animations in CSS.&lt;/p&gt;
+
+  &lt;p&gt;Below is a small snippet I created for slider like animation. &lt;/p&gt;
+
+  &lt;p data-height=&quot;365&quot; data-theme-id=&quot;dark&quot; data-slug-hash=&quot;ppNLNL&quot; data-default-tab=&quot;css,result&quot; data-user=&quot;prasann&quot;
+     data-embed-version=&quot;2&quot; data-pen-title=&quot;Slider&quot; class=&quot;codepen&quot;&gt;See the Pen &lt;a
+      href=&quot;https://codepen.io/prasann/pen/ppNLNL/&quot;&gt;Slider&lt;/a&gt; by Prasanna (&lt;a href=&quot;https://codepen.io/prasann&quot;&gt;@prasann&lt;/a&gt;)
+    on &lt;a href=&quot;https://codepen.io&quot;&gt;CodePen&lt;/a&gt;.&lt;/p&gt;
+  &lt;script async src=&quot;https://production-assets.codepen.io/assets/embed/ei.js&quot;&gt;&lt;/script&gt;
+
+  &lt;p&gt;Most of the browsers do support keyframes now. &lt;a href=&quot;https://caniuse.com/#feat=css-animation&quot;&gt;Here&lt;/a&gt; is the &quot;Can I Use&quot; page for keyframes.&lt;/p&gt;
+
+&lt;/div&gt;</description>
+					<pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2017/05/card_slider_using_css3/</link>
+					<guid isPermaLink="true">http://prasans.info/2017/05/card_slider_using_css3/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Storing a function in the Redux store</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;&lt;a href=&quot;https://redux.js.org/&quot;&gt;Redux&lt;/a&gt; is a predictable state container for Javascript. Redux state has to be serializable all
+  the time.&lt;/p&gt;
+  &lt;p&gt;Object serialization is the process of converting an object's state to a string from which it can later be restored.&lt;/p&gt;
+
+  &lt;p&gt;So, if you are trying to store a function inside the Redux state, you need to serialize them before persisting.&lt;/p&gt;
+
+  &lt;blockquote&gt;Storing functions inside redux state is not a best practice in general. So try to avoid it.&lt;/blockquote&gt;
+
+  &lt;p&gt;Javascript functions can be serialized quite easily, the challenge is in retrieving them from the store to execute.&lt;/p&gt;
+
+  &lt;p&gt;Below are the helper functions for persisting functions inside Redux state.&lt;/p&gt;
+
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+  //Returns a string
+  export const serializeFunction = (func) =&gt; (func.toString());
+  //serializeFunction(()=&gt;console.log('Hello!!'))
+  // Output ==&gt; &quot;()=&gt;console.log('Hello!!')&quot;
+  &lt;/pre&gt;
+
+  &lt;p&gt;
+  The function to be stored in the state should be converted into string using &lt;span class=&quot;inline&quot;&gt;serializeFunction&lt;/span&gt;.
+  &lt;/p&gt;
+
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+  //Returns a function
+  export const deserializeFunction = (funcString) =&gt; (new Function(`return ${funcString}`)());
+  &lt;/pre&gt;
+
+  &lt;p&gt;
+    Convert the string from the redux store into a function using &lt;span class=&quot;inline&quot;&gt;deserializeFunction&lt;/span&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2017/05/store_function_inside_redux_store/</link>
+					<guid isPermaLink="true">http://prasans.info/2017/05/store_function_inside_redux_store/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Mock toLocaleString in Jest</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;
+    We had to use &lt;span class=&quot;inline&quot;&gt;toLocaleString&lt;/span&gt; with a specific country-code. &lt;span class=&quot;inline&quot;&gt;toLocaleString('de')&lt;/span&gt;.
+    This works perfectly in all the browsers. However, not in jest tests.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Our Jest tests were running with &lt;span class=&quot;inline&quot;&gt;--env=jsdom&lt;/span&gt;. I got to know that jsdom and phantomJS aren't supporting multiple locale implementations.
+  &lt;/p&gt;
+
+  &lt;a href=&quot;https://github.com/ariya/phantomjs/issues/12327&quot;&gt;PhantomJS support locale-specific.&lt;/a&gt;
+
+  &lt;p&gt;
+    So, the only solution I found is to mock these methods and test rest of the logic. Here is a sample mock behaviour.
+  &lt;/p&gt;
+
+  &lt;script src=&quot;https://gist.github.com/prasann/84432c625f08c4156ad0e3a5ca188ec6.js&quot;&gt;&lt;/script&gt;
+
+  &lt;p&gt;
+    &lt;b&gt;Note:&lt;/b&gt; This behaviour is applicable for
+    &lt;span class=&quot;inline&quot;&gt;toLocaleDateString()&lt;/span&gt;
+    &lt;span class=&quot;inline&quot;&gt;toLocaleTimeString()&lt;/span&gt;
+  &lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2017/02/jest_test_toLocaleString_javasscript/</link>
+					<guid isPermaLink="true">http://prasans.info/2017/02/jest_test_toLocaleString_javasscript/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Spring security session timeouts</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+
+    &lt;p&gt;Using Spring security we were building an application which has 2 types of users Internal and External.
+        Our requirement was&lt;/p&gt;
+
+    &lt;ol&gt;
+        &lt;li&gt; Internal and External users have different idle timeouts.&lt;/li&gt;
+        &lt;li&gt;External user's session should be invalidated after 30 mins. Irrespective of whether the user is active or
+            not.
+        &lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;h4&gt;Setting up Idle timeout in Spring security&lt;/h4&gt;
+
+    &lt;p&gt;Spring provides out of box option to configure an idle timeout value.
+        This invalidation is done by Spring security and happens while making a request after specified amount of
+        time.&lt;/p&gt;
+
+    &lt;p&gt;We were able to achieve this by setting up &lt;span class=&quot;inline&quot;&gt;setMaxInactiveIntervalInSeconds&lt;/span&gt; on the
+        session object while creation.&lt;/p&gt;
+
+    &lt;script src=&quot;https://gist.github.com/prasann/5bd1757cadcca7e919e5e11dffcdcb0a.js&quot;&gt;&lt;/script&gt;
+
+    &lt;h4&gt;Setting up Max timeout in Spring security&lt;/h4&gt;
+
+    &lt;p&gt;The above technique can be used only for setting the idle time. But our second scenario is to invalidate the
+        session irrespective of whether the user is active or not.&lt;/p&gt;
+
+    &lt;p&gt; We ended up writing a custom filter which to invalidate the session manually whenever the session age is
+        greater than the specified value.&lt;/p&gt;
+
+    &lt;script src=&quot;https://gist.github.com/prasann/0dd68a2e918804d25e31298b382c4938.js&quot;&gt;&lt;/script&gt;
+
+    &lt;p&gt; This filter will invalidate the session when the maximum time has reached for that session. &lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2016/09/expire_session_after_timeout_spring/</link>
+					<guid isPermaLink="true">http://prasans.info/2016/09/expire_session_after_timeout_spring/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Angular resource and http interceptor</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;Once you set up your project with angular and &lt;a href=&quot;https://docs.angularjs.org/api/ngResource&quot;&gt;ngResource&lt;/a&gt;
+    you will be able to access $resource object.&lt;/p&gt;
+  &lt;p&gt;$resource will serve as a factory which creates a resource object that lets you interact with RESTful services. You
+    can call HTTP methods directly on this resource object.&lt;/p&gt;
+  &lt;p&gt;In our application we will have a custom wrapper on top of the angular resource. This wrapper will provide ability
+    for us to transform the object differently on success and error response.&lt;/p&gt;
+  &lt;p&gt;All adapters will use the wrapper and all end points will overwrite the transform logic on success and error
+    response.&lt;/p&gt;
+
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+'profile': {
+  method: 'GET',
+  params: {accountId: '@accountId'},
+  transformRequest: (data) =&gt; {
+    const moreParams = {newParams: data};
+    return angular.toJson(moreParams);
+  },
+  successTransformResponse: (data, headers, status) =&gt; {
+    // Handle parsing for HTTP status 200.
+  },
+  errorTransformResponse: (data, headers, status) =&gt; {
+    // Depending on the status code handle transform logic.
+  }
+}
+  &lt;/pre&gt;
+
+  &lt;h4&gt;Handling generic error codes&lt;/h4&gt;
+  &lt;p&gt;So, next we have to handle generic error responses across the application. Error codes like 401 (Unauthorized), 503
+    (Service Unavailable) needs to be redirected to different pages.&lt;/p&gt;
+  &lt;p&gt;The interceptors are service factories that are registered with the $httpProvider by adding them to the
+    $httpProvider.interceptors array. The factory is called and injected with dependencies (if specified) and returns
+    the interceptor.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+$provide.factory('myHttpInterceptor', function($q, dep1, dep2) {
+  return {
+    'request': function(config) {
+      // do something on success
+      return config;
+    },
+    'responseError': function(rejection) {
+      // do something on error
+      if (canRecover(rejection)) {
+        return responseOrNewPromise
+      }
+      return $q.reject(rejection);
+    }
+  }
+}
+  &lt;/pre&gt;
+
+  &lt;p&gt;
+    In the responseError method block, we used to handle all the generic error response code across the application.
+  &lt;/p&gt;
+  &lt;h4&gt;
+    Observation
+  &lt;/h4&gt;
+  &lt;p&gt;I was expecting the code in HttpInterceptor to be executed before my transform logic in the resource wrapper.
+    But i was wrong. Only after the resource transformation http interceptors are called.
+    (Refer this &lt;a href=&quot;https://github.com/angular/angular.js/issues/7594 &quot;&gt;issue.&lt;/a&gt;)
+  &lt;/p&gt;
+  &lt;p&gt;So, whenever a service responds with 500 error, Http interceptor will redirect the user to a different page.
+    However, this will not happen if there is an error in transformation logic. In order to circumvent this problem, we
+    started writing our error transform response specifically for the error codes. This means that, our transformation
+    logic will not be executed for our generic error codes and eventually it reaches http interceptor.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div&gt; &lt;/div&gt;</description>
+					<pubDate>Mon, 18 Jul 2016 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2016/07/angular_resource_and_interceptors/</link>
+					<guid isPermaLink="true">http://prasans.info/2016/07/angular_resource_and_interceptors/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Post browser logs to server in an Angular app</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;
+    We were looking for an efficient way of capturing all the Javascript errors
+    from browsers in our backend so it appears in our Kibana dashboard along with the server logs
+  &lt;/p&gt;
+  &lt;p&gt;
+    We had a Angular 1.5.8 application in front of multiple micro-services endpoint.
+    Any error in the angular application will appear in the browser console and we planned to push these logs back to the server.
+  &lt;/p&gt;
+  &lt;h4&gt;
+    Angular's &lt;i&gt;$exceptionHandler&lt;/i&gt;
+  &lt;/h4&gt;
+  &lt;p&gt;
+    In order to catch all the exceptions, we have to override the $exceptionHandler component provided by angular.
+    Only catch here is that, since we are overriding angular component we may not be able to inject $http or any other angular component in our overrides and doing so will throw a cyclic dependency issue.
+  &lt;/p&gt;
+  &lt;h4&gt;
+    Initial solution
+  &lt;/h4&gt;
+  &lt;p&gt;
+    We came up with an idea of injecting $injector and fetching $http using the same.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+factory('$exceptionHandler', ['$log', '$window', '$injector',
+                              ($log, $window, $injector)=&gt; {
+return (exception, cause) =&gt; {
+  $log.error(exception, cause);
+  try {
+    const $http = $injector.get('$http');
+    const logMessage = [{
+      level: 'error',
+      message: exception.toString(),
+      url: $window.location.href,
+      stackTrace: exception.stack,
+      currentTimestamp: Date.now()
+    }];
+    $http.post('/log/message', logMessage);
+  } catch (loggingError) {
+    $log.log(loggingError);
+  }
+);
+  &lt;/pre&gt;
+  &lt;p&gt;
+    The above piece of code will work perfectly and will be able to post all the errors generated to an exposed endpoint.
+  &lt;/p&gt;
+  &lt;p&gt;
+    But the problem is, if the $http.post throws any exception then it causes unrecoverable recursion and browser will hung.
+  &lt;/p&gt;
+  &lt;p&gt;
+    In order to come out of that issue, we re wrote our http post logic using native JS syntax.
+  &lt;/p&gt;
+  &lt;h4&gt;
+    Final solution
+  &lt;/h4&gt;
+  &lt;p&gt;
+    Same code re written using native JS functions.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+factory('$exceptionHandler', ['$log', '$window', '$injector', ($log, $window, $injector)=&gt; {
+return (exception, cause) =&gt; {
+  $log.error(exception, cause);
+  try {
+    let commonHeaders = $injector.get('$http').defaults.headers.common;
+    const logMessage = [{
+      level: 'error',
+      message: exception.toString(),
+      url: $window.location.href,
+      stackTrace: exception.stack,
+      currentTimestamp: Date.now()
+    }];
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', '/log/message');
+    xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    for (let header in commonHeaders) {
+      if (commonHeaders.hasOwnProperty(header)) {
+        let headerValue = commonHeaders[header];
+        if (angular.isFunction(headerValue)) {
+          headerValue = headerValue();
+        }
+        xmlhttp.setRequestHeader(header, headerValue);
+      }
+    }
+    xmlhttp.send(angular.toJson(logMessage));
+  } catch (loggingError) {
+    $log.log(loggingError);
+  }
+};  
+});
+  &lt;/pre&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Sat, 25 Jun 2016 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/</link>
+					<guid isPermaLink="true">http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Expanding Amazon EBS Volume in a EC2 instance.</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;
+    I had an AWS image which was created using an EC2 instance of size 8 GB. Whenever i try to launch an instance i
+    usually change the storage size to something say 20 GB. But once the system is launched when i do a
+  &lt;pre class=&quot;prettyprint&quot;&gt;df -h&lt;/pre&gt;
+  i still see 8 GB and not 20 GB.
+  &lt;/p&gt;
+  &lt;p&gt;
+    On further reading i understood i need to resize the disk size. So i did the same using
+  &lt;pre class=&quot;prettyprint&quot;&gt;sudo resize2fs /dev/xvde1&lt;/pre&gt;
+  But i was getting the following error:
+    &lt;pre class=&quot;prettyprint&quot;&gt; The filesystem is already *** blocks long. Nothing to do!
+&lt;/pre&gt;
+  &lt;/p&gt;
+  &lt;p&gt;Then to reolve this issue i have to perform the following steps.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;SSH to the machine.&lt;/li&gt;
+    &lt;pre class=&quot;prettyprint&quot;&gt;fdisk /dev/xvde&lt;/pre&gt;
+    &lt;li&gt;You should be seeing this message.&lt;/li&gt;
+
+    &lt;pre class=&quot;prettyprint&quot;&gt;WARNING: DOS-compatible mode is deprecated. It's strongly recommended to switch off the mode (command 'c') and change display units to sectors (command 'u')&lt;/pre&gt;
+    &lt;li&gt;Enter 'u' to change display units&lt;/li&gt;
+    &lt;li&gt;Enter 'p' to view the current paritions.&lt;/li&gt;
+    &lt;li&gt;Enter 'd' to delete current partitions.&lt;/li&gt;
+    &lt;li&gt;Enter 'n' to create a new partition.&lt;/li&gt;
+    &lt;li&gt;Enter 'p' to set it as primary partitions.&lt;/li&gt;
+    &lt;li&gt;Enter '1' to set it as primary partitions.&lt;/li&gt;
+    &lt;li&gt;Set the desired space. If nothing is given the entire space is allotted.&lt;/li&gt;
+    &lt;li&gt;Enter 'a' to make it bootable.&lt;/li&gt;
+    &lt;li&gt;Enter '1' and 'w' to write and save the changes.&lt;/li&gt;
+    &lt;li&gt;Reboot the instance from AWS console.&lt;/li&gt;
+    &lt;li&gt;Now if you resize the parition it worked all fine.&lt;/li&gt;
+    &lt;pre class=&quot;prettyprint&quot;&gt;sudo resize2fs /dev/xvde1&lt;/pre&gt;
+
+  &lt;/ul&gt;
+  &lt;p&gt;Check the partition size, it should be all set with more space.&lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Thu, 04 Feb 2016 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2016/02/expanding_amazon_ebs_volumes/</link>
+					<guid isPermaLink="true">http://prasans.info/2016/02/expanding_amazon_ebs_volumes/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Set deployed Git revision using Capistrano 3</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;We use Capistrano to deploy our Rails application. Recently i upgraded our capistrano version from 2 to 3&lt;/p&gt;
+  &lt;p&gt;Capistrano 3 has a complete DSL changeover. Apart from this one other major change I figured out was the way a Git repository is been deployed.&lt;/p&gt;
+  &lt;p&gt;Previously a Git repository is cloned in the deploy location. Now in Cap 3 a Git archive is been downloaded to the deploy location.
+    This means the deploy directory is no more a Git repository. During Cap 2 times, we used to run a 'git log' command in the deployed driectory to find the deployed revision. Now
+    after upgrade I am unable to do this.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Cap 3 has got a REVISION file, which contain the SHA of the deployed commit. This wasn't useful in our case, as we show this message in our web application.
+  &lt;/p&gt;
+  &lt;p&gt;
+    So i ended up writing a Cap task using a similar logic to create a REVISION file with our custom formatted Git message.
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    namespace :deploy do
+      task :add_revision_file do
+        on roles(:app) do
+          within repo_path do
+            execute(:git, :'log', :&quot;--pretty=format:'%h | %ai | %d %s'&quot;, :'-1',
+            :&quot;#{fetch(:branch)}&quot;, &quot;&gt;#{release_path}/REVISION&quot;)
+          end
+        end
+      end
+    end
+  &lt;/pre&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    after 'deploy:updating', 'deploy:add_revision_file'
+  &lt;/pre&gt;
+
+  &lt;p&gt;
+    This will overwrite the REVISION file created by Cap with our custom message. Which will be consumed by our application.
+  &lt;/p&gt;
+&lt;/div&gt;</description>
+					<pubDate>Sun, 03 Jan 2016 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2016/01/capistrano_set_deployed_revision/</link>
+					<guid isPermaLink="true">http://prasans.info/2016/01/capistrano_set_deployed_revision/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>UrlGenerationError after upgrading to Rails 4.2</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;
+    On upgrading my rails app from 4.0 to 4.2.5 i steeped onto a wierd issue where my form_for tag breaks and starts throwing exception.
+  &lt;/p&gt;
+  &lt;p&gt;
+    A REST model on new action raised an UrlGenerationError exception because of the form_for tag.
+  &lt;/p&gt;
+  &lt;p&gt;
+    For ex: if User is a model my form_for looked like this
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    form_for(@user, url: user_path(@user)) do |f|
+  &lt;/pre&gt;
+  &lt;p&gt;
+    Raised exception was
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    No route matches {:action=&gt;&quot;show&quot;, :controller=&gt;&quot;users&quot;, :id=&gt;nil} missing required keys: [:id]
+  &lt;/pre&gt;
+  &lt;p&gt;
+    The @user object’s id is nil since it’s not yet saved in the database. Previously if it was nil that is been skipped by the the url generation. All these occurrences started throwing errors.
+  &lt;/p&gt;
+  &lt;p&gt;
+    I have to change the form_for tag to
+  &lt;/p&gt;
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    form_for(@user) do |f|
+  &lt;/pre&gt;
+  &lt;p&gt;This posts the form to default users_path.&lt;/p&gt;
+
+  &lt;h3&gt;Nested objects:&lt;/h3&gt;
+
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    form_for(@user, url: user_address_path(@user, @address)) do |f|
+  &lt;/pre&gt;
+  &lt;p&gt;was changed to&lt;/p&gt;
+
+  &lt;pre class=&quot;prettyprint&quot;&gt;
+    form_for([@user, @address]) do |f|
+  &lt;/pre&gt;
+&lt;/div&gt;
+</description>
+					<pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2015/12/url_generation_error_after_upgrading_rails/</link>
+					<guid isPermaLink="true">http://prasans.info/2015/12/url_generation_error_after_upgrading_rails/</guid>
+				</item>
+			
+		
+			
+				<item>
+					<title>Integrating CKEditor with Rails asset pipeline.</title>
+					<description>&lt;div class=&quot;post&quot;&gt;
+  &lt;p&gt;We are using &lt;a href=&quot;http://ckeditor.com/&quot;&gt;ckeditor&lt;/a&gt; in our rails application (Rails 4.2).&lt;/p&gt;
+
+  &lt;p&gt;Number of network calls made by the ckeditor and its plugins are quite alot and we were facing difficulty in
+    integrating them with the Rails asset pipeline.&lt;/p&gt;
+
+  &lt;p&gt;My initial approach is to use a &lt;a href=&quot;https://github.com/tsechingho/ckeditor-rails&quot;&gt;ckeditor rails gem&lt;/a&gt;.
+    However getting it to work was complicated. On top of it we had some custom plugins written for ckeditor and making
+    it to work with ckeditor rails gem was almost impossible.&lt;/p&gt;
+
+  &lt;p&gt;Taking some pointers from this &lt;a href=&quot;https://github.com/galetahub/ckeditor/issues/307&quot;&gt;issue&lt;/a&gt; finally could
+    get
+    into some working solution.&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;Move all the CKEditor files into vendor/assets/javascript/ckeditor&lt;/li&gt;
+    &lt;li&gt;In application.js add
+      &lt;pre class=&quot;prettyprint&quot;&gt;//= require ckeditor/ckeditor&lt;/pre&gt;
+    &lt;/li&gt;
+    &lt;li&gt;ckeditor.js looks up for other ckeditor relative to CKEDITOR_BASEPATH location. So before loading ckeditor in JS
+      add a line to set that environment variable.
+      &lt;pre class=&quot;prettyprint&quot;&gt;window.CKEDITOR_BASEPATH = '/assets/ckeditor/';&lt;/pre&gt;
+    &lt;/li&gt;
+    &lt;li&gt;Add
+      &lt;pre class=&quot;prettyprint&quot;&gt;config.assets.precompile &lt;&lt; ['ckeditor/*']&lt;/pre&gt;
+      to your application.rb file.
+    &lt;/li&gt;
+    &lt;li&gt;Finally add a file called precompile_hook.rake This rake task will help in compiling the ckeditor files and add
+      it
+      to the assets folder.
+      The content of the rake task is here. &lt;a href=&quot;https://gist.github.com/prasann/c8978041777cb443fb77&quot;&gt;precompile_hook.rake&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+  &lt;br&gt;
+
+  &lt;p&gt;
+    Here is the screenshot of the network calls before and after adding ckeditor to asset pipeline.
+  &lt;/p&gt;
+  &lt;br&gt;
+
+  &lt;div id=&quot;images&quot;&gt;
+    &lt;a href=&quot;/assets/images/posts/add_ckeditor_to_rails/full/before.png&quot; title=&quot;Before adding to asset pipeline&quot;
+       data-dialog&gt;
+      &lt;img src=&quot;/assets/images/posts/add_ckeditor_to_rails/thumbs/before.png&quot; alt=&quot;Before adding to asset pipeline&quot;/&gt;
+    &lt;/a&gt;
+    &lt;a href=&quot;/assets/images/posts/add_ckeditor_to_rails/full/after.png&quot; title=&quot;After adding to asset pipeline&quot;
+       data-dialog&gt;
+      &lt;img src=&quot;/assets/images/posts/add_ckeditor_to_rails/thumbs/after.png&quot; alt=&quot;After adding to asset pipeline&quot;/&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;p&gt;Even after adding ckeditor to asset pipeline the it did not effectively reduce all calls into one.
+    Still the ckeditor's plugin calls are been fired separately. &lt;/p&gt;
+
+&lt;/div&gt;
+</description>
+					<pubDate>Wed, 27 May 2015 00:00:00 +0000</pubDate>
+					<link>http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/</link>
+					<guid isPermaLink="true">http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/</guid>
+				</item>
+			
+		
+	</channel>
+</rss>

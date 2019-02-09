@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="testng, rerun, jenkins, ant">
+<meta name="description" content="Steps to set up re-runn of testNG failed tests for n number of times, using ant task.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Re running testNG failed times n times.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2014/05/re-running-testng-failed-tests/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Steps to set up re-runn of testNG failed tests for n number of times, using ant task.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2014-05-01T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Re running testNG failed times n times.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Re running testNG failed times n times.</h1>
+  <div class="date_tag">
+    <div class="date">1 May, 2014.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/testing">testing</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+	<p>
+			We were running our Selenium functional tests using <a href="http://testng.org/doc/index.html" target="_blank">testNG</a> runner in <a href="http://jenkins-ci.org/">Jenkins</a>. However the problem was we were having too many failures on our initial run, and lot of these failures were classified as random or not reproducable. Mainly these are test script issues. Some times the testers tend to put some static wait conditions which might work on their machine but not in the Jenkins agent. Sometimes the environment against which our tests run might be a bit slow which pushes our pass percentage well behind. The ideal appropriate fix will be is to go through the failed test cases and figure out the randomness and fix it. But we thought of adding a re run mechanism to our test job to identify these random failures. As the no. of test cases grew, we ended up in re running the failed tests multiple times, something like this.</p>
+		<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>
+						Name</th>
+					<th>
+						Total</th>
+					<th>
+						Failed</th>
+				</tr>
+			
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						Initial run</td>
+					<td>
+						100</td>
+					<td>
+						30</td>
+				</tr>
+				<tr>
+					<td>
+						ReRun1</td>
+					<td>
+						30</td>
+					<td>
+						20</td>
+				</tr>
+				<tr>
+					<td>
+						ReRun2</td>
+					<td>
+						20</td>
+					<td>
+						10</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		<p>
+			In this case we will interpret the last 10 failures as a legitimate failures and rest as intermittent ones.&nbsp;</p>
+		<p>
+			Please note that this is not a correct approach to reduce the failure count. This make the testers more lazy since they always analyse only the failed tests in the final run. And this increases the running time of the job inadvertently since the sure fail cases runs for n times and failing always.</p>
+		<h3>
+			Re Running testNG failed tests using ANT</h3>
+		<p>
+			After every test run, testng will create a file called testng-failed.xml in the report directory which will contain the failed tests of that run. There was an issue with this file however. If you define multiple suites in your initial test suite file then this outer testng-failed.xml will contain the failed tests of the first run alone. The remaining suite&#39;s failed tests will be in the inner directories under their corresponding suite names.</p>
+		<p>
+			This testng-failed.xml will also inherit all the properties from the original test suite file. For example if we have defined thread-count value then the same value will be retained.</p>
+		<p>
+			So what I did was copied this file to a location and fed this to the testng task to run again. This can be achieved by any means, since we were using ant as our build tool i configured this in our build.xml file itself.</p>
+		<pre class="prettyprint">
+	&lt;target name=&quot;runTests&quot; depends=&quot;compile&quot; description=&quot;Running tests&quot;&gt;
+		&lt;echo&gt;Running Tests...&lt;/echo&gt;
+		&lt;taskdef resource=&quot;testngtasks&quot; classpath=&quot;lib/testng-6.8.jar&quot; /&gt;
+		&lt;testng outputDir=&quot;${report.dir}&quot; useDefaultListeners=&quot;true&quot; classpathref=&quot;build.classpath&quot; 
+			listeners=&quot;org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter&quot;&gt;
+			&lt;classpath location=&quot;${class.dir}&quot; /&gt;
+			&lt;xmlfileset dir=&quot;.&quot; includes=&quot;testng-suite.xml&quot; /&gt;
+			&lt;sysproperty key=&quot;org.uncommons.reportng.title&quot; value=&quot; Test report&quot; /&gt;
+			&lt;sysproperty key=&quot;properties&quot; value=&quot;${properties}&quot; /&gt;
+		&lt;/testng&gt;
+		&lt;copy file=&quot;${report.dir}/testng-failed.xml&quot; todir=&quot;${basedir}/test-output-rerun/0&quot;/&gt;
+		
+		&lt;antcall target=&quot;multiReRun&quot;/&gt;
+	&lt;/target&gt;
+	&lt;target name=&quot;multiReRun&quot; description=&quot;Multiple rerun tests&quot;&gt;
+		&lt;antcall target=&quot;runFailedTests&quot;&gt;
+			&lt;param name=&quot;rerun.report.dir&quot; value=&quot;${rerun.base.dir}/1&quot;/&gt;
+			&lt;param name=&quot;src.rerun.dir&quot; value=&quot;${rerun.base.dir}/0&quot;/&gt;
+		&lt;/antcall&gt;
+		&lt;antcall target=&quot;runFailedTests&quot;&gt;
+			&lt;param name=&quot;rerun.report.dir&quot; value=&quot;${rerun.base.dir}/2&quot;/&gt;
+			&lt;param name=&quot;src.rerun.dir&quot; value=&quot;${rerun.base.dir}/1&quot;/&gt;
+		&lt;/antcall&gt;
+	&lt;/target&gt;
+	
+</pre>
+		<p>
+			Here output folder of the init run will be test-output. And am copying testng-failed.xml from test-output to test-output-rerun/0 . This is just to make my multiReRun more convenient. Now i have repeated the block of code for two times. This is due to the fact that ant doesn&#39;t support the regular for..counter loop.</p>
+		<p>
+			When i went through some ant docs figured out that ant script supports JavaScript!! May be i can use that to constuct a string like &quot;1,2,3,4,5&quot; and pass it onto the for loop of ant.&nbsp;</p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2014/05/re-running-testng-failed-tests/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Re running testNG failed times n times. : http://prasans.info/2014/05/re-running-testng-failed-tests/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/04/wiring-jasmine2-with-phantom/" title="Previous Post:
+Wiring Jasmine 2.0 with Phantom JS">&laquo; Wiring Jasmine 2.0 with Phantom JS</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2014/06/cross-site-http-requests/" title="next Post:
+Cross Site HTTP(S) Requests.">Cross Site HTTP(S) Requests. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="netflix, hystrix, spring">
+<meta name="description" content="Hystrix is a latency and fault-tolerance library from Netflix. This post describes how to integrate it with Spring Aspects to make the implementation simpler.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Integrating Netflix Hystrix to a Spring Application">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2014/07/integrating-netflix-hystrix-to-a-spring-application/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Hystrix is a latency and fault-tolerance library from Netflix. This post describes how to integrate it with Spring Aspects to make the implementation simpler.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2014-07-15T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Integrating Netflix Hystrix to a Spring Application</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Integrating Netflix Hystrix to a Spring Application</h1>
+  <div class="date_tag">
+    <div class="date">15 July, 2014.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+
+<p>After reading Martin Fowler's <a href="http://martinfowler.com/bliki/CircuitBreaker.html">Circuit breaker post </a> i thought of implementing the same to my application. While looking for possible approaches to this solution i stepped onto Hystrix.
+</p>
+
+<p><a href="https://github.com/Netflix/Hystrix">Hystrix</a> is a latency and fault tolerance library designed to isolate points of access to remote systems, services and 3rd party libraries, stop cascading failure. Using this implementing CircuitBreakers are quite straight forward.</p>
+
+<p>To start with i wanted to measure the latency of the 3rd party calls that goes through my application. Mine was Java Spring applcation running in Tomcat. As per Hystrix documentation all the third party calls that need to be monitored are to be wrapped within a command. This command will be executed in a separate thread. Since all the 3rd party calls go through this layer it is easy to monitor those calls. It is also possible to define a fallback approach when a particular service call fails. And there by isolating these scenarios from the application code. More of how this works is explained in detail on <a href="https://github.com/Netflix/Hystrix/wiki">Hystrix wiki</a></p>
+
+<p>The problem i had was i already have my application up and running. And all i need to do is just monitoring the 3rd party calls (as of now) Now integrating Hystrix meant i need to re design the 3rd party calls to introduce a middle layer to wrap them up.
+</p>
+
+<p>I was thinking of writing Aspect based solution to wrap these calls throughout my application with an annotation.</p>
+
+<p>To do this, make sure you have included Spring AOP in your application. Declare and define an annotation as shown below.</p>
+
+<pre class="prettyprint">
+@Aspect
+@Component
+public class CircuitBreakerAspect {
+ 
+ 
+    @Around("@annotation(com.example.Monitor)")
+    public Object monitoringAround(final ProceedingJoinPoint aJoinPoint) throws Throwable {
+        String theShortName = aJoinPoint.getSignature().toShortString();
+        HystrixCommand.Setter theSetter =
+                HystrixCommand.Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(theShortName));
+        theSetter = theSetter.andCommandKey(HystrixCommandKey.Factory.asKey(theShortName));
+        HystrixCommand theCommand = new HystrixCommand(theSetter) {
+            @Override
+            protected Object run() throws Exception {
+                try {
+                    return aJoinPoint.proceed();
+                } catch (Exception e) {
+                    throw e;
+                } catch (Throwable e) {
+                    throw new Exception(e);
+                }
+            }
+        };
+        return theCommand.execute();
+    }
+}
+</pre>
+
+<p>Using Hystrix dashboard you can able to wire the views and could able to monitor the application. More about this is written <a href="http://www.mirkosertic.de/doku.php/architecturedesign/springhystrix">here</a></p>
+
+<p>However this annotation approach can be used only for monitoring purposes or when you need to do similar actions for all the services. When i moved onto writing circuit breakers this cannor be done since all the service calls need its own fallback approaches. So in that case it was better to implement them as separate commands so all the code will fit within.</p>
+
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2014/07/integrating-netflix-hystrix-to-a-spring-application/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Integrating Netflix Hystrix to a Spring Application : http://prasans.info/2014/07/integrating-netflix-hystrix-to-a-spring-application/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/07/testing-apiary-using-github-travis/" title="Previous Post:
+Testing APIary using Dredd.">&laquo; Testing APIary using Dredd.</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2014/08/deploying-jekyll-blog-through-rake-script/" title="next Post:
+Deploying Jekyll site for Github pages through rake script">Deploying Jekyll site for Github pages through rake script &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

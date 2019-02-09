@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="nginx, upstream, failure, startup">
+<meta name="description" content="nginx will not start if one of the defined upstreams is not available. Here is a workaround to get through with those situations.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Start nginx when upstream is unavailable">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="nginx will not start if one of the defined upstreams is not available. Here is a workaround to get through with those situations.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2018-03-22T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/"> 
+<meta property="og:see_also" content="http://prasans.info/2017/09/using-network-call-in-react/">  
+
+  <title>Start nginx when upstream is unavailable</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Start nginx when upstream is unavailable</h1>
+  <div class="date_tag">
+    <div class="date">22 March, 2018.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/nginx">nginx</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+    <h3>
+        Upstreams in Nginx
+    </h3>
+    <p>
+        <span class="inline">upstream</span> is an nginx directive to define groups of servers. Servers can listen on differnt ports, and it is possible to mix and match the UNIX-domain sockets and TCP connections. You can read about it <a href="http://nginx.org/en/docs/http/ngx_http_upstream_module.html">here.</a>
+    </p>
+    <h3>Issue with upstream</h3>
+    <p>If you are using <span class="inline">proxy_pass</span> with upstream definitions in nginx config, then nginx checks for the server availability during the startup phase. A sample nginx.conf with upstream is here, lots of the .conf file is redacted to focus on the point in discussion.</p>
+    <pre class="prettyprint">
+    http {
+        ...
+        upstream service-a {
+            server service-a-ip-or-name:3000;
+        }
+        
+        server {
+            ...
+            location /service-a/ {
+                proxy_pass http://service-a/;
+            }
+        }
+    }
+    </pre>
+    <p>In the above mentioned scenario, nginx server will check for <span class="inline">service-a</span> while start-up phase. If service-a is down, you will see an error like <span class="inline">host not found in upstream service-a</span></p>
+    <h3>The Workaround</h3>
+    <p>
+        This workaround is for services running in local setup in different docker containers. So, instead of using upstream directive you can directly point your service-discoverable-name in the proxy pass. The only thing while running docker containers, you need to add an additional nginx directive <span class="inline">resolver</span> and make it point to docker's internal DNS resolver. <span class="inline">127.0.0.11</span> The above mentioned config can be re-written as mentioned.
+    </p>
+    <pre class="prettyprint">
+    http {
+        ...
+        resolver 127.0.0.11;
+        
+        server {
+            ...
+            location /service-a/ {
+                proxy_pass http://service-a-ip-or-name:3000/;
+            }
+        }
+    }
+    </pre>
+    <p>
+        <i>Note: nginx approach is very valid in production like setups. However, in developer boxes it may not be possible to have all the services running while nginx starts. The workaround mentioned here should be mostly used in local or in dev setup and not advisable to use in prodcution like setup.</i>
+    </p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Start nginx when upstream is unavailable : http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2018/02/soap-call-in-clojure-compojure-with-saaj/" title="Previous Post:
+Dealing with SOAP in clojure">&laquo; Dealing with SOAP in clojure</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2018/04/add-redux-middleware-dynamically/" title="next Post:
+Add Redux custom middleware dynamically">Add Redux custom middleware dynamically &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

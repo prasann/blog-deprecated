@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="apiary, github, travis, dredd, api blueprint">
+<meta name="description" content="Test API blueprint mardown files by simply hosting them on GitHub and setting up a pipeline in Travis CI.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Testing APIary using Dredd.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2014/07/testing-apiary-using-github-travis/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Test API blueprint mardown files by simply hosting them on GitHub and setting up a pipeline in Travis CI.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2014-07-02T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Testing APIary using Dredd.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Testing APIary using Dredd.</h1>
+  <div class="date_tag">
+    <div class="date">2 July, 2014.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+	<p><a href='http://apiblueprint.org/'>API Blueprint</a> is a documentation-oriented API description language. A couple of semantical assumptions over the plain Markdown.</p>
+
+	<p><a href='https://github.com/apiaryio/dredd'>Dredd</a> is a command-line tool for testing API documentation written in API Blueprint format against its backend implementation. </p>
+
+	<p>I could able to setup dredd quite easily on my Mac by installing Node and npm. However its not quite straight forward in Windows. I faced lots of difficulties while installing node, npm and dredd.</p>
+
+	<p>So i decided to use <a href='http://travis-ci.org/'>Travis</a> to setup the testing pipeline for my jobs. All i needed to do is to have a .travis.yml file to install node_js and install dredd using npm.</p>
+
+	<p>Added a simple script file to run the dredd tool inside the job. And that's it. As part of the code i also checked in the API markdown files which will run againt the APIs</p> 
+
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2014/07/testing-apiary-using-github-travis/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Testing APIary using Dredd. : http://prasans.info/2014/07/testing-apiary-using-github-travis/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/06/making-https-call-using-apache-httpclient/" title="Previous Post:
+Making HTTPS call using Apache HttpClient.">&laquo; Making HTTPS call using Apache HttpClient.</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2014/07/integrating-netflix-hystrix-to-a-spring-application/" title="next Post:
+Integrating Netflix Hystrix to a Spring Application">Integrating Netflix Hystrix to a Spring Application &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Redux, middleware, react, thunk, saga">
+<meta name="description" content="Redux provides options to add behaviour through middlewares. Here is an example of dynamically adding middleware to the store.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Add Redux custom middleware dynamically">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Redux provides options to add behaviour through middlewares. Here is an example of dynamically adding middleware to the store.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2018-04-12T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/"> 
+<meta property="og:see_also" content="http://prasans.info/2017/09/using-network-call-in-react/">  
+
+  <title>Add Redux custom middleware dynamically</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Add Redux custom middleware dynamically</h1>
+  <div class="date_tag">
+    <div class="date">12 April, 2018.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/javascript">javascript</a> 
+                 
+                <a href="/categories/redux">redux</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p> <a href="https://redux.js.org/advanced/middleware"> Redux middlewares</a> can be used for a variety of things. You can basically tap into a redux event and perform some action with it. 
+    Logging and analytics are very common use cases for Redux middleware.</p>
+  <p> In my case, I have a middleware component, that needs to be injected while initializing the Redux store.
+    The middleware component will be served dynamically when the app loads. </p>
+  <h3>Exporting the middleware component</h3>
+  <p>
+    This middleware detects a specific redux action and persist an information to the local storage.
+    It's a custom middleware with a minimal change. This custom function takes in <span class="inline">middlewareAPI</span>
+    as the parameter instead of having the state.
+  </p>
+  <pre class="prettyprint">
+  const persistInfo = middlewareAPI => next => (action) => {
+    if (action.type === "SOME_ACTION") {
+      const result = next(action);
+      const state =
+            JSON.stringify(middlewareAPI.getState().listen.value);
+      window.localStorage.setItem('PERSIST_THIS_INFO', state);
+      return result;
+    }
+    return next(action);
+  };
+  
+  export default persistInfo;
+  </pre>
+
+  <h3>Loading the custom middleware</h3>
+  <p>
+    Here is a small utility function that can take in a custom middleware and initialize the store.
+  </p>
+  <pre class="prettyprint">
+  import { createStore, compose } from 'redux';
+  import reducers from './reducers';
+  
+  
+  class Store {
+    constructor() {
+      const composeEnhancers =
+        typeof window === 'object' &&
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+          window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+
+      this.store = createStore(reducers);
+    }
+  
+    instance() {
+      return this.store;
+    }
+  
+    addMiddleware(middleware) {
+      const middlewareAPI = {
+        getState: this.store.getState,
+        dispatch: action => this.store.dispatch(action),
+      };
+      this.store.dispatch = compose(middleware(middlewareAPI))(this.store.dispatch);
+    }
+  }
+  export default new Store();
+      
+  </pre>
+
+  <p>
+    This is my store class with the store initialization happens in the constructor. Simply, importing this store class and calling the <span class="inline">addMiddleware</span>
+    function it's possible to inject the custom middleware component to your redux store.
+  </p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2018/04/add-redux-middleware-dynamically/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Add Redux custom middleware dynamically : http://prasans.info/2018/04/add-redux-middleware-dynamically/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2018/03/start-nginx-when-upstream-unavailable/" title="Previous Post:
+Start nginx when upstream is unavailable">&laquo; Start nginx when upstream is unavailable</a> 
+  </div>
+
+  <div class="next-link">
+    
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

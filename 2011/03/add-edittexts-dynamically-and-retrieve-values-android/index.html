@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Android, dynamic, edit-texts">
+<meta name="description" content="Adding multiple edit text boxes to the android application dynamically through code and controlling them.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Add EditText(s) dynamically and retrieve values - Android">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/03/add-edittexts-dynamically-and-retrieve-values-android/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Adding multiple edit text boxes to the android application dynamically through code and controlling them.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-03-22T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Add EditText(s) dynamically and retrieve values - Android</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Add EditText(s) dynamically and retrieve values - Android</h1>
+  <div class="date_tag">
+    <div class="date">22 March, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/android">android</a> 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>Adding EditText to your Android application is no different from adding any other form elements except for one thing. Retrieving values from them is slightly different and of course nothing impossible. Just a little more bit of coding and thats it.</p>
+<div id="images">
+ <a href="/assets/images/posts/add-edit-text-dynamically-android/full/img1.png" title="Android-EditText" data-dialog>
+            <img src="/assets/images/posts/add-edit-text-dynamically-android/thumbs/img1.png" alt="Android-EditText" />
+ </a>    
+</div>
+<p style="text-align: center;">Following code snippet creates a series of EditTexts and also let you to access its values.<br />    
+<pre class="prettyprint">import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.widget.LinearLayout.VERTICAL;
+
+public class Sample extends Activity {
+    private List&lt;EditText&gt; editTextList = new ArrayList&lt;EditText&gt;();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(FILL_PARENT, WRAP_CONTENT);
+        linearLayout.setLayoutParams(params);
+        linearLayout.setOrientation(VERTICAL);
+
+        int count = 10;
+        linearLayout.addView(tableLayout(count));
+        linearLayout.addView(submitButton());
+        setContentView(linearLayout);
+    }
+
+    private Button submitButton() {
+        Button button = new Button(this);
+        button.setHeight(WRAP_CONTENT);
+        button.setText("Submit");
+        button.setOnClickListener(submitListener);
+        return button;
+    }
+
+    // Access the value of the EditText
+
+    private View.OnClickListener submitListener = new View.OnClickListener() {
+        public void onClick(View view) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (EditText editText : editTextList) {
+                stringBuilder.append(editText.getText().toString());
+            }
+        }
+    };
+
+    // Using a TableLayout as it provides you with a neat ordering structure
+
+    private TableLayout tableLayout(int count) {
+        TableLayout tableLayout = new TableLayout(this);
+        tableLayout.setStretchAllColumns(true);
+        int noOfRows = count / 5;
+        for (int i = 0; i &lt; noOfRows; i++) {
+            int rowId = 5 * i;
+            tableLayout.addView(createOneFullRow(rowId));
+        }
+        int individualCells = count % 5;
+        tableLayout.addView(createLeftOverCells(individualCells, count));
+        return tableLayout;
+    }
+
+    private TableRow createLeftOverCells(int individualCells, int count) {
+        TableRow tableRow = new TableRow(this);
+        tableRow.setPadding(0, 10, 0, 0);
+        int rowId = count - individualCells;
+        for (int i = 1; i &lt;= individualCells; i++) {
+            tableRow.addView(editText(String.valueOf(rowId + i)));
+        }
+        return tableRow;
+    }
+
+    private TableRow createOneFullRow(int rowId) {
+        TableRow tableRow = new TableRow(this);
+        tableRow.setPadding(0, 10, 0, 0);
+        for (int i = 1; i &lt;= 5; i++) {
+            tableRow.addView(editText(String.valueOf(rowId + i)));
+        }
+        return tableRow;
+    }
+
+    private EditText editText(String hint) {
+        EditText editText = new EditText(this);
+        editText.setId(Integer.valueOf(hint));
+        editText.setHint(hint);
+        editTextList.add(editText);
+        return editText;
+    }
+}</pre>
+
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/03/add-edittexts-dynamically-and-retrieve-values-android/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Add EditText(s) dynamically and retrieve values - Android : http://prasans.info/2011/03/add-edittexts-dynamically-and-retrieve-values-android/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/01/test-your-controllers-modelattribute-methods/" title="Previous Post:
+Test your Controller's ModelAttribute methods.">&laquo; Test your Controller's ModelAttribute methods.</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2011/04/wiring-android-wheel-widget-into-your-application/" title="next Post:
+Wiring Android Wheel Widget into your application.">Wiring Android Wheel Widget into your application. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

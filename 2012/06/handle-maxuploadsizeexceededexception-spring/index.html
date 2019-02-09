@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Spring, file-upload, exception">
+<meta name="description" content="Handling MaxUploadExceedException in Ajax call with Spring controllers. This exception occurs when the file size greate than what is expected is been uploaded by the user.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Handle MaxUpload SizeExceededException in Spring">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Handling MaxUploadExceedException in Ajax call with Spring controllers. This exception occurs when the file size greate than what is expected is been uploaded by the user.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2012-06-24T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Handle MaxUpload SizeExceededException in Spring</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Handle MaxUpload SizeExceededException in Spring</h1>
+  <div class="date_tag">
+    <div class="date">24 June, 2012.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/java">java</a> 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>I was doing a AJAX file upload using jQuery and Spring 3. Spring provides a way to limit the file being uploaded and this can be configured while creating the multipart bean by specifying the maxUploadSize parameter.</p>
+<p>So whenever an user tries to upload a file with size size greater than that of the specified one then Spring will throw<em> 'MaxUploadSizeExceededException'</em> exception and returns back. The problem for me is that i was doing the file upload using AJAX so i wanted a custom error to be thrown rather than the Spring's default error.</p>
+<p>And also because of this exception the control will not even reach your specified controller so there is no chance to catch it in your Controller. After some lookup i found this simple fix for it.</p>
+<p><span style="text-decoration: underline;">FileUploadController: Controller which will handle the file upload request.</span></p>
+<p><em><strong>Make this FileUploadController to implement HandlerExceptionResolver. This will force you to define resolveException() method.</strong></em></p>
+<pre class="prettyprint">    
+  @ResponseBody
+  public ModelAndView resolveException(HttpServletRequest httpServletRequest, 
+            HttpServletResponse httpServletResponse, Object o, Exception e) {
+      if (e instanceof MaxUploadSizeExceededException) {
+          ModelAndView modelAndView = new ModelAndView("inline-error");
+          modelAndView.addObject("error", "Error: Your file size is too large to upload. 
+                    Please upload a file of size &lt; 5MB and continue.");
+          return modelAndView;
+      }
+      e.printStackTrace();
+      return new ModelAndView("500");
+  }</pre>
+<p><strong> How to show the error on the same page:</strong></p>
+<p>The call to the controller is from a jQuery ajax method. But the problem here is that even with this approach your jQuery POST method is going to receive a HTTP_OK message from the controller. Hence if you are waiting at the error callback then you have no chance of catching this error.</p>
+<p>So what i have done here is to return inline-error view back as the response. On the <span style="text-decoration: underline;">success</span> callback of the jQuery i check for the presence of the error_div in the response and display the field in the page. Else show the success message.</p>
+<p><em>inline-error.jsp</em></p>
+<pre class="brush:plain">&lt;div class="error" id="error_div"&gt;${error}&lt;/div&gt;</pre>
+<p><span style="text-decoration: underline;"><em>PS: This is definitely not the cleanest approach, but this solved my problem :)</em></span></p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Handle MaxUpload SizeExceededException in Spring : http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/12/make_ntfs_write_mac_lion/" title="Previous Post:
+Make your NTFS drive writable under Mac Lion">&laquo; Make your NTFS drive writable under Mac Lion</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2012/06/hamcrest-conflict-junit/" title="next Post:
+Hamcrest conflict in jUnit.">Hamcrest conflict in jUnit. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

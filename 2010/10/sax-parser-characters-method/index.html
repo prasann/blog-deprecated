@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="java, sax, characters">
+<meta name="description" content="Sax Parser, behaviour of characters() method. Sample code in Java.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="SAX parser characters() method.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2010/10/sax-parser-characters-method/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Sax Parser, behaviour of characters() method. Sample code in Java.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2010-10-07T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>SAX parser characters() method.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>SAX parser characters() method.</h1>
+  <div class="date_tag">
+    <div class="date">7 October, 2010.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>Was playing around SAX parsing some Gigs of XML file :) Here are few learnings from the game.</p>
+<p>My intention was to read values between a corresponding tag. I initially went after using characters() in SAX parser which actually worked fine for initial feeds. But as i keep increasing the size of the XMLs and if the size of the tagContent was large the problem arises. characters() function not always gives back the entire value in a single shot. It may return the value in multiple chunks. So need to be careful in assigning and using the values from characters() method.</p>
+<p>So the better way to use characters() method is to keep appending all the values to a buffer and use the value in the corresponding end tag section. Also need to make sure that the buffer has to be flushed in the corresponding start element.</p>
+<p><strong>Sample Xml:</strong></p>
+<p><strong> </strong></p>
+<pre class="prettyprint">&lt;Sample&gt;
+    &lt;StudentCollection&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Jack&lt;/Name&gt;
+            &lt;Age&gt;12&lt;/Age&gt;
+        &lt;/Student&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Jill&lt;/Name&gt;
+            &lt;Age&gt;13&lt;/Age&gt;
+        &lt;/Student&gt;
+        &lt;Student&gt;
+            &lt;Name&gt;Rose&lt;/Name&gt;
+            &lt;Age&gt;14&lt;/Age&gt;
+        &lt;/Student&gt;
+    &lt;/StudentCollection&gt;
+&lt;/Sample&gt;</pre>
+<p><strong>Sample SAX handler code to print the Names:</strong></p>
+<p><strong>Initial Code: (Works fine for small values &amp; small files)</strong></p>
+<p><strong> </strong></p>
+<pre class="prettyprint">
+public void startElement(String uri,String tag,String qName,
+                             Attributes attributes){ }
+
+public void characters(char ch[],int start,int length){      
+           System.out.println("Name of a student: " + new String(ch,start,length));
+} 
+
+public void endElements(String uri,String tag,String qName){ }
+</pre>
+<p><strong>Final Code:</strong></p>
+<p><strong> </strong></p>
+<pre class="prettyprint">public void startElement(String uri,String tag,String qName,
+                             Attributes attributes){
+        if("Name".equals(tag)){
+            tagContentBuffer = new StringBuffer();
+        }
+    }
+public void characters(char ch[],int start,int length){
+        tagContentBuffer.append(new String(ch,start,length));
+    }
+public void endElements(String uri,String tag,String qName){
+        if("Name".equals(tag)){
+            System.out.println("Name of a student: " +
+                    tagContentBuffer.toString());
+        }
+    }</pre>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2010/10/sax-parser-characters-method/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=SAX parser characters() method. : http://prasans.info/2010/10/sax-parser-characters-method/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2010/08/ftp-client-ubuntu/" title="Previous Post:
+FTP Client (Ubuntu)">&laquo; FTP Client (Ubuntu)</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2010/11/install-custom-jar-files-in-samsung-corby-pro/" title="next Post:
+Install Custom JAR files in Samsung Corby Pro">Install Custom JAR files in Samsung Corby Pro &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

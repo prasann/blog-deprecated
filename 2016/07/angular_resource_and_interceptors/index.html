@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="angular, http">
+<meta name="description" content="This post describe about the use of angular resource library along with http interceptor.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Angular resource and http interceptor">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2016/07/angular_resource_and_interceptors/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="This post describe about the use of angular resource library along with http interceptor.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2016-07-18T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Angular resource and http interceptor</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Angular resource and http interceptor</h1>
+  <div class="date_tag">
+    <div class="date">18 July, 2016.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/angular">angular</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>Once you set up your project with angular and <a href="https://docs.angularjs.org/api/ngResource">ngResource</a>
+    you will be able to access $resource object.</p>
+  <p>$resource will serve as a factory which creates a resource object that lets you interact with RESTful services. You
+    can call HTTP methods directly on this resource object.</p>
+  <p>In our application we will have a custom wrapper on top of the angular resource. This wrapper will provide ability
+    for us to transform the object differently on success and error response.</p>
+  <p>All adapters will use the wrapper and all end points will overwrite the transform logic on success and error
+    response.</p>
+
+  <pre class="prettyprint">
+'profile': {
+  method: 'GET',
+  params: {accountId: '@accountId'},
+  transformRequest: (data) => {
+    const moreParams = {newParams: data};
+    return angular.toJson(moreParams);
+  },
+  successTransformResponse: (data, headers, status) => {
+    // Handle parsing for HTTP status 200.
+  },
+  errorTransformResponse: (data, headers, status) => {
+    // Depending on the status code handle transform logic.
+  }
+}
+  </pre>
+
+  <h4>Handling generic error codes</h4>
+  <p>So, next we have to handle generic error responses across the application. Error codes like 401 (Unauthorized), 503
+    (Service Unavailable) needs to be redirected to different pages.</p>
+  <p>The interceptors are service factories that are registered with the $httpProvider by adding them to the
+    $httpProvider.interceptors array. The factory is called and injected with dependencies (if specified) and returns
+    the interceptor.
+  </p>
+  <pre class="prettyprint">
+$provide.factory('myHttpInterceptor', function($q, dep1, dep2) {
+  return {
+    'request': function(config) {
+      // do something on success
+      return config;
+    },
+    'responseError': function(rejection) {
+      // do something on error
+      if (canRecover(rejection)) {
+        return responseOrNewPromise
+      }
+      return $q.reject(rejection);
+    }
+  }
+}
+  </pre>
+
+  <p>
+    In the responseError method block, we used to handle all the generic error response code across the application.
+  </p>
+  <h4>
+    Observation
+  </h4>
+  <p>I was expecting the code in HttpInterceptor to be executed before my transform logic in the resource wrapper.
+    But i was wrong. Only after the resource transformation http interceptors are called.
+    (Refer this <a href="https://github.com/angular/angular.js/issues/7594 ">issue.</a>)
+  </p>
+  <p>So, whenever a service responds with 500 error, Http interceptor will redirect the user to a different page.
+    However, this will not happen if there is an error in transformation logic. In order to circumvent this problem, we
+    started writing our error transform response specifically for the error codes. This means that, our transformation
+    logic will not be executed for our generic error codes and eventually it reaches http interceptor.</p>
+</div>
+<div> </div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2016/07/angular_resource_and_interceptors/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Angular resource and http interceptor : http://prasans.info/2016/07/angular_resource_and_interceptors/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2016/06/post_errors_to_an_endpoint_angular/" title="Previous Post:
+Post browser logs to server in an Angular app">&laquo; Post browser logs to server in an Angular app</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2016/09/expire_session_after_timeout_spring/" title="next Post:
+Spring security session timeouts">Spring security session timeouts &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

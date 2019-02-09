@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Spring, junit">
+<meta name="description" content="Injecting a ModelAttribute to the controller's method in Unit tests using Spring and jUnit.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Test your Controller's ModelAttribute methods.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/01/test-your-controllers-modelattribute-methods/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Injecting a ModelAttribute to the controller's method in Unit tests using Spring and jUnit.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-01-20T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Test your Controller's ModelAttribute methods.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Test your Controller's ModelAttribute methods.</h1>
+  <div class="date_tag">
+    <div class="date">20 January, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/assertion">assertion</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>I was about to write some unit tests around my Spring’s controller classes and also i wanted to write the test using MockHttpRequest and MockHttpResponse.</p>
+<p>My controller had a method to which i was using ModelAttribute as one of the parameter. I just want to simulate the same scenario in my Unit Tests.</p>
+<p>Unfortunately i could not see any methods in MockHttpRequest to help me with this. So i had to take a simple different approach as an workaround for this.</p>
+<p><span style="text-decoration: underline;">My Controller code looks similar to this:</span></p>
+<div id="_mcePaste">
+<pre class="prettyprint">@Controller
+@RequestMapping(value = "/register")
+public class MyController {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ModelAndView save(@ModelAttribute User user) {
+        //Code to save the User object
+        return new ModelAndView();
+    }
+}</pre>
+</div>
+<p><span style="text-decoration: underline;">My Unit Tests:</span></p>
+<pre class="prettyprint">public class MyControllerTest {
+    MockHttpServletResponse response;
+    MockHttpServletRequest request;
+    AnnotationMethodHandlerAdapter handler;
+
+    @Before
+    public final void init() {
+        response = new MockHttpServletResponse();
+        request = new MockHttpServletRequest();
+        handler = new AnnotationMethodHandlerAdapter();
+    }
+
+    @Test
+    public void shouldTestSaveUser() {
+        final User mockUser = new UserTestBuilder().withName("John").build();
+        request.setMethod("POST");
+        request.setRequestURI("/register/save");
+
+        MyController myController = new MyController() {
+            @ModelAttribute
+            public User mockModel() {
+                return user;
+            }
+        }
+        ModelAndView model = handler.handle(request, response, myController);
+    }
+}</pre>
+<p><em><strong>Explanation:</strong></em></p>
+<p>Whenever a method in a controller is annotated with @ModelAttribute , it will be invoked for every request made to that controller. So while creating the mycontroller object i am overriding a sample method which has this annotation and returns a User object as a ModelAttribute.</p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/01/test-your-controllers-modelattribute-methods/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Test your Controller's ModelAttribute methods. : http://prasans.info/2011/01/test-your-controllers-modelattribute-methods/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2010/11/hadoop-version-in-aws-map-reduce/" title="Previous Post:
+Hadoop Version in AWS Map Reduce">&laquo; Hadoop Version in AWS Map Reduce</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2011/03/add-edittexts-dynamically-and-retrieve-values-android/" title="next Post:
+Add EditText(s) dynamically and retrieve values - Android">Add EditText(s) dynamically and retrieve values - Android &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

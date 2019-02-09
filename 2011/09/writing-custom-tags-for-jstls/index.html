@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Custom, JSTL, Java">
+<meta name="description" content="Writing a custom JSTL tag and integrating with the application. A sample code to do the same.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Writing Custom Tags for JSTLs">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/09/writing-custom-tags-for-jstls/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Writing a custom JSTL tag and integrating with the application. A sample code to do the same.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-09-11T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Writing Custom Tags for JSTLs</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Writing Custom Tags for JSTLs</h1>
+  <div class="date_tag">
+    <div class="date">11 September, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>First start with writing a tag library descriptor(TLD). A TLD is a XML document that contains information about a library as a whole and about each tag contained in the library.<br />
+The structure of the TLD file is pretty readalbe.</p>
+<p>Below is an implementation of tag which takes in a section name(value) of a web page and checks whether the logged-in user has rights to view the section.</p>
+<p><span style="text-decoration: underline;"><strong>Step 1:</strong> custom.tld</span></p>
+<pre class="prettyprint">&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
+&lt;!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+        "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"&gt;
+&lt;taglib xmlns="http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"&gt;
+    &lt;tlibversion&gt;1.0&lt;/tlibversion&gt;
+    &lt;jspversion&gt;1.1&lt;/jspversion&gt;
+    &lt;shortname&gt;custom&lt;/shortname&gt;
+    &lt;info&gt;Custom tag library&lt;/info&gt;
+    &lt;tag&gt;
+        &lt;name&gt;permission&lt;/name&gt;
+        &lt;tagclass&gt;com.prasans.PermissionTag&lt;/tagclass&gt;
+        &lt;info&gt;
+            Checks the User Permission to access the content.
+        &lt;/info&gt;
+        &lt;attribute&gt;
+            &lt;name&gt;value&lt;/name&gt;
+            &lt;required&gt;true&lt;/required&gt;
+        &lt;/attribute&gt;
+        &lt;attribute&gt;
+            &lt;name&gt;invertCondition&lt;/name&gt;
+            &lt;required&gt;false&lt;/required&gt;
+        &lt;/attribute&gt;
+    &lt;/tag&gt;
+&lt;/taglib&gt;</pre>
+<p>Here we have implemented a tag called permission within the 'custom' tag library.</p>
+<p>Usage: <em>&lt;custom:permission value=""&gt;{section}&lt;/custom:permission&gt;</em><br />
+Similarly you can add more tags to your library by adding more &lt;tag&gt; nodes.</p>
+<p>After done with defining TLD, next step is to implement the conditional logic. Below is a piece of Java code that does the implementation of the TLD.</p>
+<p><strong>Step 2: </strong><span style="text-decoration: underline;">PermissionTag.java</span></p>
+<pre class="prettyprint">package com.prasans;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
+
+public class PermissionTag extends ConditionalTagSupport {
+    private String value = null;
+    private boolean invertCondition;
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isInvertCondition() {
+        return invertCondition;
+    }
+
+    public void setInvertCondition(boolean invertCondition) {
+        this.invertCondition = invertCondition;
+    }
+
+    @Override
+    protected boolean condition() {
+        // If needed you can access Request Object like this.
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        boolean permission = checkForThePermission(value);
+        return invertCondition ? !permission : permission;
+    }
+}</pre>
+<p><span style="text-decoration: underline;"><strong>Explanation:</strong></span></p>
+<p>* Since the expectation of this tag is to return true or false, we are extending the <em>ConditionalTagSupport</em> class. Based on the need you can choose upon your class implementation.</p>
+<p>*Note that all tag attributes are member variables of the class and all of them should have getters and setters.</p>
+<p>*Here we have overridden the condition() from ConditionalTagSupport to return the needed boolean result.</p>
+<p>* InvertCondition is an attribute that helps us in simulating negative scenarios.</p>
+<p>For ex: "Show the section <em>If User A do not have 'X' permission</em>"</p>
+<p>After building the TLD and its corresponding logic, the next step is to integrate with your application.<br />
+Add the custome tag library to your web.xml to integrate with your web app.</p>
+<p><strong>Step 3:</strong> <span style="text-decoration: underline;">web.xml</span></p>
+<pre class="prettyprint">&lt;jsp-config&gt;
+    &lt;taglib&gt;
+        &lt;taglib-uri&gt;/custom&lt;/taglib-uri&gt;
+        &lt;taglib-location&gt;/WEB-INF/tags/custom.tld&lt;/taglib-location&gt;
+    &lt;/taglib&gt;
+&lt;/jsp-config&gt;</pre>
+<p>The taglib-uri is the <em>&lt;shortname&gt;</em> defined in the TLD file. And <em>&lt;taglib-location&gt;</em> is the location of the tld. Make sure that you are bundling the TLD along with your WAR.</p>
+<p>Thats it. You can start using your custom tags in your JSPs now.</p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/09/writing-custom-tags-for-jstls/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Writing Custom Tags for JSTLs : http://prasans.info/2011/09/writing-custom-tags-for-jstls/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/07/reloading-an-activity-in-android/" title="Previous Post:
+Reloading an activity in Android">&laquo; Reloading an activity in Android</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2011/09/slot-machine-effect-jquery/" title="next Post:
+Slot machine effect using jQuery">Slot machine effect using jQuery &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

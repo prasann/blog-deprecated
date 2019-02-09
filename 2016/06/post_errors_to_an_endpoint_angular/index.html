@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="angular, error, http">
+<meta name="description" content="This post describes about posting all the browser errors in an angular application to an endpoint. This will be helpful to analyse or debug issues.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Post browser logs to server in an Angular app">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="This post describes about posting all the browser errors in an angular application to an endpoint. This will be helpful to analyse or debug issues.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2016-06-25T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Post browser logs to server in an Angular app</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Post browser logs to server in an Angular app</h1>
+  <div class="date_tag">
+    <div class="date">25 June, 2016.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/angular">angular</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>
+    We were looking for an efficient way of capturing all the Javascript errors
+    from browsers in our backend so it appears in our Kibana dashboard along with the server logs
+  </p>
+  <p>
+    We had a Angular 1.5.8 application in front of multiple micro-services endpoint.
+    Any error in the angular application will appear in the browser console and we planned to push these logs back to the server.
+  </p>
+  <h4>
+    Angular's <i>$exceptionHandler</i>
+  </h4>
+  <p>
+    In order to catch all the exceptions, we have to override the $exceptionHandler component provided by angular.
+    Only catch here is that, since we are overriding angular component we may not be able to inject $http or any other angular component in our overrides and doing so will throw a cyclic dependency issue.
+  </p>
+  <h4>
+    Initial solution
+  </h4>
+  <p>
+    We came up with an idea of injecting $injector and fetching $http using the same.
+  </p>
+  <pre class="prettyprint">
+factory('$exceptionHandler', ['$log', '$window', '$injector',
+                              ($log, $window, $injector)=> {
+return (exception, cause) => {
+  $log.error(exception, cause);
+  try {
+    const $http = $injector.get('$http');
+    const logMessage = [{
+      level: 'error',
+      message: exception.toString(),
+      url: $window.location.href,
+      stackTrace: exception.stack,
+      currentTimestamp: Date.now()
+    }];
+    $http.post('/log/message', logMessage);
+  } catch (loggingError) {
+    $log.log(loggingError);
+  }
+);
+  </pre>
+  <p>
+    The above piece of code will work perfectly and will be able to post all the errors generated to an exposed endpoint.
+  </p>
+  <p>
+    But the problem is, if the $http.post throws any exception then it causes unrecoverable recursion and browser will hung.
+  </p>
+  <p>
+    In order to come out of that issue, we re wrote our http post logic using native JS syntax.
+  </p>
+  <h4>
+    Final solution
+  </h4>
+  <p>
+    Same code re written using native JS functions.
+  </p>
+  <pre class="prettyprint">
+factory('$exceptionHandler', ['$log', '$window', '$injector', ($log, $window, $injector)=> {
+return (exception, cause) => {
+  $log.error(exception, cause);
+  try {
+    let commonHeaders = $injector.get('$http').defaults.headers.common;
+    const logMessage = [{
+      level: 'error',
+      message: exception.toString(),
+      url: $window.location.href,
+      stackTrace: exception.stack,
+      currentTimestamp: Date.now()
+    }];
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', '/log/message');
+    xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    for (let header in commonHeaders) {
+      if (commonHeaders.hasOwnProperty(header)) {
+        let headerValue = commonHeaders[header];
+        if (angular.isFunction(headerValue)) {
+          headerValue = headerValue();
+        }
+        xmlhttp.setRequestHeader(header, headerValue);
+      }
+    }
+    xmlhttp.send(angular.toJson(logMessage));
+  } catch (loggingError) {
+    $log.log(loggingError);
+  }
+};  
+});
+  </pre>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Post browser logs to server in an Angular app : http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2016/02/expanding_amazon_ebs_volumes/" title="Previous Post:
+Expanding Amazon EBS Volume in a EC2 instance.">&laquo; Expanding Amazon EBS Volume in a EC2 instance.</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2016/07/angular_resource_and_interceptors/" title="next Post:
+Angular resource and http interceptor">Angular resource and http interceptor &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

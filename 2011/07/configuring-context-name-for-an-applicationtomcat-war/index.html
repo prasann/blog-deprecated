@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="tomcat, java, context-name">
+<meta name="description" content="Setting up a different context name than the WAR name for the Java application deployed in Tomcat server.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Configuring Context name for an application">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/07/configuring-context-name-for-an-applicationtomcat-war/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Setting up a different context name than the WAR name for the Java application deployed in Tomcat server.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-07-09T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Configuring Context name for an application</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Configuring Context name for an application</h1>
+  <div class="date_tag">
+    <div class="date">9 July, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<div id="_mcePaste">Many times i have faced this necessity of  having a different Context name than that of the WAR name. Especially when i use Maven. And i also found that it is quite simple in Tomcat. While looking for it i found two approached for doing it. One using Context.xml and the other using Server.xml</div>
+<div></div>
+<br/>
+<p><strong>Problem Statement: </strong>I have a WAR file myapp-build123.war and the app can be referred using <i>http://localhost:8080/myapp-build123</i> but i need to refer my application as <i>http://localhost:8080/myapp</i> So here is what im gonna do.</p>
+<div></div>
+<p><strong>Approach 1: <i>Context.xml</i> (Recommended way)</strong></p>
+<li>Create a Context file in ${TOMCAT_HOME}/conf/Catalina/localhost directory. Name the file as myapp.xml (The file name should be the same as desired context name) The content of the file is given below.</li><br/>
+<div id="_mcePaste">
+<pre class="prettyprint">&lt;Context path="/somepath" docBase="/home/myapp-build123"/&gt;</pre>
+<div><em>Basically the path attribute is been ignored by Tomcat so if you want you can ignore it too.</em></div>
+<div><em> </em><em>The docBase will contain the path of the WAR. Here i have placed my WAR file in the home directory.</em></div>
+<div><em><br />
+</em></div>
+<li>An important thing to note here is that the WAR file cannot be placed inside the ${TOMCAT_HOME}/webapps folder. If you place the WAR in the webapps folder then the war will get exploded with the same name as the WAR file and after that it is not possible to configure the Context name. So place the WAR anywhere in the system apart from ${TOMCAT_HOME}/webapps folder.</li><br/>
+</div>
+<div>
+<li>Now its time to start the server and you will see a folder named myapp in the ${TOMCAT_HOME}/webapps folder, containing the application files.</li><br/>
+</div>
+<p><strong>Approach 2: Server.xml ( <a href="http://tomcat.apache.org/tomcat-6.0-doc/config/context.html" target="_blank">Not Recommended</a> after Tomcat 4.x )</strong></p>
+
+
+<li>Open the Server.xml file from ${TOMCAT_HOME}/conf folder. Search for the Host tag and place the Context tag inside it.</li><br/>
+<div id="_mcePaste">
+<pre class="prettyprint">&lt;Host name="localhost"  appBase="webapps"
+unpackWARs="true" autoDeploy="true"
+xmlValidation="false" xmlNamespaceAware="false"&gt;
+<span style="color: #ff0000;">&lt;Context path="/myapp" docBase="/myapp-build123"/&gt;</span>
+&lt;/Host&gt;</pre>
+</div>
+<li>In this scenario you can place the WAR file in the ${TOMCAT_HOME}/webapps folder itself. And also it is possible to access the application by both the URLs, http://localhost:8080/myapp-build123 and http://localhost:8080/myapp.</li>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/07/configuring-context-name-for-an-applicationtomcat-war/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Configuring Context name for an application : http://prasans.info/2011/07/configuring-context-name-for-an-applicationtomcat-war/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/06/my-first-windows-7-theme/" title="Previous Post:
+My First Windows 7 Theme">&laquo; My First Windows 7 Theme</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2011/07/reloading-an-activity-in-android/" title="next Post:
+Reloading an activity in Android">Reloading an activity in Android &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

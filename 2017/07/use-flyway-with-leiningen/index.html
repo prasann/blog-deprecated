@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="clojure, compojure, flyway, lein, ring">
+<meta name="description" content="Flyway is a popular Java based database migration tool. This post describes about integrating flyway seamlessly with lein compojure ring stack in clojure.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Flyway migrations in lein clojure">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2017/07/use-flyway-with-leiningen/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Flyway is a popular Java based database migration tool. This post describes about integrating flyway seamlessly with lein compojure ring stack in clojure.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2017-07-16T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Flyway migrations in lein clojure</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Flyway migrations in lein clojure</h1>
+  <div class="date_tag">
+    <div class="date">16 July, 2017.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/clojure">clojure</a> 
+                 
+                <a href="/categories/db">db</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+    <p>
+        <a href="https://leiningen.org/">Leiningen</a> is the easiest way to start with clojure project automation. The project under discussion is a webservices
+        written in clojure with
+        <a href="https://github.com/metosin/compojure-api">compojure-api</a> and
+        <a href="https://github.com/ring-clojure/ring">ring</a> middleware.
+    </p>
+    <p>
+        When it came to Database migrations, I didn't find anything straightforward amongst the lein plugins. So, decided to use
+        <a href="https://flywaydb.org/">flyway</a>. I have worked with flyway in the past with Java applications. But, this is the first time with clojure,
+        leiningen combination.
+    </p>
+    <h3>Migration utility in clojure</h3>
+    <p>
+        Here is the small migration helper written in Clojure
+        <script src="https://gist.github.com/prasann/11e62167434eb76a675b54a5b5b672e4.js"></script>
+    </p>
+    <h3>Running migration during deployment</h3>
+    <p>
+        I'm using
+        <a href="https://github.com/weavejester/lein-ring">lein-ring</a> plugin, this provided an option to execute function before the handler starts. So, I wired
+        <span class="inline">app.migrate</span> to the init block of the handler.
+    </p>
+
+    <p>This helps to run migration everytime before the application deploys. Ofcourse, flyway will take care of what migrations
+        need to run based on the migration version.</p>
+
+    <h3>Running migrations for local development</h3>
+    <p>
+        The above method works perfectly for the application deployment scenarios. However, in local it will be better to execute​
+        ​migration and clean databases as and when required, rather than re-deploying the application. lein-exec plugin offers​
+        ​a way to create and execute clojure code from project.clj files. With the above-mentioned migration present, all
+        ​I​​ ha​ve to do is to create some aliases as shown below.
+        <pre class="prettyprint">
+            :aliases { 
+                "db-clean"   ["exec" "-ep" "(use 'deal-picker.migration) (clean)"]
+                "db-migrate" ["exec" "-ep" "(use 'deal-picker.migration) (migrate)"]
+                "db-info"    ["exec" "-ep" "(use 'deal-picker.migration) (info)"]
+                "db-reset"   ["exec" "-ep" "(use 'deal-picker.migration) (reset)"]
+            }
+        </pre>
+    </p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2017/07/use-flyway-with-leiningen/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Flyway migrations in lein clojure : http://prasans.info/2017/07/use-flyway-with-leiningen/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2017/05/card_slider_using_css3/" title="Previous Post:
+Card slider using CSS Keyframes">&laquo; Card slider using CSS Keyframes</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2017/09/using-network-call-in-react/" title="next Post:
+Asynchronous calls in React component">Asynchronous calls in React component &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="spring, session, timeout, java, security">
+<meta name="description" content="Setup session timeouts in spring security. This will explain how to setup the idle timeout and also the max timeout for separate sessions.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Spring security session timeouts">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2016/09/expire_session_after_timeout_spring/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Setup session timeouts in spring security. This will explain how to setup the idle timeout and also the max timeout for separate sessions.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2016-09-25T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Spring security session timeouts</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Spring security session timeouts</h1>
+  <div class="date_tag">
+    <div class="date">25 September, 2016.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+                 
+                <a href="/categories/spring">spring</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+
+    <p>Using Spring security we were building an application which has 2 types of users Internal and External.
+        Our requirement was</p>
+
+    <ol>
+        <li> Internal and External users have different idle timeouts.</li>
+        <li>External user's session should be invalidated after 30 mins. Irrespective of whether the user is active or
+            not.
+        </li>
+    </ol>
+
+    <h4>Setting up Idle timeout in Spring security</h4>
+
+    <p>Spring provides out of box option to configure an idle timeout value.
+        This invalidation is done by Spring security and happens while making a request after specified amount of
+        time.</p>
+
+    <p>We were able to achieve this by setting up <span class="inline">setMaxInactiveIntervalInSeconds</span> on the
+        session object while creation.</p>
+
+    <script src="https://gist.github.com/prasann/5bd1757cadcca7e919e5e11dffcdcb0a.js"></script>
+
+    <h4>Setting up Max timeout in Spring security</h4>
+
+    <p>The above technique can be used only for setting the idle time. But our second scenario is to invalidate the
+        session irrespective of whether the user is active or not.</p>
+
+    <p> We ended up writing a custom filter which to invalidate the session manually whenever the session age is
+        greater than the specified value.</p>
+
+    <script src="https://gist.github.com/prasann/0dd68a2e918804d25e31298b382c4938.js"></script>
+
+    <p> This filter will invalidate the session when the maximum time has reached for that session. </p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2016/09/expire_session_after_timeout_spring/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Spring security session timeouts : http://prasans.info/2016/09/expire_session_after_timeout_spring/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2016/07/angular_resource_and_interceptors/" title="Previous Post:
+Angular resource and http interceptor">&laquo; Angular resource and http interceptor</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2017/02/jest_test_toLocaleString_javasscript/" title="next Post:
+Mock toLocaleString in Jest">Mock toLocaleString in Jest &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

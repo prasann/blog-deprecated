@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="gradle, spring, java, log">
+<meta name="description" content="A skeleton sample app demostrating gradle set up with Spring MVC along with basic logging and deployment in tomcat environment.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Gradle, Spring MVC App.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2014/06/skeleton-gradle-spring-mvc-app/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="A skeleton sample app demostrating gradle set up with Spring MVC along with basic logging and deployment in tomcat environment.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2014-06-15T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Gradle, Spring MVC App.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Gradle, Spring MVC App.</h1>
+  <div class="date_tag">
+    <div class="date">15 June, 2014.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/java">java</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+	<p>Will try to list down few of my learnings to set up a Spring MVC app with Gradle. And also this time i tried using Servlet 3.0 spec which means no .xml files for Spring configuration.</p>
+
+	<p> Refer to the <a href="https://github.com/prasann/GradleSpringApp"> GitHub repo </a> for the source code. I will be giving some notes on the code.</p>
+
+	<h4>Create build.gradle file</h4>
+	<p> build.gradle can be pretty much simple to start with. I started with adding java and war plugin followed by adding dependencies to the Spring artifacts. I have to define <pre class="prettyprint">runtime 'javax.servlet:jstl:1.2'</pre> to make sure it doesn't get packaged as part of the war.</p>
+	
+	<p> Then thought it will be awesome to start the application in one command instead of building the war and deploying it in local instance. After some initial searching landed onto this <a href="https://github.com/bmuschko/gradle-cargo-plugin">Cargo plugin</a> This lets you to configure the server of your choice and get it working. So after doing some basic configuration got this working.</p>
+	Now <pre class="prettyprint">gradle war cargoRunLocal</pre> since the task name is not so user friendly, just added an alias to it.
+	<pre class="prettyprint">
+task serve(dependsOn: cargoRunLocal) << {
+}
+	</pre>
+	<h4>Setup Spring</h4>
+	<p>	I decided to play around with Servlet 3.0 style of Spring configuration. This means that i do not need to create web.xml or applicationContext.xml files. Instead i can go with complete Java style configuration.</p>
+	<p>	Application containers (tomcat 7+ in my case) will look for implementation of WebApplicationInitializer and will load that class on the startup. Initializer.java in my src will be equivalent for web.xml</p>
+	
+	<p>	MvcConfig.java will be equivalent to applicationContext.xml file. This contains all the bean initialization, property place holders and more.</p>
+	
+	<p>	As you can see most of the configurations are handled by annotations.</p> 
+
+	<h4>Setup Unit Tests</h4>
+	<p>Setting up Unit tests are no different to Gradle. As i mentioned i have used Java style configuration for my Spring classes. So the style of testing my controllers will also be different.</p>
+	
+	<p>InitControllerTest.java will be my controller test. I have initialized a mock web application in the <pre>@Before</pre> method and the rest of the stuff are handled by annotations.</p>
+	
+	<h4>Setup Logging</h4>
+	
+	<p>Setting up slf4j is quite straight forward. You have to add slf4j-log4j, log4j jars and add a log4j.properties to the <pre>src/main/resources</pre> In the log4j.properties you can define the way your appenders should work.</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2014/06/skeleton-gradle-spring-mvc-app/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Gradle, Spring MVC App. : http://prasans.info/2014/06/skeleton-gradle-spring-mvc-app/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/06/cross-site-http-requests/" title="Previous Post:
+Cross Site HTTP(S) Requests.">&laquo; Cross Site HTTP(S) Requests.</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2014/06/making-https-call-using-apache-httpclient/" title="next Post:
+Making HTTPS call using Apache HttpClient.">Making HTTPS call using Apache HttpClient. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

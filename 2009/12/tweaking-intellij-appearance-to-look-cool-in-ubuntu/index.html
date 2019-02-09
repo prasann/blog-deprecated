@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Intellij, Ubuntu, Java">
+<meta name="description" content="Intellij is one of the most prominent Java IDE. Opitimising its appearance on Ubuntu is described in this post.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Tweaking IntelliJ appearance to look cool in Ubuntu">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2009/12/tweaking-intellij-appearance-to-look-cool-in-ubuntu/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Intellij is one of the most prominent Java IDE. Opitimising its appearance on Ubuntu is described in this post.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2009-12-30T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Tweaking IntelliJ appearance to look cool in Ubuntu</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Tweaking IntelliJ appearance to look cool in Ubuntu</h1>
+  <div class="date_tag">
+    <div class="date">30 December, 2009.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/intellij">intellij</a> 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/ubuntu">ubuntu</a> 
+                 
+                <a href="/categories/tricks">tricks</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>When i  initially installed IntelliJ in Ubuntu the font of the IDE really sucked. I couldn't able to concentrate on my work because of the freaking font style. After looking out various forums and blogs i finally did a revamp to my Intellij that looked perfect to me. Here is a screenshot of my IDEA after modification.<br />
+<div id="image">
+	<a href="/assets/images/posts/tweaking-intellij-appearance-ubuntu/full/image1.png" title="Intellj on Ubuntu" data-dialog>
+            <img src="/assets/images/posts/tweaking-intellij-appearance-ubuntu/thumbs/image1.png" alt="Intellj on Ubuntu" />
+	</a>
+</div>
+If you are facing same issues try out these steps and your life with IDEA will be much better.
+<ul>
+<li>Open the file idea.vmoptions.<br /><i>cd {IDEA directory}/bin</i><br /><i>
+<div style="text-align: left;"><span class="Apple-style-span" style="font-style: normal; "><i>sudo vim idea.vmoptions</i></span></div>
+<p></i>
+<div style="text-align: left;">Add '<i>-Dawt.useSystemAAFontSettings=on'</i> (without quotes) to the end of file.</div>
+<p>Save and exit the editor.</li>
+<li>Install <a href="/2009/12/install-inconsolata-ttf-in-ubuntujaunty/">Inconsolata.ttf to Ubuntu.</a></li>
+<li>Goto <i>System -> Preferences -> Appearance</i></li>
+<li>Goto the Fonts tab and click on Details  and set your Resolution to 120 DPI.</li>
+<li>Open IntellijIDEA. Goto Project <i>Settings -> Colors &amp; Fonts</i>  Select General tab and Click on the button near the Name textbox.</li>
+<li>Uncheck the '<i>Show Only Monospaced Fonts</i>' . Now you will find Inconsolata in the list . Select <b>Inconsolata</b> as font , Set Size to <b>16</b> and Line Spacing to <b>1.0</b>  then click on Apply.</li>
+<li>Back in the <i>Settings </i>menu choose Appearance and Select '<b><i>Use Anti-Aliased Font in Editor</i></b>' option.</li>
+</ul>
+<p>Thats it. You are done.</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2009/12/tweaking-intellij-appearance-to-look-cool-in-ubuntu/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Tweaking IntelliJ appearance to look cool in Ubuntu : http://prasans.info/2009/12/tweaking-intellij-appearance-to-look-cool-in-ubuntu/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2009/12/install-inconsolata-ttf-in-ubuntujaunty/" title="Previous Post:
+Install Inconsolata.ttf in Ubuntu(Jaunty).">&laquo; Install Inconsolata.ttf in Ubuntu(Jaunty).</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2010/02/printing-multiple-divs-in-a-page/" title="next Post:
+Printing multiple divs in a page.">Printing multiple divs in a page. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

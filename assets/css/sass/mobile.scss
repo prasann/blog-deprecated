@@ -1,0 +1,47 @@
+@import "vars";
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .blog_header {
+    .blog_img {
+      text-align: center;
+      .circular {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+      }
+    }
+    .blog_title {
+      text-align: center;
+      width: 100%;
+      font-size: 2em !important;
+    }
+    .blog_quote {
+      font-size: 1.5em;
+    }
+  }
+  #index_container {
+    a.item {
+      .item-title {
+        display: inline;
+      }
+    }
+  }
+  #share_icons {
+    margin: 10px;
+    text-align: center;
+    a {
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+    }
+    a:hover {
+      background-repeat: no-repeat;
+    }
+  }
+  h1 {
+    font-size: 1.5em !important;
+    text-align: center;
+  }
+}

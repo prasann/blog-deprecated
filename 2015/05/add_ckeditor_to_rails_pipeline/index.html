@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Rails, Ckeditor, asset_pipeline">
+<meta name="description" content="Integrating CKEditor plugin into rails asset pipeline.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Integrating CKEditor with Rails asset pipeline.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Integrating CKEditor plugin into rails asset pipeline.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2015-05-27T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Integrating CKEditor with Rails asset pipeline.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Integrating CKEditor with Rails asset pipeline.</h1>
+  <div class="date_tag">
+    <div class="date">27 May, 2015.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>We are using <a href="http://ckeditor.com/">ckeditor</a> in our rails application (Rails 4.2).</p>
+
+  <p>Number of network calls made by the ckeditor and its plugins are quite alot and we were facing difficulty in
+    integrating them with the Rails asset pipeline.</p>
+
+  <p>My initial approach is to use a <a href="https://github.com/tsechingho/ckeditor-rails">ckeditor rails gem</a>.
+    However getting it to work was complicated. On top of it we had some custom plugins written for ckeditor and making
+    it to work with ckeditor rails gem was almost impossible.</p>
+
+  <p>Taking some pointers from this <a href="https://github.com/galetahub/ckeditor/issues/307">issue</a> finally could
+    get
+    into some working solution.</p>
+
+  <ol>
+    <li>Move all the CKEditor files into vendor/assets/javascript/ckeditor</li>
+    <li>In application.js add
+      <pre class="prettyprint">//= require ckeditor/ckeditor</pre>
+    </li>
+    <li>ckeditor.js looks up for other ckeditor relative to CKEDITOR_BASEPATH location. So before loading ckeditor in JS
+      add a line to set that environment variable.
+      <pre class="prettyprint">window.CKEDITOR_BASEPATH = '/assets/ckeditor/';</pre>
+    </li>
+    <li>Add
+      <pre class="prettyprint">config.assets.precompile << ['ckeditor/*']</pre>
+      to your application.rb file.
+    </li>
+    <li>Finally add a file called precompile_hook.rake This rake task will help in compiling the ckeditor files and add
+      it
+      to the assets folder.
+      The content of the rake task is here. <a href="https://gist.github.com/prasann/c8978041777cb443fb77">precompile_hook.rake</a>
+    </li>
+  </ol>
+  <br>
+
+  <p>
+    Here is the screenshot of the network calls before and after adding ckeditor to asset pipeline.
+  </p>
+  <br>
+
+  <div id="images">
+    <a href="/assets/images/posts/add_ckeditor_to_rails/full/before.png" title="Before adding to asset pipeline"
+       data-dialog>
+      <img src="/assets/images/posts/add_ckeditor_to_rails/thumbs/before.png" alt="Before adding to asset pipeline"/>
+    </a>
+    <a href="/assets/images/posts/add_ckeditor_to_rails/full/after.png" title="After adding to asset pipeline"
+       data-dialog>
+      <img src="/assets/images/posts/add_ckeditor_to_rails/thumbs/after.png" alt="After adding to asset pipeline"/>
+    </a>
+  </div>
+
+  <p>Even after adding ckeditor to asset pipeline the it did not effectively reduce all calls into one.
+    Still the ckeditor's plugin calls are been fired separately. </p>
+
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Integrating CKEditor with Rails asset pipeline. : http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/08/deploying-jekyll-blog-through-rake-script/" title="Previous Post:
+Deploying Jekyll site for Github pages through rake script">&laquo; Deploying Jekyll site for Github pages through rake script</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2015/12/url_generation_error_after_upgrading_rails/" title="next Post:
+UrlGenerationError after upgrading to Rails 4.2">UrlGenerationError after upgrading to Rails 4.2 &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

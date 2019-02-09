@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">    
+  <url>
+    <loc>http://prasans.info/</loc>
+    <lastmod>2019-02-09T06:51:10+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>http://prasans.info/me</loc>
+    <lastmod>2019-02-09T06:51:10+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+    
+      <url>
+        <loc>http://prasans.info/2018/04/add-redux-middleware-dynamically/</loc>
+        <lastmod>2018-04-12T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/</loc>
+        <lastmod>2018-03-22T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/</loc>
+        <lastmod>2018-02-16T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2017/09/using-network-call-in-react/</loc>
+        <lastmod>2017-09-11T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2017/07/use-flyway-with-leiningen/</loc>
+        <lastmod>2017-07-16T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2017/05/card_slider_using_css3/</loc>
+        <lastmod>2017-05-26T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2017/05/store_function_inside_redux_store/</loc>
+        <lastmod>2017-05-18T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2017/02/jest_test_toLocaleString_javasscript/</loc>
+        <lastmod>2017-02-01T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2016/09/expire_session_after_timeout_spring/</loc>
+        <lastmod>2016-09-25T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2016/07/angular_resource_and_interceptors/</loc>
+        <lastmod>2016-07-18T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2016/06/post_errors_to_an_endpoint_angular/</loc>
+        <lastmod>2016-06-25T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2016/02/expanding_amazon_ebs_volumes/</loc>
+        <lastmod>2016-02-04T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2016/01/capistrano_set_deployed_revision/</loc>
+        <lastmod>2016-01-03T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2015/12/url_generation_error_after_upgrading_rails/</loc>
+        <lastmod>2015-12-09T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2015/05/add_ckeditor_to_rails_pipeline/</loc>
+        <lastmod>2015-05-27T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/08/deploying-jekyll-blog-through-rake-script/</loc>
+        <lastmod>2014-08-31T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/07/integrating-netflix-hystrix-to-a-spring-application/</loc>
+        <lastmod>2014-07-15T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/07/testing-apiary-using-github-travis/</loc>
+        <lastmod>2014-07-02T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/06/making-https-call-using-apache-httpclient/</loc>
+        <lastmod>2014-06-27T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/06/skeleton-gradle-spring-mvc-app/</loc>
+        <lastmod>2014-06-15T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/06/cross-site-http-requests/</loc>
+        <lastmod>2014-06-02T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/05/re-running-testng-failed-tests/</loc>
+        <lastmod>2014-05-01T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/04/wiring-jasmine2-with-phantom/</loc>
+        <lastmod>2014-04-29T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2014/02/utc-time-android-device-ntp-server-sync/</loc>
+        <lastmod>2014-02-14T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2013/11/castle-gorge-hiking-with-jhc/</loc>
+        <lastmod>2013-11-10T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2013/08/whats-new-in-apple-passbook-ios7/</loc>
+        <lastmod>2013-08-07T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2013/07/setting-up-cucumber-jvm/</loc>
+        <lastmod>2013-07-10T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2013/01/link-your-sublime-text-2-instances-with-dropbox/</loc>
+        <lastmod>2013-01-10T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2012/12/scribblings-socket-io/</loc>
+        <lastmod>2012-12-04T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2012/06/hamcrest-conflict-junit/</loc>
+        <lastmod>2012-06-27T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2012/06/handle-maxuploadsizeexceededexception-spring/</loc>
+        <lastmod>2012-06-24T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/12/make_ntfs_write_mac_lion/</loc>
+        <lastmod>2011-12-07T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/11/running-windows-8-on-vm-on-mac-lion/</loc>
+        <lastmod>2011-11-10T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/09/slot-machine-effect-jquery/</loc>
+        <lastmod>2011-09-25T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/09/writing-custom-tags-for-jstls/</loc>
+        <lastmod>2011-09-11T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/07/reloading-an-activity-in-android/</loc>
+        <lastmod>2011-07-13T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/07/configuring-context-name-for-an-applicationtomcat-war/</loc>
+        <lastmod>2011-07-09T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/06/my-first-windows-7-theme/</loc>
+        <lastmod>2011-06-21T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/05/primary-key-onetoone-mapping-in-hibernate/</loc>
+        <lastmod>2011-05-18T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/04/play-age-of-empires-aoe-in-windows-7/</loc>
+        <lastmod>2011-04-28T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/04/wiring-android-wheel-widget-into-your-application/</loc>
+        <lastmod>2011-04-24T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/03/add-edittexts-dynamically-and-retrieve-values-android/</loc>
+        <lastmod>2011-03-22T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2011/01/test-your-controllers-modelattribute-methods/</loc>
+        <lastmod>2011-01-20T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/11/hadoop-version-in-aws-map-reduce/</loc>
+        <lastmod>2010-11-15T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/11/install-custom-jar-files-in-samsung-corby-pro/</loc>
+        <lastmod>2010-11-03T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/10/sax-parser-characters-method/</loc>
+        <lastmod>2010-10-07T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/08/ftp-client-ubuntu/</loc>
+        <lastmod>2010-08-31T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/03/stop-halting-at-assertions/</loc>
+        <lastmod>2010-03-05T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/02/send-your-mail-later/</loc>
+        <lastmod>2010-02-20T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2010/02/printing-multiple-divs-in-a-page/</loc>
+        <lastmod>2010-02-11T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2009/12/tweaking-intellij-appearance-to-look-cool-in-ubuntu/</loc>
+        <lastmod>2009-12-30T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2009/12/install-inconsolata-ttf-in-ubuntujaunty/</loc>
+        <lastmod>2009-12-11T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2009/11/enabling-yahoo-accounts-on-ubuntu/</loc>
+        <lastmod>2009-11-28T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2009/10/test-smtp-server/</loc>
+        <lastmod>2009-10-21T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+    
+      <url>
+        <loc>http://prasans.info/2009/08/first-post/</loc>
+        <lastmod>2009-08-29T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    
+  
+</urlset>

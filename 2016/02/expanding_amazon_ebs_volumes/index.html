@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="EBS, AWS, EC2">
+<meta name="description" content="Even after increasing the size of the EBS volume in the AWS console, the actual size of the EBS wasn't increased. Have to follow the following steps to grow the EBS size.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Expanding Amazon EBS Volume in a EC2 instance.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2016/02/expanding_amazon_ebs_volumes/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Even after increasing the size of the EBS volume in the AWS console, the actual size of the EBS wasn't increased. Have to follow the following steps to grow the EBS size.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2016-02-04T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Expanding Amazon EBS Volume in a EC2 instance.</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Expanding Amazon EBS Volume in a EC2 instance.</h1>
+  <div class="date_tag">
+    <div class="date">4 February, 2016.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/aws">aws</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>
+    I had an AWS image which was created using an EC2 instance of size 8 GB. Whenever i try to launch an instance i
+    usually change the storage size to something say 20 GB. But once the system is launched when i do a
+  <pre class="prettyprint">df -h</pre>
+  i still see 8 GB and not 20 GB.
+  </p>
+  <p>
+    On further reading i understood i need to resize the disk size. So i did the same using
+  <pre class="prettyprint">sudo resize2fs /dev/xvde1</pre>
+  But i was getting the following error:
+    <pre class="prettyprint"> The filesystem is already *** blocks long. Nothing to do!
+</pre>
+  </p>
+  <p>Then to reolve this issue i have to perform the following steps.</p>
+  <ul>
+    <li>SSH to the machine.</li>
+    <pre class="prettyprint">fdisk /dev/xvde</pre>
+    <li>You should be seeing this message.</li>
+
+    <pre class="prettyprint">WARNING: DOS-compatible mode is deprecated. It's strongly recommended to switch off the mode (command 'c') and change display units to sectors (command 'u')</pre>
+    <li>Enter 'u' to change display units</li>
+    <li>Enter 'p' to view the current paritions.</li>
+    <li>Enter 'd' to delete current partitions.</li>
+    <li>Enter 'n' to create a new partition.</li>
+    <li>Enter 'p' to set it as primary partitions.</li>
+    <li>Enter '1' to set it as primary partitions.</li>
+    <li>Set the desired space. If nothing is given the entire space is allotted.</li>
+    <li>Enter 'a' to make it bootable.</li>
+    <li>Enter '1' and 'w' to write and save the changes.</li>
+    <li>Reboot the instance from AWS console.</li>
+    <li>Now if you resize the parition it worked all fine.</li>
+    <pre class="prettyprint">sudo resize2fs /dev/xvde1</pre>
+
+  </ul>
+  <p>Check the partition size, it should be all set with more space.</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2016/02/expanding_amazon_ebs_volumes/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Expanding Amazon EBS Volume in a EC2 instance. : http://prasans.info/2016/02/expanding_amazon_ebs_volumes/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2016/01/capistrano_set_deployed_revision/" title="Previous Post:
+Set deployed Git revision using Capistrano 3">&laquo; Set deployed Git revision using Capistrano 3</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2016/06/post_errors_to_an_endpoint_angular/" title="next Post:
+Post browser logs to server in an Angular app">Post browser logs to server in an Angular app &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

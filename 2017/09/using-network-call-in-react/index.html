@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="javascript, react, tech, asynchronous, network">
+<meta name="description" content="React documentation suggests to use componentDidMount for async calls. Here is the explanation of why you shouldn't do in constructor or in componentWillMount.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Asynchronous calls in React component">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2017/09/using-network-call-in-react/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="React documentation suggests to use componentDidMount for async calls. Here is the explanation of why you shouldn't do in constructor or in componentWillMount.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2017-09-11T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Asynchronous calls in React component</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Asynchronous calls in React component</h1>
+  <div class="date_tag">
+    <div class="date">11 September, 2017.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/javascript">javascript</a> 
+                 
+                <a href="/categories/react">react</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+
+  <p>All network calls that are necessary to load data needed by the component should go inside <span class="inline">componentDidMount()</span>
+  </p>
+
+  <blockquote>
+    <h5><a href="https://facebook.github.io/react/docs/react-component.html#componentdidmount" target="_blank">
+      From React docs</a></h5>
+    <span class="inline">componentDidMount()</span> is invoked immediately after a component is mounted. Initialization
+    that requires DOM nodes should go here.
+    If you need to load data from a remote endpoint, this is a good place to
+    instantiate the network request. Setting state in this method will trigger a re-rendering.
+  </blockquote>
+
+  <h4>Why not inside <span class="inline">constructor()</span>?</h4>
+
+  <ul>
+    <li>
+      If you make a fetch for a component in constructor, and the user navigates away from the page containing that
+      component before the request completes, it will still try to <span class="inline">setState</span> on that
+      component despite being unmounted,
+      and React will throw an error.
+    </li>
+
+    <li>If your component fails to load, still you will end up making an unnecessary server-request.</li>
+
+  </ul>
+
+  <h4>Why not in <span class="inline">componenentWillMount()</span>?</h4>
+
+  <p>
+    This function is invoked immediately before mounting occurs. So, obviously this appears to be a best place to place
+    the call to load data.
+    However that's not the case.
+  </p>
+  <ul>
+    <li>
+      Even if you add the network call in componentWillMount, your request will almost certainly not finish before the
+      component is rendered. There is no way to pause the rendering till the request returns.
+      So you will end up re-rendering the component anyways.
+    </li>
+    <li>
+      This is the only lifecycle hook called on server rendering. So, if you are serving from the backend, this will be
+      executed twice.
+    </li>
+  </ul>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2017/09/using-network-call-in-react/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Asynchronous calls in React component : http://prasans.info/2017/09/using-network-call-in-react/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2017/07/use-flyway-with-leiningen/" title="Previous Post:
+Flyway migrations in lein clojure">&laquo; Flyway migrations in lein clojure</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2018/02/soap-call-in-clojure-compojure-with-saaj/" title="next Post:
+Dealing with SOAP in clojure">Dealing with SOAP in clojure &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

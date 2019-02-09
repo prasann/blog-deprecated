@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="jquery, javascript, slot-machine, tricks">
+<meta name="description" content="A cool widget that looks like a slot machine. Small piece of code and a nice trick to animate the numbers to achieve a slot machine effect.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Slot machine effect using jQuery">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/09/slot-machine-effect-jquery/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="A cool widget that looks like a slot machine. Small piece of code and a nice trick to animate the numbers to achieve a slot machine effect.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-09-25T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Slot machine effect using jQuery</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Slot machine effect using jQuery</h1>
+  <div class="date_tag">
+    <div class="date">25 September, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/javascript">javascript</a> 
+                 
+                <a href="/categories/tricks">tricks</a> 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p><strong>Intention:</strong><br />
+In an yet another cart based web-app, the intention is to make the cart page looks fancier. <a title="Praveen Selvam" href="http://praveenselvam.com" target="_blank">Praveen Selvam</a> came up with this idea of slot machine effect in the price section whenever an item been added.</p>
+<p><strong>Slot Machine Effect:</strong></p>
+<iframe width="100%" height="320" src="http://jsfiddle.net/prasans/vxrBd/embedded/result/"></iframe>
+<p><strong>Requisite:</strong></p>
+<ul>
+<li>jQuery 1.5+</li>
+</ul>
+<p><strong>Idea:</strong></p>
+<ul>
+<li>Create an element to display the animation.</li>
+<li>Next create an empty element say <span style="color: #008080;">&lt;div&gt;&lt;/div&gt;</span> and set its <span style="color: #008080;">position: 'fixed'</span></li>
+<li>Set the position of the empty element to the Start Value of the slot.</li>
+<li>Now use jQuery animate to move the empty element from Start value to the specified End Value in a given duration.</li>
+<li>jQuery animate has a <span style="color: #008080;">step()</span> method which gives you the current position of the div for every unit of time.</li>
+<li>Now inside this <span style="color: #008080;">step()</span> method set the display element's text to the current position value of the empty element.</li>
+<li>Since empty element moves from start value to end value, you will see the numbers changing from start value to end value in the display area.</li>
+</ul>
+<div><span class="Apple-style-span" style="font-size: 16px; line-height: 24px;"><strong>Javascript Code:</strong></span></div>
+<div>
+<pre class="prettyprint">$('#animate_btn').click(function() {
+	cashFlow($('.value'), $('#startVal').val(), $('#endVal').val(),
+	$('#duration').val() * 1000, $('#decimal').val());
+});
+
+cashFlow = function(elem, from, to, duration, decimal) {
+    var magicObject;
+    if (typeof magicObject === 'undefined') {
+        magicObject = $('&lt;div&gt;&lt;/div&gt;').appendTo('body');
+    }
+    magicObject.css({
+        position: "fixed",
+        left: from
+    }).animate({
+        left: to
+    }, {
+        duration: duration,
+        step: function(currentLeft) {
+            elem.html(Number(currentLeft).toFixed(decimal));
+        },
+        complete: function() {
+            magicObject.remove();
+        }
+    });
+};</pre>
+</div>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/09/slot-machine-effect-jquery/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Slot machine effect using jQuery : http://prasans.info/2011/09/slot-machine-effect-jquery/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/09/writing-custom-tags-for-jstls/" title="Previous Post:
+Writing Custom Tags for JSTLs">&laquo; Writing Custom Tags for JSTLs</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2011/11/running-windows-8-on-vm-on-mac-lion/" title="next Post:
+Running Windows 8 on VM on Mac Lion">Running Windows 8 on VM on Mac Lion &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

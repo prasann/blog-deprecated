@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Rails, Capistrano, Deploy, Git">
+<meta name="description" content="While deploying Rails application using Capistrano 3, recording the current deployed git revision to be used by Rails applicaiton.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Set deployed Git revision using Capistrano 3">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2016/01/capistrano_set_deployed_revision/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="While deploying Rails application using Capistrano 3, recording the current deployed git revision to be used by Rails applicaiton.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2016-01-03T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Set deployed Git revision using Capistrano 3</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Set deployed Git revision using Capistrano 3</h1>
+  <div class="date_tag">
+    <div class="date">3 January, 2016.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/capistrano">capistrano</a> 
+                 
+                <a href="/categories/rails">rails</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>We use Capistrano to deploy our Rails application. Recently i upgraded our capistrano version from 2 to 3</p>
+  <p>Capistrano 3 has a complete DSL changeover. Apart from this one other major change I figured out was the way a Git repository is been deployed.</p>
+  <p>Previously a Git repository is cloned in the deploy location. Now in Cap 3 a Git archive is been downloaded to the deploy location.
+    This means the deploy directory is no more a Git repository. During Cap 2 times, we used to run a 'git log' command in the deployed driectory to find the deployed revision. Now
+    after upgrade I am unable to do this.
+  </p>
+  <p>
+    Cap 3 has got a REVISION file, which contain the SHA of the deployed commit. This wasn't useful in our case, as we show this message in our web application.
+  </p>
+  <p>
+    So i ended up writing a Cap task using a similar logic to create a REVISION file with our custom formatted Git message.
+  </p>
+  <pre class="prettyprint">
+    namespace :deploy do
+      task :add_revision_file do
+        on roles(:app) do
+          within repo_path do
+            execute(:git, :'log', :"--pretty=format:'%h | %ai | %d %s'", :'-1',
+            :"#{fetch(:branch)}", ">#{release_path}/REVISION")
+          end
+        end
+      end
+    end
+  </pre>
+  <pre class="prettyprint">
+    after 'deploy:updating', 'deploy:add_revision_file'
+  </pre>
+
+  <p>
+    This will overwrite the REVISION file created by Cap with our custom message. Which will be consumed by our application.
+  </p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2016/01/capistrano_set_deployed_revision/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Set deployed Git revision using Capistrano 3 : http://prasans.info/2016/01/capistrano_set_deployed_revision/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2015/12/url_generation_error_after_upgrading_rails/" title="Previous Post:
+UrlGenerationError after upgrading to Rails 4.2">&laquo; UrlGenerationError after upgrading to Rails 4.2</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2016/02/expanding_amazon_ebs_volumes/" title="next Post:
+Expanding Amazon EBS Volume in a EC2 instance.">Expanding Amazon EBS Volume in a EC2 instance. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

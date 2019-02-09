@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="javascript, redux, tech, react, network">
+<meta name="description" content="Redux state can be very useful to share data across the application. This post is about storing a function inside the redux store.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Storing a function in the Redux store">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2017/05/store_function_inside_redux_store/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Redux state can be very useful to share data across the application. This post is about storing a function inside the redux store.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2017-05-18T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Storing a function in the Redux store</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Storing a function in the Redux store</h1>
+  <div class="date_tag">
+    <div class="date">18 May, 2017.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/javascript">javascript</a> 
+                 
+                <a href="/categories/react">react</a> 
+                 
+                <a href="/categories/redux">redux</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p><a href="https://redux.js.org/">Redux</a> is a predictable state container for Javascript. Redux state has to be serializable all
+  the time.</p>
+  <p>Object serialization is the process of converting an object's state to a string from which it can later be restored.</p>
+
+  <p>So, if you are trying to store a function inside the Redux state, you need to serialize them before persisting.</p>
+
+  <blockquote>Storing functions inside redux state is not a best practice in general. So try to avoid it.</blockquote>
+
+  <p>Javascript functions can be serialized quite easily, the challenge is in retrieving them from the store to execute.</p>
+
+  <p>Below are the helper functions for persisting functions inside Redux state.</p>
+
+  <pre class="prettyprint">
+  //Returns a string
+  export const serializeFunction = (func) => (func.toString());
+  //serializeFunction(()=>console.log('Hello!!'))
+  // Output ==> "()=>console.log('Hello!!')"
+  </pre>
+
+  <p>
+  The function to be stored in the state should be converted into string using <span class="inline">serializeFunction</span>.
+  </p>
+
+  <pre class="prettyprint">
+  //Returns a function
+  export const deserializeFunction = (funcString) => (new Function(`return ${funcString}`)());
+  </pre>
+
+  <p>
+    Convert the string from the redux store into a function using <span class="inline">deserializeFunction</span>
+  </p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2017/05/store_function_inside_redux_store/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Storing a function in the Redux store : http://prasans.info/2017/05/store_function_inside_redux_store/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2017/02/jest_test_toLocaleString_javasscript/" title="Previous Post:
+Mock toLocaleString in Jest">&laquo; Mock toLocaleString in Jest</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2017/05/card_slider_using_css3/" title="next Post:
+Card slider using CSS Keyframes">Card slider using CSS Keyframes &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

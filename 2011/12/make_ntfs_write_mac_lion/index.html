@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Mac, NTFS">
+<meta name="description" content="Make your NTFS drive writabe under mac lion.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Make your NTFS drive writable under Mac Lion">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2011/12/make_ntfs_write_mac_lion/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Make your NTFS drive writabe under mac lion.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2011-12-07T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Make your NTFS drive writable under Mac Lion</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Make your NTFS drive writable under Mac Lion</h1>
+  <div class="date_tag">
+    <div class="date">7 December, 2011.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/mac">mac</a> 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>Just now i got my new MBP pre loaded with Lion OSX and one of the surprises i stepped onto is NTFS write issue on the Mac.</p>
+<p>Based on a few blog posts and comments I managed to find a way that worked for me, so I thought I’d put it all here in one place for others.</p>
+<p><strong>Pre requisites:</strong></p>
+<p>Get <a title="homebrew" href="http://mxcl.github.com/homebrew/" target="_blank">HomeBrew</a> installed in your machine. And of course this needs XCode tools to be installed.</p>
+<p><strong>Steps:</strong></p>
+<p>1) Install latest Fuse4X (a fork of MacFUSE) and NTFS-3G packages:</p>
+<pre class="prettyprint">brew install fuse4x
+brew install ntfs-3g</pre>
+<p>2) Type brew info fuse4x-kext in the terminal. You will be shown a message similar to this:</p>
+<pre class="prettyprint">In order for FUSE-based filesystems to work, the fuse4x kernel extension
+must be installed by the root user:
+sudo cp -rfX /usr/local/Cellar/fuse4x-kext/0.8.13/Library/Extensions/fuse4x.kext /System/Library/Extensions
+sudo chmod +s /System/Library/Extensions/fuse4x.kext/Support/load_fuse4x</pre>
+<p>Perform both the operation.<br />
+3) And after this i simply followed this <a href="http://fernandoff.posterous.com/ntfs-write-support-on-osx-lion-with-ntfs-3g-f" target="_blank">blog post entry</a>. Since you have already installed Fuse4x and ntfs-3g you can directly jump to</p>
+<blockquote><p>"Ok, at this point you should have a functional fuse4x and ntfs-3g install."</p></blockquote>
+<p>and create an alternative</p>
+<pre class="prettyprint">/sbin/ntfs_mount</pre>
+<p>script as described there.<br />
+And at last you got make one change to get things working.<br />
+The script in the bog post is for MacPort users. For HomveBrew users you got to make this change.<br />
+replace</p>
+<pre class="prettyprint">/opt/local/bin/ntfs-3g</pre>
+<p>with</p>
+<pre class="prettyprint">/usr/local/bin/ntfs-3g</pre>
+<p>And that's it. Just try mounting a NTFS drive and you should have write permissions to your drive. If you face any issues check out the log @</p>
+<pre class="prettyprint">/var/log/ntfsmnt.log</pre>
+<p>or try re-booting the machine in the worst case.</p>
+</div>
+ <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2011/12/make_ntfs_write_mac_lion/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Make your NTFS drive writable under Mac Lion : http://prasans.info/2011/12/make_ntfs_write_mac_lion/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2011/11/running-windows-8-on-vm-on-mac-lion/" title="Previous Post:
+Running Windows 8 on VM on Mac Lion">&laquo; Running Windows 8 on VM on Mac Lion</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2012/06/handle-maxuploadsizeexceededexception-spring/" title="next Post:
+Handle MaxUpload SizeExceededException in Spring">Handle MaxUpload SizeExceededException in Spring &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

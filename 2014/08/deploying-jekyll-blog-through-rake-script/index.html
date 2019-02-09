@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Rake, Jekyll, Github">
+<meta name="description" content="Deploying jekyll blog or site for Github pages using rake script.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Deploying Jekyll site for Github pages through rake script">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2014/08/deploying-jekyll-blog-through-rake-script/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Deploying jekyll blog or site for Github pages using rake script.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2014-08-31T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Deploying Jekyll site for Github pages through rake script</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Deploying Jekyll site for Github pages through rake script</h1>
+  <div class="date_tag">
+    <div class="date">31 August, 2014.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>This blog is powered by Jekyll and I use Github pages as web server.</p>
+  <h4>Branch structure in Github</h4>
+
+  <p>Github by default publish the contents of the master branch as a github page. So i have created two branches in
+    the repository. </p>
+
+  <p><strong>source:</strong> contains Jekyll based folder structure. _drafts, _posts, _site etc. All the new posts
+    are added in the drafts folder first and then once its written fully it is then moved to _posts folder and are
+    then ready to be published.</p>
+
+  <p><strong>master:</strong> is simply a generated content from the rake script. This branch has all the HTML files
+    that are generated
+    using Jekyll gem.</p>
+
+  <h4>Folder structure in Dev box</h4>
+
+  <p>I have both the branches checked out in different folders. Both these folders are present in the same level (will
+    be useful while generating output)</p>
+
+  <h4>Rake script</h4>
+
+  <h5>To generate HTML</h5>
+
+  <p>I have the Rakefile in the root level of my source branch. The rake task mentioned below will create HTML
+    equivalent inside the _site folder.</p>
+
+    <pre class="prettyprint">
+task :generate do
+  Jekyll::Site.new(Jekyll.configuration({
+    "source"      => ".",
+    "destination" => "_site"
+  })).process
+end
+    </pre>
+
+  <h5>To publish in Github</h5>
+
+  <p>This task copies the entire _site folder into the master branch (locally). This is why i need to checkout both
+    master and source branches separately and keep them in the same level.</p>
+
+  <p>After copying the contents, simply it switches to the master branch and does a git push.</p>
+
+  <p>Once the changes are pushed into github's master branch the changes are then reflected in your site
+    immediately.</p>
+    <pre class="prettyprint">
+task :publish => [:generate] do
+  cp_r "_site/.", LOCAL_DIR_NAME
+  cp ".travis.yml", LOCAL_DIR_NAME
+  pwd = Dir.pwd
+  Dir.chdir LOCAL_DIR_NAME
+  system "git add --all"
+  message = "Site updated at #{Time.now.utc}"
+  system "git commit -m #{message.inspect}"
+  system "git push origin master:refs/heads/master"
+  Dir.chdir pwd
+end
+    </pre>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2014/08/deploying-jekyll-blog-through-rake-script/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Deploying Jekyll site for Github pages through rake script : http://prasans.info/2014/08/deploying-jekyll-blog-through-rake-script/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2014/07/integrating-netflix-hystrix-to-a-spring-application/" title="Previous Post:
+Integrating Netflix Hystrix to a Spring Application">&laquo; Integrating Netflix Hystrix to a Spring Application</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2015/05/add_ckeditor_to_rails_pipeline/" title="next Post:
+Integrating CKEditor with Rails asset pipeline.">Integrating CKEditor with Rails asset pipeline. &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

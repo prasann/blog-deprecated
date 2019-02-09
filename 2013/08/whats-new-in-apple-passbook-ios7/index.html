@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="iOS, passbook, ios7">
+<meta name="description" content="New features in passbook application in the iOS7.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="What's new in Apple Passbook iOS7">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2013/08/whats-new-in-apple-passbook-ios7/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="New features in passbook application in the iOS7.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2013-08-07T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>What's new in Apple Passbook iOS7</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>What's new in Apple Passbook iOS7</h1>
+  <div class="date_tag">
+    <div class="date">7 August, 2013.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>I'm currently working in a project that integrated with iOS Passbook application to deliver digital passes to their users. Spent some time in investigating the changes to passbook application in iOS7 (beta 4). Here is a quick summary of it.</p>
+<p>Apple listened to its user's feedback and have come with some features which increases the usability of the application.</p>
+<p><strong>Add multiple passes to Passbook.</strong></p>
+<p>Yes, you can able to add multiple passes to the Passbook application in one go. So, if you are issuing multiple passes to your users, probably have a page with all the passes and you can have download all link, which downloads all the passes in one shot.</p>
+<p><strong>Delivery through Barcode.</strong></p>
+<p>Apple have added one more delivery mechanism to the passbook. Currently you can deliver a pass through Safari browser (with vnd.apple.pkpass as header) or Through email attachment or to stream from your native iOS application. Now in the new passbook app they have added a barcode scanner. So the content of the pass can be crisped into a barcode and can be delivered to the Passbook application.</p>
+<p><strong>Anchor tags at the back of the pass.</strong></p>
+<p>Currently you can have links, but you cannot have link text. For example if you want to link 
+	<a href="http://google.com">http://www.google.com</a> to 'Click here' it is not possible. But it will be possible from iOS7</p>
+<p><strong>Expiration date for Passes.</strong></p>
+<p>Now passes can have its own expiration date. It's a meta data that you can set and after that the passes will be destroyed from the Apple passbook automatically.</p>
+<p><strong>Usage restriction by Geo location.</strong></p>
+<p>You can restrict the usage of passes, within a specific geo location. For example if you are issuing a coupon, then you can make sure that your users could able to access the coupons within a specific geo co-ordinates.</p>
+<p>All these are nice features that are provided in iOS7. So far i was happy with all these news, until i read that, (<a href="https://devforums.apple.com/thread/190987?tstart=0">Dev forum link</a>)</p>
+<p><strong>The rendering algorithms are significantly different from the previous versions.</strong></p>
+<p>This seems to be a major issue to me, since i have to now test the appearance of my pass with new version. And have to think about optimising the design across all the versions.</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2013/08/whats-new-in-apple-passbook-ios7/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=What's new in Apple Passbook iOS7 : http://prasans.info/2013/08/whats-new-in-apple-passbook-ios7/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2013/07/setting-up-cucumber-jvm/" title="Previous Post:
+Setting up Cucumber-jvm">&laquo; Setting up Cucumber-jvm</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2013/11/castle-gorge-hiking-with-jhc/" title="next Post:
+Hike to Castle Gorge with JHC">Hike to Castle Gorge with JHC &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

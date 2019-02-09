@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="sublime, mac, windows">
+<meta name="description" content="Sublime text has a key mapping file where it stores all the shortcut. Here is a way to share your preferences and key maps across two machines using a dropbox account.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Link your Sublime Text 2 instances with Dropbox">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2013/01/link-your-sublime-text-2-instances-with-dropbox/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Sublime text has a key mapping file where it stores all the shortcut. Here is a way to share your preferences and key maps across two machines using a dropbox account.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2013-01-10T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Link your Sublime Text 2 instances with Dropbox</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Link your Sublime Text 2 instances with Dropbox</h1>
+  <div class="date_tag">
+    <div class="date">10 January, 2013.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>After started using <strong>Sublime Text 2 (ST2)</strong>, was completely head over heels for it. After using it for some time, figured out that ST2 uses a settings file to remember the plugins, open tabs etc. I was using my laptop (Mac) and sometimes uses my PC (Windows) do type blog post or some other stuff. So thought of giving a try in syncing these two using Dropbox folder.</p>
+<p>The idea is to have the settings file in the Dropbox folder and to have a symlink in the OS to point to. This means whatever changes i did to a ST2 instance will reflect in my other instance too.</p>
+<p><strong>Prerequisites:</strong></p>
+<ul>
+<li>Install ST2 in both the machines.</li>
+<li>Have a DropBox account and install the software in both the machines.</li>
+</ul>
+<h3><strong>In Mac:</strong></h3>
+<p>Move the entire Sublime Text folder into the Dropbox folder.</p>
+<pre class="prettyprint">mv '~/Library/Application\ Support/Sublime\ Text\ 2/' '~/Dropbox/Sublime\ Text\ 2'</pre>
+<p>Next step is to create a symlink in the original location so that it the folder in the Dropbox will be used to store the settings.</p>
+<pre class="prettyprint">ln -s '~/Library/Application\ Support/Sublime\ Text\ 2' '~/Dropbox/Sublime\ Text\ 2'</pre>
+<h3><strong>In Windows:</strong></h3>
+<p>Windows don't have symlink concept. So we have to settle with <a title="NTFS Junction Point" href="http://en.wikipedia.org/wiki/NTFS_symbolic_link">NTFS symbolic link</a></p>
+<pre class="prettyprint">mklink /J 'C:/Users/user_name/Dropbox/Sublime Text 2' 'C:/User/user_name/Applications/Sublime Text 2'</pre>
+<p>That's it, now you don't need to worry about the sync between these two instances.</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2013/01/link-your-sublime-text-2-instances-with-dropbox/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Link your Sublime Text 2 instances with Dropbox : http://prasans.info/2013/01/link-your-sublime-text-2-instances-with-dropbox/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2012/12/scribblings-socket-io/" title="Previous Post:
+Scribblings on Socket.io">&laquo; Scribblings on Socket.io</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2013/07/setting-up-cucumber-jvm/" title="next Post:
+Setting up Cucumber-jvm">Setting up Cucumber-jvm &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

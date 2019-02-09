@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="testing, soft-assert, testng">
+<meta name="description" content="Generally assertions cause the test to halt. But sometimes we need to continue further and evaluate all the asserts and expect a comprehensive report of all the asserts.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Stop halting at Assertions">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2010/03/stop-halting-at-assertions/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Generally assertions cause the test to halt. But sometimes we need to continue further and evaluate all the asserts and expect a comprehensive report of all the asserts.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2010-03-05T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Stop halting at Assertions</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Stop halting at Assertions</h1>
+  <div class="date_tag">
+    <div class="date">5 March, 2010.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/testing">testing</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+  <p>When i was writing functional tests i stepped into a scenario where i have to continue with the test even after an
+    assertion failure. The idea here is that you find an assertion failing, still you may need to go ahead and check out
+    all the assertions as these tests generally take long time to complete. At the end of the test it will be good to
+    have the summary of all the failures along with the stack trace. I was looking for some testing framework to help
+    out with this functionality but unfortunately cant find any.</p>
+  <p>Finally using TestNg i implemented this feature. All you need is to write a listener that listens whenever a test
+    fails and simply logs the stack trace without failing the test. There is a neat step by step tutorial given <a
+            href="http://seleniumexamples.com/blog/guide/using-soft-assertions-in-testng">here&nbsp;</a></p>
+  <p>Though this example has some specific information for Selenium based tests, it works fine with normal functional
+    tests too.</p>
+  <p>Happy Testing :)</p>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2010/03/stop-halting-at-assertions/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Stop halting at Assertions : http://prasans.info/2010/03/stop-halting-at-assertions/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2010/02/send-your-mail-later/" title="Previous Post:
+Send your mail later">&laquo; Send your mail later</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2010/08/ftp-client-ubuntu/" title="next Post:
+FTP Client (Ubuntu)">FTP Client (Ubuntu) &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>

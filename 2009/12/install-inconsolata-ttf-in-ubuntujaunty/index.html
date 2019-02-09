@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="Inconsolata, Tech, Ubuntu">
+<meta name="description" content="Inconsolata is dev friendly font used by devs for their code. This post is about installing Inconsolata tru type in Ubuntu - Jaunty.">
+ <meta content="670156599751120" property="fb:app_id">
+<meta property="og:title" content="Install Inconsolata.ttf in Ubuntu(Jaunty).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://prasans.info/2009/12/install-inconsolata-ttf-in-ubuntujaunty/">
+<meta property="og:image" content="/assets/images/profile.jpg">
+<meta property="og:description" content="Inconsolata is dev friendly font used by devs for their code. This post is about installing Inconsolata tru type in Ubuntu - Jaunty.">
+<meta property="og:site_name" content="Feel My Presence">
+<meta property="og:locale" content="en"> 
+<meta property="article:published_time" content="2009-12-11T00:00:00+00:00">
+<meta property="article:author" content="Prasanna"> 
+<meta property="og:see_also" content="http://prasans.info/2018/04/add-redux-middleware-dynamically/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/03/start-nginx-when-upstream-unavailable/"> 
+<meta property="og:see_also" content="http://prasans.info/2018/02/soap-call-in-clojure-compojure-with-saaj/">  
+
+  <title>Install Inconsolata.ttf in Ubuntu(Jaunty).</title>
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/post.css">
+  <link rel="alternate" type="application/rss+xml" title="Random Presence" href="http://prasans.info/feed.xml">
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        
+        Random Presence
+        
+      </a>
+
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+        <li><a href="https://github.com/prasann">Github</a></li>
+        <li><a href="/me">Me</a></li>
+        <li><a href="http://feeds.prasans.info/prasans">Feed</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog_header">
+  
+</div>
+ <div class="title">
+  <h1>Install Inconsolata.ttf in Ubuntu(Jaunty).</h1>
+  <div class="date_tag">
+    <div class="date">11 December, 2009.</div>
+    <div class="tags">
+      <em>Under: 
+                 
+                <a href="/categories/tech">tech</a> 
+                 
+                <a href="/categories/ubuntu">ubuntu</a> 
+            </em>
+    </div>
+  </div>
+</div>
+ <div class="post">
+<p>As developers tend to spend most of the time in front of IDEs it makes sense to pick up the best suited font for development. And i have seen most of  the developers prefer to use monochrome fonts as it yields better feel while looking at the code. It is been now widely accepted by many developers to use Inconsolata as their development font. So better start using it and prove yourself geeky ;)<br />When i tried to use Inconsolata with my IntellijIDEA i couldn't find the ttf type inconsolata. And Intellij supports only ttf types. After a long search i downloaded thr ODf type and converted it to ttf using a converter and then i had the issue of installing it to my Jaunty. And i took help of my dev friends out here to resolve stuffs. So thought of consolidating the steps together as it may reduce someone else's pain.</p>
+<p><strong>Steps to install Inconsolata.ttf in Ubuntu(Jaunty).</strong></p>
+<p><strong>Step 1:</strong> Start with downloading inconsolata font. <a href="http://www.4shared.com/file/xnMYNL0w/Inconsolata.html" target=_blank>Inconsolata.ttf</a></p>
+<p><strong>Step 2:</strong> </p> 
+<pre class="prettyprint">mkdir /usr/share/fonts/truetype</pre>
+<pre class="prettyprint">cd /usr/share/fonts/truetype</pre>
+<pre class="prettyprint">sudo mkdir  ttf-inconsolata</pre>
+<p><strong>Step 3:</strong> Copy the Inconsolata.ttf into the directory.<pre class="prettyprint">sudo cp ~/Desktop/Inconsolata.ttf ttf-inconsolata</pre></p>
+<p><strong>Step 4:</strong> Now modify the permissions to allow it to be accessed by IDE's
+	<pre class="prettyprint">cd ttf-inconsolata</pre>
+	<pre class="prettyprint">sudo chmod 777 Inconsolata.ttf</pre>
+<p><strong>Step 5:</strong>Its not over yet. Finally before going to the IDE you need to cache the font to make it accessible.
+	<pre class="prettyprint">sudo fc-cache -f -v</pre>
+	This will show a list of fonts cached recently. Check whether Inconsolata.ttf is been cached.</p>
+<div>Now you can keep staring at your code for a long time as it feels a lot better :)   </div>
+</div>
+</div> <div class="text-center">
+	<a href="http://www.facebook.com/sharer/sharer.php?u=http://prasans.info/2009/12/install-inconsolata-ttf-in-ubuntujaunty/" class="btn-share facebook">Share</a>
+	<a href="http://twitter.com/intent/tweet?text=Install Inconsolata.ttf in Ubuntu(Jaunty). : http://prasans.info/2009/12/install-inconsolata-ttf-in-ubuntujaunty/" class="btn-share twitter">Tweet</a>
+</div>
+ <div id="page-navigation">
+  <div class="prev-link">
+    
+    <a href="/2009/11/enabling-yahoo-accounts-on-ubuntu/" title="Previous Post:
+Enabling Yahoo Accounts On Ubuntu">&laquo; Enabling Yahoo Accounts On Ubuntu</a> 
+  </div>
+
+  <div class="next-link">
+    
+    <a href="/2009/12/tweaking-intellij-appearance-to-look-cool-in-ubuntu/" title="next Post:
+Tweaking IntelliJ appearance to look cool in Ubuntu">Tweaking IntelliJ appearance to look cool in Ubuntu &raquo; </a> 
+  </div>
+</div>
+
+  <div id="footer">
+	Copyright &copy; 2017 - Prasanna
+</div>
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-19478421-1', 'prasans.info');
+	ga('send', 'pageview');
+</script>
+
+</body>
+<script src="../../../assets/js/application.js"></script>
+
+</html>
